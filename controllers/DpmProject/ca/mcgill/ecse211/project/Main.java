@@ -26,6 +26,8 @@ public class Main {
   public static void main(String[] args) {
     initialize();
     
+    LightSensorCalibration.dmm.setMinMargin(30);
+    
     // Start the odometer thread
     new Thread(odometer).start();
     
@@ -35,7 +37,7 @@ public class Main {
 
     odometer.setX(3.5 * TILE_SIZE);
     odometer.setY(6.5 * TILE_SIZE);
-    odometer.setTheta(270);
+    odometer.setTheta(90);
    
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
@@ -46,16 +48,19 @@ public class Main {
           }
         case ("Standard.Initialization.Localization"): {
           System.out.println("Localizing");
-          /*UltrasonicLocalizer.localize();
+          UltrasonicLocalizer.localize();
           LightSensorCalibration.calibrate();
-          LightLocalizer.localize();*/
+          LightLocalizer.localize();
+          odometer.setX(1 * TILE_SIZE);
+          odometer.setY(8 * TILE_SIZE);
+          odometer.setTheta(90);
           STATE_MACHINE.doneLocalizing(); // TEMPORARY : Add this at the end of the function it self
           }
         case ("Standard.Initialization.EntryField"): {
           System.out.println("Entering field");
-          STATE_MACHINE.enteredField(); // TEMPORARY : Add this at the end of the function it self
+          FieldEntry.enterField();
           }
-        case ("Standard.Operation.Search"): {
+        case ("dStandard.Operation.Search"): {
           System.out.println("Searching"); 
           Search.initializeSearch();
           Search.doSearch();

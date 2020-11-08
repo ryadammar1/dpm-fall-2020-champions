@@ -13,6 +13,8 @@ import simlejos.hardware.port.SensorPort;
 import simlejos.hardware.sensor.EV3ColorSensor;
 import simlejos.hardware.sensor.EV3UltrasonicSensor;
 import simlejos.robotics.RegulatedMotor;
+import simlejos.robotics.SampleProvider;
+
 
 /* (non-Javadoc comment)
  * TODO Integrate this carefully with your existing Resources class (See below for where to add
@@ -84,7 +86,7 @@ public class Resources {
   public static final double WHEEL_RAD = 0.021;
   
   /** The robot width in meters. */
-  public static final double BASE_WIDTH = 0.155;
+  public static final double BASE_WIDTH = 0.125; //was 0.155
   
   /** The distance between the color sensors and the wheels in meters. */
   public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0;
@@ -121,11 +123,10 @@ public class Resources {
   /** The ultrasonic sensor. */
   public static final EV3UltrasonicSensor usSensor = new EV3UltrasonicSensor(SensorPort.S1);
 
-  /** The left color sensor. */
-  public static final EV3ColorSensor colorSensorLeft = new EV3ColorSensor(SensorPort.S2);
-
-  /** The right color sensor. */
-  public static final EV3ColorSensor colorSensorRight = new EV3ColorSensor(SensorPort.S3);
+  /** The color sensor sample provider. */
+  public static final SampleProvider colorSensorLeft = new EV3ColorSensor(SensorPort.S2).getRGBMode();
+  
+  public static final SampleProvider colorSensorRight= new EV3ColorSensor(SensorPort.S3).getRGBMode();
 
   /** The differential minimal margin object. */
   public static DifferentialMinimalMargin dmm = new DifferentialMinimalMargin();

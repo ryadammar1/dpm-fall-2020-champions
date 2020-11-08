@@ -195,11 +195,10 @@ public class Search {
      * @return boolean
      */
     private static boolean hasDangerWithin(double hypotenuse) {
-        if (hypotenuse > 5) { // Base case
+        if (hypotenuse >= 0) { // Base case
         if (isBlackListed(hypotenuse, getCurrentAngle()))
             return true;
-        return false;
-        //hasDangerWithin(hypotenuse - hypotenuse*0.10); // Decrement hypotenuse by 10%
+        hasDangerWithin(hypotenuse - hypotenuse*0.10); // Decrement hypotenuse by 10%
         }
         return false;
     }
