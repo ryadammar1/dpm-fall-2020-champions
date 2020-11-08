@@ -67,6 +67,8 @@ public class Search {
         while (true) {
             rotateClockwise();
 
+            odometer.printPosition();
+
             if (hasSpotedNewOject()) {
                 System.out.println("Object detected");
                 break;
@@ -75,7 +77,7 @@ public class Search {
             if (hasFullyRotated()) {
                 /** If no near object is detected, find a secure place to navigate to */
                 System.out.println("Could not find near object");
-                while (hasDangerWithin((int) DISTANCE_THREESHOLD))
+                while (hasDangerWithin((int)(DISTANCE_THREESHOLD*100)))
                     rotateClockwise();
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
                 doSearch();
@@ -193,10 +195,11 @@ public class Search {
      * @return boolean
      */
     private static boolean hasDangerWithin(double hypotenuse) {
-        if (hypotenuse > 0) { // Base case
+        if (hypotenuse > 5) { // Base case
         if (isBlackListed(hypotenuse, getCurrentAngle()))
             return true;
-        hasDangerWithin(hypotenuse - 0.25 * (TILE_SIZE * 100)); // Decrement hypotenuse
+        return false;
+        //hasDangerWithin(hypotenuse - hypotenuse*0.10); // Decrement hypotenuse by 10%
         }
         return false;
     }
