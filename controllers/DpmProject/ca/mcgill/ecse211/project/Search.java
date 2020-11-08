@@ -11,6 +11,13 @@ public class Search {
 
     /** Buffer (array) to store US samples. */
     private static float[] usData = new float[usSensor.sampleSize()];
+
+    //Buffer size used to receive US sensor readings and perform filtering.
+    private static int BUFFER_SIZE = 3;
+
+    //Buffer array to store sensor readings and perform filtering.
+    private static int[] buffer = new int[BUFFER_SIZE];
+
     /**
      * The limit of invalid samples that we read from the US sensor before assuming
      * no obstacle.
@@ -183,7 +190,7 @@ public class Search {
      * @return boolean
      */
     private static boolean hasSpotedNewOject() {
-        int hypotenuse = readUsDistance();
+        int hypotenuse = tapeReader();
         if (hypotenuse < DISTANCE_THREESHOLD && !isBlackListed(hypotenuse, getCurrentAngle()))
             return true;
         return false;
@@ -204,33 +211,92 @@ public class Search {
         return false;
     }
 
-    /**
-     * Returns the filtered distance between the US sensor and an obstacle in cm.
-     */
-    private static int readUsDistance() {
-        usSensor.fetchSample(usData, 0);
-        // extract from buffer, cast to int, and filter
-        return filter((int) (usData[0] * 100.0));
+        /**
+    * Method which implements a basic tape technique to fill and update the buffer.
+    * This method is called by the ...Edge() methods to get a new filtered sensor reading.
+    *
+    * @return the median of the filtered buffer.
+    */
+    private static int tapeReader() {
+
+        //if the array is empty, fill it up to be able to compute filtering.
+        if (buffer[0] == 0) {
+            for (int i = 0; i < BUFFER_SIZE; i++) {
+                buffer[i] = getSensorValue(); //get new sensor reading.
+            }
+        }
+        //shift elements tto right to then add a new sensor reading (tape mechanism).
+        else {
+            for (int j = BUFFER_SIZE-1; j > 0; j--) {
+                buffer[j] = buffer[j-1];
+            }
+            buffer[0] = getSensorValue(); //get new sensor reading.
+        }
+
+        int value = medianFilter(buffer); //get the median of the current buffer.
+
+        //System.out.println("median: "+value);
+        return value;
+
     }
 
+
     /**
-     * Rudimentary filter - toss out invalid samples corresponding to null signal.
-     * 
-     * @param distance raw distance measured by the sensor in cm
-     * @return the filtered distance in cm
-     */
-    private static int filter(int distance) {
+    * This methods calls the SampleProvider methods to receive a new reading from the US sensor
+    * and perform some "filtering" to ensure a correct reading is being returned.
+    *
+    * @return a corrected value of the sensor reading.
+    */
+    private static int getSensorValue() {
+        
+        usSensor.fetchSample(usData, 0);
+        int distance = (int)(usData[0]*100); 
+        /*Ccale sensor reading to cm. and typecast to int.
+        //We do not necessarily need double values for the distance here as it's the difference between
+        that value and the noise margin threshold which is of interest.*/
+
         if (distance >= MAX_SENSOR_DIST && invalidSampleCount < INVALID_SAMPLE_LIMIT) {
-            // bad value, increment the filter value and return the distance remembered from
-            // before
+            // bad value, increment the filter value and return the distance remembered from before
             invalidSampleCount++;
-            return prevDistance;
+            return prevValue;
         } else {
             if (distance < MAX_SENSOR_DIST) {
                 invalidSampleCount = 0; // reset filter and remember the input distance.
             }
-            prevDistance = distance;
+            prevValue = distance;
             return distance;
         }
     }
+
+
+    /**
+    * This method implements a basic median filter as seen in the lectures.
+    *
+    * @param arr buffer array to compute median on.
+    * @return the median of the array.
+    */
+    private static int medianFilter(int[] arr) {
+        int[] temp = new int[BUFFER_SIZE];
+
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+            temp[i] = arr[i];
+        }
+        Arrays.sort(temp);
+
+        int median = temp[BUFFER_SIZE/2];
+
+        return median;
+    }
+
+
+    /*
+    * This method is used to reset the buffer when needed.
+    */
+    private static void clearBuffer() {
+
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+            buffer[i] = 0;
+        }
+    }
+
 }
