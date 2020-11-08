@@ -20,24 +20,27 @@ import simlejos.robotics.RegulatedMotor;
  */
 
 /**
- * Class for static resources (things that stay the same throughout the entire program execution),
- * like constants and hardware.
- * <br><br>
- * Use these resources in other files by adding this line at the top (see examples):<br><br>
+ * Class for static resources (things that stay the same throughout the entire
+ * program execution), like constants and hardware. <br>
+ * <br>
+ * Use these resources in other files by adding this line at the top (see
+ * examples):<br>
+ * <br>
  * 
  * {@code import static ca.mcgill.ecse211.project.Resources.*;}
  */
 public class Resources {
-  
+
   // Wi-Fi client parameters
   /** The default server IP used by the profs and TA's. */
   public static final String DEFAULT_SERVER_IP = "127.0.0.1";
 
   /**
-   * The IP address of the server that sends data to the robot. For the beta demo and competition,
-   * replace this line with
+   * The IP address of the server that sends data to the robot. For the beta demo
+   * and competition, replace this line with
    * 
-   * <p>{@code public static final String SERVER_IP = DEFAULT_SERVER_IP;}
+   * <p>
+   * {@code public static final String SERVER_IP = DEFAULT_SERVER_IP;}
    */
   public static final String SERVER_IP = "127.0.0.1"; // = DEFAULT_SERVER_IP;
 
@@ -47,90 +50,101 @@ public class Resources {
   /** Enables printing of debug info from the WiFi class. */
   public static final boolean ENABLE_DEBUG_WIFI_PRINT = true;
 
-  /** Enable this to attempt to receive Wi-Fi parameters at the start of the program. */
+  /**
+   * Enable this to attempt to receive Wi-Fi parameters at the start of the
+   * program.
+   */
   public static final boolean RECEIVE_WIFI_PARAMS = true;
 
-
   // Simulation-related constants
-  
+
   /** The time between physics steps in milliseconds. */
   public static final int PHYSICS_STEP_PERIOD = 500; // ms
-  
+
   /** The relative path of the input vector file. */
   public static final Path VECTORS_FILE = Paths.get("vectors.txt");
 
-
-  //----------------------------- DECLARE YOUR CURRENT RESOURCES HERE -----------------------------
-  //----------------------------- eg, constants, motors, sensors, etc -----------------------------
-
+  // ----------------------------- DECLARE YOUR CURRENT RESOURCES HERE
+  // -----------------------------
+  // ----------------------------- eg, constants, motors, sensors, etc
+  // -----------------------------
 
   // Robot constants
+
+  /** Timeout period in milliseconds. */
+  public static final int TIMEOUT_PERIOD = 3000;
   
   /** The maximum distance detected by the ultrasonic sensor, in cm. */
   public static final int MAX_SENSOR_DIST = 255;
   
   /** The limit of invalid samples that we read from the US sensor before assuming no obstacle. */
-  public static final int INVALID_SAMPLE_LIMIT = 0;
+  public static final int INVALID_SAMPLE_LIMIT = 20;
   
   /** The wheel radius in meters. */
-  public static final double WHEEL_RAD = 0;
+  public static final double WHEEL_RAD = 0.021;
   
   /** The robot width in meters. */
-  public static final double BASE_WIDTH = 0;
+  public static final double BASE_WIDTH = 0.155;
   
   /** The distance between the color sensors and the wheels in meters. */
   public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0;
   
   /** The speed at which the robot moves forward in degrees per second. */
-  public static final int FORWARD_SPEED = 0;
+  public static final int FORWARD_SPEED = 500;
+  
+  /** The speed at which the robot moves forward slowly in degrees per second. */
+  public static final int LOWER_FORWARD_SPEED = 150;
   
   /** The speed at which the robot rotates in degrees per second. */
-  public static final int ROTATE_SPEED = 0;
+  public static final int ROTATE_SPEED = 300;
   
   /** The motor acceleration in degrees per second squared. */
-  public static final int ACCELERATION = 0;
-  
-  /** Timeout period in milliseconds. */
-  public static final int TIMEOUT_PERIOD = 3000;
+  public static final int ACCELERATION = 3000;
   
   /** The tile size in meters. Note that 0.3048 m = 1 ft. */
   public static final double TILE_SIZE = 0.3048;
 
+  /** Robot offset from Block when block is on grid point in meters. Used to stop robot after pushing block. */
+  public static final double BLOCK_OFFSET = 0.1498;
+  
+  /** Length of a block in meters. */
+  public static final double BLOCK_LENGTH = 0.15;
 
   // Hardware resources
 
   /** The left motor. */
   public static final RegulatedMotor leftMotor = Motor.A;
-  
+
   /** The right motor. */
   public static final RegulatedMotor rightMotor = Motor.D;
-  
+
   /** The ultrasonic sensor. */
   public static final EV3UltrasonicSensor usSensor = new EV3UltrasonicSensor(SensorPort.S1);
-  
-  /** The left color sensor. */
-  public static final EV3ColorSensor leftColorSensor = new EV3ColorSensor(SensorPort.S2);
-  
-  /** The right color sensor. */
-  public static final EV3ColorSensor rightColorSensor = new EV3ColorSensor(SensorPort.S3);
 
+  /** The left color sensor. */
+  public static final EV3ColorSensor colorSensorLeft = new EV3ColorSensor(SensorPort.S2);
+
+  /** The right color sensor. */
+  public static final EV3ColorSensor colorSensorRight = new EV3ColorSensor(SensorPort.S3);
+
+  /** The differential minimal margin object. */
+  public static DifferentialMinimalMargin dmm = new DifferentialMinimalMargin();
 
   // Software singletons
-  
+
   /** The odometer. */
   public static Odometer odometer = Odometer.getOdometer();
-
 
   // Wi-Fi parameters
 
   /** Container for the Wi-Fi parameters. */
   public static Map<String, Object> wifiParameters;
-  
+
   // This static initializer MUST be declared before any Wi-Fi parameters.
   static {
     receiveWifiParameters();
   }
-  
+
   /** Red team number. */
   public static int redTeam = getWP("RedTeam");
 
@@ -169,7 +183,7 @@ public class Resources {
 
   /** The green search zone. */
   public static Region szg = makeRegion("SZG");
-  
+
   /**
    * Receives Wi-Fi parameters from the server program.
    */
@@ -191,7 +205,7 @@ public class Resources {
       System.err.println("Error: " + e.getMessage());
     }
   }
-  
+
   /**
    * Returns the Wi-Fi parameter int value associated with the given key.
    * 
@@ -205,20 +219,20 @@ public class Resources {
       return 0;
     }
   }
-  
+
   /** Makes a point given a Wi-Fi parameter prefix. */
   public static Point makePoint(String paramPrefix) {
     return new Point(getWP(paramPrefix + "_x"), getWP(paramPrefix + "_y"));
   }
-  
+
   /** Makes a ramp edge given a Wi-Fi parameter prefix. */
   public static RampEdge makeRampEdge(String paramPrefix) {
     return new RampEdge(makePoint(paramPrefix + "L"), makePoint(paramPrefix + "R"));
   }
-  
+
   /** Makes a region given a Wi-Fi parameter prefix. */
   public static Region makeRegion(String paramPrefix) {
     return new Region(makePoint(paramPrefix + "_LL"), makePoint(paramPrefix + "_UR"));
   }
-  
+
 }

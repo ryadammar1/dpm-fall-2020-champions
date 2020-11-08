@@ -13,6 +13,9 @@ import simlejos.hardware.ev3.LocalEV3;
  */
 public class Main {
   
+  public static final int NUM_BLOCKS = 10;
+  public static final StateMachine STATE_MACHINE = new StateMachine();
+
   /**
    * The number of threads used in the program (main, odometer), other than the one used to
    * perform physics steps.
@@ -29,6 +32,38 @@ public class Main {
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
     wifiExample();
+
+    odometer.setX(3.5 * TILE_SIZE);
+    odometer.setY(6.5 * TILE_SIZE);
+    odometer.setTheta(270);
+   
+    // TODO : Poll states and call corresponding functions
+    while (true) { // main loop
+      switch (STATE_MACHINE.getStatusFullName()) {
+        case ("Standard.Initialization.Configuration"): {
+          System.out.println("Configuring");
+          STATE_MACHINE.doneConfiguring(); // TEMPORARY : Add this at the end of the function it self
+          }
+        case ("Standard.Initialization.Localization"): {
+          System.out.println("Localizing");
+          /*UltrasonicLocalizer.localize();
+          LightSensorCalibration.calibrate();
+          LightLocalizer.localize();*/
+          STATE_MACHINE.doneLocalizing(); // TEMPORARY : Add this at the end of the function it self
+          }
+        case ("Standard.Initialization.EntryField"): {
+          System.out.println("Entering field");
+          STATE_MACHINE.enteredField(); // TEMPORARY : Add this at the end of the function it self
+          }
+        case ("Standard.Operation.Search"): {
+          System.out.println("Searching"); 
+          Search.initializeSearch();
+          Search.doSearch();
+          
+        }
+        default: break;
+        }
+      }
   }
   
   /**

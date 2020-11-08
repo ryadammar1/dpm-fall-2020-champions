@@ -1,0 +1,105 @@
+#VRML_SIM R2020b utf8
+WorldInfo {
+  basicTimeStep 16
+  coordinateSystem "NUE"
+  contactProperties [
+    ContactProperties {
+      material1 "DPM-Tile"
+      material2 "Rubber"
+      coulombFriction [
+        1000
+      ]
+      bounce 0.1
+      softCFM 0.0001
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.8311963783355338 0.43415231831272005 0.3473101569859176 4.526268113369286
+  position 0.9618435156003072 6.154036085231181 0.9160048527358636
+}
+DPM-Floor {
+  dimension 8 8
+  wallHeight 0.2
+}
+DPM-Block {
+  name "block1"
+  translation 1.8388 0.0749903 1.504
+  rotation 0 1 0 0
+  dimension 0.15
+  mass 0.85
+}
+DPM-Block {
+  name "block2"
+  translation 0.62 0.0749908 1.21
+  rotation 0 1 0 0
+  dimension 0.15
+  mass 1.5
+}
+DPM-Block {
+  name "block3"
+  translation 0.93 0.0749911 0.91
+  rotation 0 1 0 0
+  dimension 0.15
+  mass 0.85
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+DPM-Robot {
+  hidden rotation_9 0.21992275877819584 -0.6487529024758151 -0.7285284151634672 3.5283787943393965
+  translation 0.160909 0.063 0.14696
+  rotation 0 -1 0 1.57
+  children [
+    lab5-robot-first-version-balance5-solid {
+      translation 0 0.00185 0.001
+      rotation 1 0 0 -1.57
+    }
+    EV3-ColorSensor {
+      name "S3"
+      translation 0.0265 -0.0335 0.062
+      rotation 0 1 0 0
+    }
+    EV3-ColorSensor {
+      name "S2"
+      translation -0.0265 -0.0335 0.062
+      rotation 0 1 0 0
+    }
+    BallCaster {
+      translation 0 -0.0495 0.0399999
+      rotation 1 0 0 -1.5707953071795862
+    }
+    EV3-Ultrasonic {
+      name "S1"
+      translation -0.039 0.0345 -0.044
+      rotation -3.3905013482585576e-09 0.7071062811861719 0.7071072811865696 3.14159
+    }
+    EV3-LargeMotor {
+      name "D"
+      translation 0.0558 -0.026 0.032
+      rotation 1 0 0 -1.5707953071795862
+      children [
+        Wheel {
+          translation 0.02 0 0
+          rotation 0 0 1 1.57
+        }
+      ]
+    }
+    EV3-LargeMotor {
+      name "A"
+      translation -0.0558 -0.026 0.032
+      rotation 1 0 0 -1.5707953071795862
+      children [
+        Wheel {
+          translation -0.02 0 0
+          rotation 0 0 1 1.57
+        }
+      ]
+    }
+    EV3 {
+      rotation 1 0 0 -1.5708
+    }
+  ]
+  controller "DpmProject"
+}
