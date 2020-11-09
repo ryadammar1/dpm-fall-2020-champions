@@ -45,11 +45,11 @@ public class Search {
     /** The current motor tacho counts. */
     private static int[] currTacho = new int[2];
 
-    /** Controlles the number of scans performed within a distance
+    /** Controls the number of scans performed within a distance
      * during @Code hasDangerWithin().
-     * The lower the value, the more precise the scan.
+     * The higher the value, the more precise the scan.
      */
-    private static double SCAN_FREQUENCY = 0.3;
+    private static double SCAN_FREQUENCY = 3;
 
     public static void initializeSearch() {
         // TODO : Transform edges to rectangles and add to blacklist
@@ -205,7 +205,7 @@ public class Search {
         while (hyp > 0) {
         if (isBlackListed(hyp, getCurrentAngle()))
             return true;
-        hyp -= hypotenuse * SCAN_FREQUENCY;
+        hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
         }
         return false;
     }
