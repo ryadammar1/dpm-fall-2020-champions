@@ -32,6 +32,10 @@ public class Main {
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
     wifiExample();
+    
+    odometer.setX(7.5 * TILE_SIZE);
+    odometer.setY(8.5 * TILE_SIZE);
+    odometer.setTheta(180);
    
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
@@ -57,9 +61,6 @@ public class Main {
           }
         case ("Standard.Operation.Search"): {
           System.out.println("Searching");
-          odometer.setX(6.5 * TILE_SIZE);
-          odometer.setY(5.5 * TILE_SIZE);
-          odometer.setTheta(180);
           Search.initializeSearch();
           Search.doSearch();
         }

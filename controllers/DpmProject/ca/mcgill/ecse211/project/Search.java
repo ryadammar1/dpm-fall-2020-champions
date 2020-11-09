@@ -29,7 +29,7 @@ public class Search {
     /** The number of invalid samples seen by filter() so far. */
     private static int invalidSampleCount;
 
-    /** Maximal distance between the robot and an object */
+    /** Maximal distance between the robot and an object in meters*/
     private static final double DISTANCE_THREESHOLD = TILE_SIZE;
 
     /** Linked to edge bounding box width in tile size */
@@ -38,7 +38,8 @@ public class Search {
     /**
      * Distance between the center of the robot and the front of the usSensor in cm
      */
-    private static final double DIST_US_SENSOR = 10;
+    private static final double DIST_US_SENSOR_Y = 9;
+    private static final double DIST_US_SENSOR_X = 10;
 
     /**
      * All blacklisted points identified as obstacles/walls Circle are used instead
@@ -64,7 +65,8 @@ public class Search {
         blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(15, 5)));
         blacklistEdge.add(creatRectFromEdge(new Point(6, 9), new Point(15, 9)));
         blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(6, 9)));
-
+        blacklistEdge.add(new Rect(new Point(8.5, 6.5), new Point(10.5, 9.5))); //Ramp
+        blacklistEdge.add(new Rect(new Point(8, 5), new Point(9, 6))); //Ramp
     }
 
     public static void doSearch() {
@@ -166,12 +168,12 @@ public class Search {
         System.out.println("crt.x = " + crt.x);
         System.out.println("crt.y = " + crt.y);
         System.out.println("angle = " + angle);
-        System.out.println("hypo = " + (hypotenuse));
+        System.out.println("hypo = " + (hypotenuse+DIST_US_SENSOR_Y));
 
-        double dx = Math.sin(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR); // x displacement
-        double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR); // y displacement
+        double dx = DIST_US_SENSOR_X + Math.sin(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // x displacement
+        double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // y displacement
 
-        System.out.println("dx = " + dx);
+        System.out.println("dx = " + dx+DIST_US_SENSOR_X);
         System.out.println("dy = " + dy);
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
@@ -183,7 +185,6 @@ public class Search {
                 return true;
         }
         for (Rect edge : blacklistEdge) {
-            System.out.println(edge);
             if (edge.contains(npt))
                 return true;
         }
@@ -198,7 +199,7 @@ public class Search {
      */
     private static boolean hasSpotedNewOject() {
         int hypotenuse = tapeReader();
-        if (hypotenuse < DISTANCE_THREESHOLD && !isBlackListed(hypotenuse, getCurrentAngle()))
+        if (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle()))
             return true;
         return false;
     }
