@@ -24,10 +24,12 @@ public class Search {
     /** Maximal distance between the robot and an object */
     private static final double DISTANCE_THREESHOLD = TILE_SIZE;
 
-    /** Linked to edge bounding box width in tile size*/
-    private static final double EDGE_BOUND_WITH = 1;
+    /** Linked to edge bounding box width in tile size */
+    private static final double EDGE_BOUND_WIDTH = 1;
 
-    /** Distance between the center of the robot and the front of the usSensor in cm*/
+    /**
+     * Distance between the center of the robot and the front of the usSensor in cm
+     */
     private static final double DIST_US_SENSOR = 10;
 
     /**
@@ -42,6 +44,12 @@ public class Search {
     private static int[] prevTacho = new int[2];
     /** The current motor tacho counts. */
     private static int[] currTacho = new int[2];
+
+    /** Controlles the number of scans performed within a distance
+     * during @Code hasDangerWithin().
+     * The lower the value, the more precise the scan.
+     */
+    private static double SCAN_FREQUENCY = 0.3;
 
     public static void initializeSearch() {
         // TODO : Transform edges to rectangles and add to blacklist
@@ -75,7 +83,7 @@ public class Search {
             if (hasFullyRotated()) {
                 /** If no near object is detected, find a secure place to navigate to */
                 System.out.println("Could not find near object");
-                while (hasDangerWithin((int)(DISTANCE_THREESHOLD*100)))
+                while (hasDangerWithin((int) (DISTANCE_THREESHOLD * 100)))
                     rotateClockwise();
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
                 doSearch();
@@ -86,23 +94,22 @@ public class Search {
 
     }
 
-    private static Rect creatRectFromEdge(Point pt1, Point pt2){
+    private static Rect creatRectFromEdge(Point pt1, Point pt2) {
         double centerY;
         double centerX;
         double height;
         double width;
-        
+
         /** If the line is vertical */
         if (pt1.x == pt2.x) {
             centerY = pt1.y > pt2.y ? (pt1.y - pt2.y) / 2 + pt2.y : (pt2.y - pt1.y) / 2 + pt1.y;
             centerX = pt1.x;
             height = pt1.y > pt2.y ? (pt1.y - pt2.y) : (pt2.y - pt1.y);
-            width = EDGE_BOUND_WITH;
-        }
-        else {
+            width = EDGE_BOUND_WIDTH;
+        } else {
             centerX = pt1.x > pt2.x ? (pt1.x - pt2.x) / 2 + pt2.x : (pt2.x - pt1.x) / 2 + pt1.x;
             centerY = pt1.y;
-            height = EDGE_BOUND_WITH;
+            height = EDGE_BOUND_WIDTH;
             width = pt1.x > pt2.x ? (pt1.x - pt2.x) : (pt2.x - pt1.x);
         }
 
@@ -147,21 +154,21 @@ public class Search {
      */
     private static boolean isBlackListed(double hypotenuse, double angle) {
         Point crt = getCurrentPosition();
-        
-        System.out.println("crt.x = "+crt.x);
-        System.out.println("crt.y = "+crt.y);
-        System.out.println("angle = "+angle);
-        System.out.println("hypo = "+(hypotenuse));
 
-        double dx = Math.sin(Math.toRadians(angle)) * (hypotenuse+DIST_US_SENSOR); // x displacement
-        double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse+DIST_US_SENSOR); // y displacement
+        System.out.println("crt.x = " + crt.x);
+        System.out.println("crt.y = " + crt.y);
+        System.out.println("angle = " + angle);
+        System.out.println("hypo = " + (hypotenuse));
 
-        System.out.println("dx = "+dx);
-        System.out.println("dy = "+dy);
+        double dx = Math.sin(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR); // x displacement
+        double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR); // y displacement
+
+        System.out.println("dx = " + dx);
+        System.out.println("dy = " + dy);
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
-        System.out.println("Point seen = "+npt);
+        System.out.println("Point seen = " + npt);
 
         for (Circle point : blacklistPoint) {
             if (point.contains(npt))
@@ -194,14 +201,12 @@ public class Search {
      * @return boolean
      */
     private static boolean hasDangerWithin(double hypotenuse) {
-        if (isBlackListed(hypotenuse, getCurrentAngle()))
+        double hyp = hypotenuse;
+        while (hyp > 0) {
+        if (isBlackListed(hyp, getCurrentAngle()))
             return true;
-            if (isBlackListed(hypotenuse-hypotenuse*0.3, getCurrentAngle()))
-            return true;
-            if (isBlackListed(hypotenuse-hypotenuse*0.6, getCurrentAngle()))
-            return true;
-            if (isBlackListed(hypotenuse-hypotenuse*0.9, getCurrentAngle()))
-            return true;
+        hyp -= hypotenuse * SCAN_FREQUENCY;
+        }
         return false;
     }
 
