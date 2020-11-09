@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.project;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.Circle;
 import ca.mcgill.ecse211.playingfield.Rect;
@@ -264,12 +265,12 @@ public class Search {
         if (distance >= MAX_SENSOR_DIST && invalidSampleCount < INVALID_SAMPLE_LIMIT) {
             // bad value, increment the filter value and return the distance remembered from before
             invalidSampleCount++;
-            return prevValue;
+            return prevDistance;
         } else {
             if (distance < MAX_SENSOR_DIST) {
                 invalidSampleCount = 0; // reset filter and remember the input distance.
             }
-            prevValue = distance;
+            prevDistance = distance;
             return distance;
         }
     }
