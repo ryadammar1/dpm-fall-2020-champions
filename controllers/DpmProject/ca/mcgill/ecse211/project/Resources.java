@@ -86,7 +86,7 @@ public class Resources {
   public static final double WHEEL_RAD = 0.021;
   
   /** The robot width in meters. */
-  public static final double BASE_WIDTH = 0.125; //was 0.155
+  public static final double BASE_WIDTH = 0.1255; //was 0.155
   
   /** The distance between the color sensors and the wheels in meters. */
   public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0;

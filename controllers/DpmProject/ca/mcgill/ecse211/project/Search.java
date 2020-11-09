@@ -5,6 +5,7 @@ import java.util.Arrays;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.Circle;
 import ca.mcgill.ecse211.playingfield.Rect;
+
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.Utils.*;
 
@@ -38,8 +39,13 @@ public class Search {
     /**
      * Distance between the center of the robot and the front of the usSensor in cm
      */
-    private static final double DIST_US_SENSOR_Y = 9;
-    private static final double DIST_US_SENSOR_X = 10;
+    private static final double DIST_US_SENSOR_Y = 8;
+    private static final double DIST_US_SENSOR_X = 5;
+
+    /** The number of samples bypassed before sampling.
+     * The higher the value, the better theperformance will be.
+     */
+    private static final int SAMPLE_PERIOD = 600;
 
     /**
      * All blacklisted points identified as obstacles/walls Circle are used instead
@@ -53,6 +59,9 @@ public class Search {
     private static int[] prevTacho = new int[2];
     /** The current motor tacho counts. */
     private static int[] currTacho = new int[2];
+
+    private static int sampleNumA = 0;
+    private static int sampleNumB = 0;
 
     /** Controls the number of scans performed within a distance
      * during @Code hasDangerWithin().
@@ -70,6 +79,8 @@ public class Search {
     }
 
     public static void doSearch() {
+
+        odometer.printPosition();
 
         stopMotors();
 
@@ -93,7 +104,7 @@ public class Search {
             if (hasFullyRotated()) {
                 /** If no near object is detected, find a secure place to navigate to */
                 System.out.println("Could not find near object");
-                while (hasDangerWithin((int) (DISTANCE_THREESHOLD * 100)))
+                while (hasDangerWithin((int) (1.5 * DISTANCE_THREESHOLD * 100)))
                     rotateClockwise();
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
                 doSearch();
@@ -163,22 +174,24 @@ public class Search {
      * @param angle
      */
     private static boolean isBlackListed(double hypotenuse, double angle) {
+        System.out.println("Ignoring object, keep rotating");
+        
         Point crt = getCurrentPosition();
 
-        System.out.println("crt.x = " + crt.x);
+        /*System.out.println("crt.x = " + crt.x);
         System.out.println("crt.y = " + crt.y);
         System.out.println("angle = " + angle);
-        System.out.println("hypo = " + (hypotenuse+DIST_US_SENSOR_Y));
+        System.out.println("hypo = " + (hypotenuse+DIST_US_SENSOR_Y));*/
 
         double dx = DIST_US_SENSOR_X + Math.sin(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // x displacement
         double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // y displacement
 
-        System.out.println("dx = " + dx+DIST_US_SENSOR_X);
-        System.out.println("dy = " + dy);
+        /*System.out.println("dx = " + dx+DIST_US_SENSOR_X);
+        System.out.println("dy = " + dy);*/
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
-        System.out.println("Point seen = " + npt);
+        //System.out.println("Point seen = " + npt);
 
         for (Circle point : blacklistPoint) {
             if (point.contains(npt))
@@ -198,6 +211,13 @@ public class Search {
      * @return boolean
      */
     private static boolean hasSpotedNewOject() {
+        sampleNumA++;
+
+        if (sampleNumA != SAMPLE_PERIOD){
+            return false;
+        }
+        sampleNumA = 0;
+
         int hypotenuse = tapeReader();
         if (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle()))
             return true;
@@ -210,10 +230,19 @@ public class Search {
      * @return boolean
      */
     private static boolean hasDangerWithin(double hypotenuse) {
+        sampleNumB++;
+
+        if (sampleNumB != SAMPLE_PERIOD){
+            return true;
+        }
+        sampleNumB = 0;
+
         double hyp = hypotenuse;
         while (hyp > 0) {
-        if (isBlackListed(hyp, getCurrentAngle()))
+        if (isBlackListed(hyp, getCurrentAngle())){
+            System.out.println("Danger in front, keep rotating");
             return true;
+        }
         hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
         }
         return false;
