@@ -150,20 +150,20 @@ public class Search {
     private static boolean isBlackListed(double hypotenuse, double angle) {
         Point crt = getCurrentPosition();
         
-        System.out.println("crt.x = "+crt.x);
+        /*System.out.println("crt.x = "+crt.x);
         System.out.println("crt.y = "+crt.y);
         System.out.println("angle = "+angle);
-        System.out.println("hypo = "+(hypotenuse));
+        System.out.println("hypo = "+(hypotenuse));*/
 
         double dx = Math.sin(Math.toRadians(angle)) * (hypotenuse+DIST_US_SENSOR); // x displacement
         double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse+DIST_US_SENSOR); // y displacement
 
-        System.out.println("dx = "+dx);
-        System.out.println("dy = "+dy);
+        /*System.out.println("dx = "+dx);
+        System.out.println("dy = "+dy);*/
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
-        System.out.println("Point seen = "+npt);
+        /*System.out.println("Point seen = "+npt);*/
 
         for (Circle point : blacklistPoint) {
             if (point.contains(npt))

@@ -26,18 +26,12 @@ public class Main {
   public static void main(String[] args) {
     initialize();
     
-    LightSensorCalibration.dmm.setMinMargin(30);
-    
     // Start the odometer thread
     new Thread(odometer).start();
     
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
     wifiExample();
-
-    odometer.setX(3.5 * TILE_SIZE);
-    odometer.setY(6.5 * TILE_SIZE);
-    odometer.setTheta(90);
    
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
@@ -48,9 +42,9 @@ public class Main {
           }
         case ("Standard.Initialization.Localization"): {
           System.out.println("Localizing");
-          //UltrasonicLocalizer.localize();
-          //LightSensorCalibration.calibrate();
-          //LightLocalizer.localize();
+          UltrasonicLocalizer.localize();
+          LightSensorCalibration.calibrate();
+          LightLocalizer.localize();
           odometer.setX(1 * TILE_SIZE);
           odometer.setY(8 * TILE_SIZE);
           odometer.setTheta(90);
@@ -59,12 +53,12 @@ public class Main {
         case ("Standard.Initialization.EntryField"): {
           System.out.println("Entering field");
           FieldEntry.enterField();
+          STATE_MACHINE.enteredField();
           }
-        case ("dStandard.Operation.Search"): {
+        case ("Standard.Operation.Search"): {
           System.out.println("Searching"); 
           Search.initializeSearch();
           Search.doSearch();
-          
         }
         default: break;
         }

@@ -15,6 +15,7 @@ public class FieldEntry {
   public static void enterField() {
     // first demo map 
     goInFrontOfHTunnel();
+    Navigation.turnTo(90);
     //if (isTunnelHorizontal()==true) 
     crossHTunnel();
     Main.STATE_MACHINE.enteredField();
@@ -23,32 +24,32 @@ public class FieldEntry {
   
   public static void goInFrontOfHTunnel() {
     
-    //first find middle of line in fromt of tunnel
+    //first find middle of line in front of tunnel
     
     Point inFront = new Point((TNR_LL.x-2),(TNR_LL.y+TNR_UL.y)/2);
-    Navigation.travelTo(inFront);
+    Navigation.travelToPerpendicular(inFront);
     
   }
  
  // vertical downwards
 public static void goInFrontOfVTunnel() {
     
-    //first find middle of line in fromt of tunnel
+    //first find middle of line in front of tunnel
     
     Point inFront = new Point((TNR_UL.x+TNR_UR.x)/2,(TNR_UL.y+1));
-    Navigation.travelTo(inFront);
+    Navigation.travelToPerpendicular(inFront);
     
   }
   
   public static void crossHTunnel() {
    Point destination = new Point((TNR_LR.x+1),(Odometer.getOdometer().getXyt()[1])/0.3048 );
-     Navigation.travelCorrected(destination);
+     Navigation.travelTo(destination);
     //Navigation.travelTo(destination);
   }
   
   public static void crossVTunnel() {
     Point destination = new Point((Odometer.getOdometer().getXyt()[0])/0.3048,TNR_LL.y-1 );
-      Navigation.travelCorrected(destination);
+      Navigation.travelTo(destination);
      //Navigation.travelTo(destination);
    }
   

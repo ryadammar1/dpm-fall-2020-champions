@@ -39,6 +39,47 @@ public class Navigation {
     return (toDegrees(atan2(destination.x - current.x, destination.y - current.y)) + 360) % 360;
   }
 
+  public static void travelToPerpendicular(Point destination) {
+    // Perpendicular traveling
+    System.out.println("Traveling to " + destination.toString());
+
+    Point currentX = new Point(odometer.getXyt()[0] / TILE_SIZE, 0);
+    Point currentY = new Point(0, odometer.getXyt()[1] / TILE_SIZE);
+
+    System.out.println(currentX);
+    System.out.println(currentY);
+
+    Point destinationX = new Point(destination.x, 0);
+    Point destinationY = new Point(0, destination.y);
+
+    double angleX = getDestinationAngle(currentX, destinationX);
+    double angleY = getDestinationAngle(currentY, destinationY);
+
+    double distanceX = distanceBetween(currentX, destinationX);
+    double distanceY = distanceBetween(currentY, destinationY);
+
+    if (distanceX >= 0.2) {
+      // Move along the X axis
+      setSpeed(ROTATE_SPEED);
+      turnTo(angleX);
+      setSpeed(FORWARD_SPEED);
+      moveStraightFor(distanceX);
+    }
+
+    if (distanceY >= 0.2) {
+      // Move along the Y axis
+      setSpeed(ROTATE_SPEED);
+      turnTo(angleY);
+      setSpeed(FORWARD_SPEED);
+      moveStraightFor(distanceY);
+    }
+
+  }
+
+  public static void turnTo(double angle) {
+    turnBy(minimalAngle(odometer.getXyt()[2], angle));
+  }
+
   /**
    * Returns the signed minimal angle from the initial angle to the destination
    * angle.
