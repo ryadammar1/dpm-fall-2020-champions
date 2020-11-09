@@ -42,21 +42,24 @@ public class Main {
           }
         case ("Standard.Initialization.Localization"): {
           System.out.println("Localizing");
-          UltrasonicLocalizer.localize();
+          /*UltrasonicLocalizer.localize();
           LightSensorCalibration.calibrate();
           LightLocalizer.localize();
           odometer.setX(1 * TILE_SIZE);
           odometer.setY(8 * TILE_SIZE);
-          odometer.setTheta(90);
+          odometer.setTheta(90);*/
           STATE_MACHINE.doneLocalizing(); // TEMPORARY : Add this at the end of the function it self
           }
         case ("Standard.Initialization.EntryField"): {
           System.out.println("Entering field");
-          FieldEntry.enterField();
+          //FieldEntry.enterField();
           STATE_MACHINE.enteredField();
           }
         case ("Standard.Operation.Search"): {
-          System.out.println("Searching"); 
+          System.out.println("Searching");
+          odometer.setX(6.5 * TILE_SIZE);
+          odometer.setY(5.5 * TILE_SIZE);
+          odometer.setTheta(180);
           Search.initializeSearch();
           Search.doSearch();
         }

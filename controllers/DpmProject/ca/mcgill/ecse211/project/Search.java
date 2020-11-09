@@ -45,9 +45,9 @@ public class Search {
 
     public static void initializeSearch() {
         // TODO : Transform edges to rectangles and add to blacklist
-        blacklistEdge.add(creatRectFromEdge(new Point(0, 0), new Point(0, 15)));
-        blacklistEdge.add(creatRectFromEdge(new Point(4, 0), new Point(4, 15)));
-        blacklistEdge.add(creatRectFromEdge(new Point(6, 0), new Point(6, 4)));
+        blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(15, 5)));
+        blacklistEdge.add(creatRectFromEdge(new Point(6, 9), new Point(15, 9)));
+        blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(6, 9)));
 
     }
 
@@ -66,8 +66,6 @@ public class Search {
 
         while (true) {
             rotateClockwise();
-
-            odometer.printPosition();
 
             if (hasSpotedNewOject()) {
                 System.out.println("Object detected");
@@ -96,13 +94,13 @@ public class Search {
         
         /** If the line is vertical */
         if (pt1.x == pt2.x) {
-            centerY = pt1.y > pt2.y ? (pt1.y - pt2.y) / 2 : (pt2.y - pt1.y) / 2;
+            centerY = pt1.y > pt2.y ? (pt1.y - pt2.y) / 2 + pt2.y : (pt2.y - pt1.y) / 2 + pt1.y;
             centerX = pt1.x;
             height = pt1.y > pt2.y ? (pt1.y - pt2.y) : (pt2.y - pt1.y);
             width = EDGE_BOUND_WITH;
         }
         else {
-            centerX = pt1.x > pt2.x ? (pt1.x - pt2.x) / 2 : (pt2.x - pt1.x) / 2;
+            centerX = pt1.x > pt2.x ? (pt1.x - pt2.x) / 2 + pt2.x : (pt2.x - pt1.x) / 2 + pt1.x;
             centerY = pt1.y;
             height = EDGE_BOUND_WITH;
             width = pt1.x > pt2.x ? (pt1.x - pt2.x) : (pt2.x - pt1.x);
@@ -150,26 +148,27 @@ public class Search {
     private static boolean isBlackListed(double hypotenuse, double angle) {
         Point crt = getCurrentPosition();
         
-        /*System.out.println("crt.x = "+crt.x);
+        System.out.println("crt.x = "+crt.x);
         System.out.println("crt.y = "+crt.y);
         System.out.println("angle = "+angle);
-        System.out.println("hypo = "+(hypotenuse));*/
+        System.out.println("hypo = "+(hypotenuse));
 
         double dx = Math.sin(Math.toRadians(angle)) * (hypotenuse+DIST_US_SENSOR); // x displacement
         double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse+DIST_US_SENSOR); // y displacement
 
-        /*System.out.println("dx = "+dx);
-        System.out.println("dy = "+dy);*/
+        System.out.println("dx = "+dx);
+        System.out.println("dy = "+dy);
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
-        /*System.out.println("Point seen = "+npt);*/
+        System.out.println("Point seen = "+npt);
 
         for (Circle point : blacklistPoint) {
             if (point.contains(npt))
                 return true;
         }
         for (Rect edge : blacklistEdge) {
+            System.out.println(edge);
             if (edge.contains(npt))
                 return true;
         }
@@ -195,11 +194,14 @@ public class Search {
      * @return boolean
      */
     private static boolean hasDangerWithin(double hypotenuse) {
-        if (hypotenuse >= 0) { // Base case
         if (isBlackListed(hypotenuse, getCurrentAngle()))
             return true;
-        hasDangerWithin(hypotenuse - hypotenuse*0.10); // Decrement hypotenuse by 10%
-        }
+            if (isBlackListed(hypotenuse-hypotenuse*0.3, getCurrentAngle()))
+            return true;
+            if (isBlackListed(hypotenuse-hypotenuse*0.6, getCurrentAngle()))
+            return true;
+            if (isBlackListed(hypotenuse-hypotenuse*0.9, getCurrentAngle()))
+            return true;
         return false;
     }
 
