@@ -22,8 +22,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.9701045333444486 0.1831521673885671 0.15922461482264605 1.4613653922391463
-  position 2.2363377868117706 2.289700246744962 1.0702797702496625
+  orientation -0.3375256710625816 -0.9004822504215327 -0.2742410218211817 1.4681675785402994
+  position 1.248370019967736 0.6250592267431756 1.3185094633257282
 }
 TexturedBackground {
 }
@@ -263,61 +263,54 @@ DPM-Block {
   mass 2
 }
 DPM-Robot {
-  translation 1.99125 0.103737 1.04897
-  rotation 0.005502697342818809 0.9999715171267214 -0.005165777505513029 3.14154
+  name "robot(1)"
+  translation 1.99177 0.073 1.05553
+  rotation 0 1 0 -3.1407953071795864
   children [
-    EV3-ColorSensor {
-      translation 0 -0.054 -0.06
-      rotation 1 0 0 1.5708
-    }
-    EV3-Ultrasonic {
-      name "S1"
-      translation -0.0535 -0.023816 -0.07546
-      rotation 0 0.7073882252434113 0.7068252250641434 3.14159
+    lab5-robot-first-version-balance5-solid {
+      translation 0 0.00185 0.001
+      rotation 1 0 0 -1.57
     }
     EV3-ColorSensor {
       name "S3"
-      translation 0.0585 -0.042 0.071
+      translation 0.0265 -0.0335 0.062
+      rotation 0 1 0 0
     }
     EV3-ColorSensor {
       name "S2"
-      translation -0.0539 -0.042 0.071
+      translation -0.0265 -0.0335 0.062
+      rotation 0 1 0 0
     }
     BallCaster {
-      translation 0.0005 -0.066008 0.064008
-      rotation 1 0 0 -1.57
+      translation 0 -0.0495 0.0399999
+      rotation 1 0 0 -1.5707953071795862
     }
-    BallCaster {
-      translation 0.0005 -0.06592 -0.045992
-      rotation 1 0 0 -1.57
+    EV3-Ultrasonic {
+      name "S1"
+      translation -0.039 0.0345 -0.044
+      rotation -3.3905013482585576e-09 0.7071062811861719 0.7071072811865696 3.14159
     }
     EV3-LargeMotor {
       name "D"
-      translation 0.04 -0.0491 -0.004
+      translation 0.0558 -0.026 0.032
       rotation 1 0 0 -1.5707953071795862
-      position 2.6839625858024057e-07
       children [
         Wheel {
-          translation 0.022 0 0
+          translation 0.02 0 0
           rotation 0 0 1 1.57
         }
       ]
     }
     EV3-LargeMotor {
       name "A"
-      translation -0.04 -0.0491 -0.004
+      translation -0.0558 -0.026 0.032
       rotation 1 0 0 -1.5707953071795862
-      position 5.516103213073592e-07
       children [
         Wheel {
-          translation -0.022 0 0
+          translation -0.02 0 0
           rotation 0 0 1 1.57
         }
       ]
-    }
-    robot-3-frame-solid {
-      translation 0 -0.02 -0.04
-      rotation 1 0 0 -1.5707953071795862
     }
     EV3 {
       rotation 1 0 0 -1.5708
