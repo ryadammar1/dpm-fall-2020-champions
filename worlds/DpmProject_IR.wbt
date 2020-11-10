@@ -23,8 +23,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.9985724653785365 0.037404853113354425 0.03813015016230723 4.691757036139098
-  position 2.288978020664252 2.6533149865564933 0.34680087239619173
+  orientation 0.9952342564643842 0.0950414298206885 0.0218151639329915 5.829847559545464
+  position 2.1506063213970323 0.8367971891458372 1.6873460682116577
 }
 TexturedBackground {
 }
@@ -251,7 +251,7 @@ DPM-Block {
 }
 DPM-Block {
   name "block3"
-  translation 2.33556 0.0498368 0.765157
+  translation 2.3155600738484576 0.049836993132685414 0.7651574523479752
   rotation 0.9998626135514487 1.1564637236643661e-06 -0.016575705738491625 8.898798110727404e-05
   dimension 0.1
   mass 2
@@ -264,8 +264,8 @@ DPM-Block {
   mass 2
 }
 DPM-Robot {
-  translation 2.13 0.086 0.439999
-  rotation 0 1 0 -1.5707953071795862
+  translation 2.28 0.086 0.139999
+  rotation 0 1 0 3.14159
   children [
     robot-design-4-fixed-mainframe-frontpart-solid {
       translation 0.0638 -0.033 -0.071
@@ -274,11 +274,6 @@ DPM-Robot {
     robot-design-4-fixed-mainframe-frontpart-solid {
       translation -0.063 -0.033 -0.071
       rotation 1 0 0 -1.5707953071795862
-    }
-    EV3-Ultrasonic {
-      name "S1"
-      translation -2.03347e-07 -0.038 -0.044
-      rotation -7.851293122126192e-08 0.7071062811861697 0.7071072811865674 -3.1415853071795863
     }
     EV3-ColorSensor {
       translation 0.008 -0.062 -0.04
@@ -329,4 +324,9 @@ DPM-Robot {
     }
   ]
   controller "DpmProject"
+}
+EV3-Infrared-solid {
+  name "S1"
+  translation 2.28 0.0600005 0.2
+  rotation -0.9999999999999999 0 0 1.5707953071795862
 }

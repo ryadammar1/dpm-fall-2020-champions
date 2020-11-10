@@ -39,7 +39,7 @@ public class Search {
     /**
      * Offset between the center of the robot and the front of the usSensor in cm
      */
-    private static final double DIST_US_SENSOR_Y = 6;
+    private static final double DIST_US_SENSOR_Y = 8;
     private static final double DIST_US_SENSOR_X = 0;
 
     /**
@@ -77,7 +77,7 @@ public class Search {
         blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(6, 9)));
         blacklistEdge.add(new Rect(new Point(8.5, 6.5), new Point(10.5, 9.5))); // Ramp
         blacklistEdge.add(new Rect(new Point(8, 5), new Point(9, 6))); // obstacle
-        blacklistEdge.add(new Rect(new Point(3.75, 6.75), new Point(6.25, 8.25))); // obstacle
+        blacklistEdge.add(new Rect(new Point(3.75, 6.75), new Point(6.25, 8.25))); // tunnel
     }
 
     public static void doSearch() {
@@ -106,7 +106,7 @@ public class Search {
             if (hasFullyRotated()) {
                 /** If no near object is detected, find a secure place to navigate to */
                 System.out.println("Could not find near object");
-                while (hasDangerWithin((int) (1.5 * DISTANCE_THREESHOLD * 100)))
+                while (hasDangerWithin((int) (1 * DISTANCE_THREESHOLD * 100)))
                     rotateClockwise();
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
                 doSearch();
@@ -219,7 +219,7 @@ public class Search {
         }
         sampleNumA = 0;
 
-        int hypotenuse = readUsDistance();
+        int hypotenuse = tapeReader();
         if (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle()))
             return true;
         return false;

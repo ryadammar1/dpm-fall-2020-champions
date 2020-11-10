@@ -33,9 +33,9 @@ public class Main {
     LocalEV3.getAudio().beep(); // beeps once
     wifiExample();
     
-    odometer.setX(7.5 * TILE_SIZE);
-    odometer.setY(8.5 * TILE_SIZE);
-    odometer.setTheta(180);
+    odometer.setX(7 * TILE_SIZE);
+    odometer.setY(7.5 * TILE_SIZE);
+    odometer.setTheta(90);
    
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
