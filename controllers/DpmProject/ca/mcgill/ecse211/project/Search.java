@@ -14,10 +14,10 @@ public class Search {
     /** Buffer (array) to store US samples. */
     private static float[] usData = new float[usSensor.sampleSize()];
 
-    //Buffer size used to receive US sensor readings and perform filtering.
+    // Buffer size used to receive US sensor readings and perform filtering.
     private static int BUFFER_SIZE = 3;
 
-    //Buffer array to store sensor readings and perform filtering.
+    // Buffer array to store sensor readings and perform filtering.
     private static int[] buffer = new int[BUFFER_SIZE];
 
     /**
@@ -30,7 +30,7 @@ public class Search {
     /** The number of invalid samples seen by filter() so far. */
     private static int invalidSampleCount;
 
-    /** Maximal distance between the robot and an object in meters*/
+    /** Maximal distance between the robot and an object in meters */
     private static final double DISTANCE_THREESHOLD = TILE_SIZE;
 
     /** Linked to edge bounding box width in tile size */
@@ -39,11 +39,12 @@ public class Search {
     /**
      * Offset between the center of the robot and the front of the usSensor in cm
      */
-    private static final double DIST_US_SENSOR_Y = 5;
+    private static final double DIST_US_SENSOR_Y = 6;
     private static final double DIST_US_SENSOR_X = 0;
 
-    /** The number of samples bypassed before sampling.
-     * The higher the value, the better theperformance will be.
+    /**
+     * The number of samples bypassed before sampling. The higher the value, the
+     * better theperformance will be.
      */
     private static final int SAMPLE_PERIOD = 600;
 
@@ -63,19 +64,20 @@ public class Search {
     private static int sampleNumA = 0;
     private static int sampleNumB = 0;
 
-    /** Controls the number of scans performed within a distance
-     * during @Code hasDangerWithin().
-     * The higher the value, the more precise the scan.
+    /**
+     * Controls the number of scans performed within a distance during @Code
+     * hasDangerWithin(). The higher the value, the more precise the scan.
      */
-    private static double SCAN_FREQUENCY = 3;
+    private static double SCAN_FREQUENCY = 5;
 
     public static void initializeSearch() {
         // TODO : Transform edges to rectangles and add to blacklist
         blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(15, 5)));
         blacklistEdge.add(creatRectFromEdge(new Point(6, 9), new Point(15, 9)));
         blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(6, 9)));
-        blacklistEdge.add(new Rect(new Point(8.5, 6.5), new Point(10.5, 9.5))); //Ramp
-        blacklistEdge.add(new Rect(new Point(8, 5), new Point(9, 6))); //Ramp
+        blacklistEdge.add(new Rect(new Point(8.5, 6.5), new Point(10.5, 9.5))); // Ramp
+        blacklistEdge.add(new Rect(new Point(8, 5), new Point(9, 6))); // obstacle
+        blacklistEdge.add(new Rect(new Point(3.75, 6.75), new Point(6.25, 8.25))); // obstacle
     }
 
     public static void doSearch() {
@@ -174,22 +176,22 @@ public class Search {
      * @param angle
      */
     private static boolean isBlackListed(double hypotenuse, double angle) {
-        
+
         Point crt = getCurrentPosition();
 
         System.out.println("angle = " + angle);
-        System.out.println("hypo = " + (hypotenuse+DIST_US_SENSOR_Y));
+        System.out.println("hypo = " + (hypotenuse + DIST_US_SENSOR_Y));
 
-        double dx = DIST_US_SENSOR_X + Math.sin(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // x displacement
+        double dx = DIST_US_SENSOR_X + Math.sin(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // x
+                                                                                                          // displacement
         double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // y displacement
 
-        System.out.println("dx = " + dx+DIST_US_SENSOR_X);
+        System.out.println("dx = " + dx + DIST_US_SENSOR_X);
         System.out.println("dy = " + dy);
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
-         
-        System.out.println("Point curr = " + crt); 
+        System.out.println("Point curr = " + crt);
         System.out.println("Point seen = " + npt);
 
         for (Circle point : blacklistPoint) {
@@ -212,86 +214,36 @@ public class Search {
     private static boolean hasSpotedNewOject() {
         sampleNumA++;
 
-        if (sampleNumA != SAMPLE_PERIOD){
+        if (sampleNumA != SAMPLE_PERIOD) {
             return false;
         }
         sampleNumA = 0;
 
-        int hypotenuse = tapeReader();
+        int hypotenuse = readUsDistance();
         if (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle()))
             return true;
         return false;
     }
 
     /**
-     * Returns true if no danger is within a certain distance, false otherwise.
-     * 
-     * @return boolean
+     * Returns the filtered distance between the US sensor and an obstacle in cm.
      */
-    private static boolean hasDangerWithin(double hypotenuse) {
-        sampleNumB++;
-
-        if (sampleNumB != SAMPLE_PERIOD){
-            return true;
-        }
-        sampleNumB = 0;
-
-        double hyp = hypotenuse;
-        while (hyp > 0) {
-        if (isBlackListed(hyp, getCurrentAngle())){
-            return true;
-        }
-        hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
-        }
-        return false;
+    public static int readUsDistance() {
+        usSensor.fetchSample(usData, 0);
+        // extract from buffer, cast to int, and filter
+        return filter((int) (usData[0] * 100.0));
     }
-
-        /**
-    * Method which implements a basic tape technique to fill and update the buffer.
-    * This method is called by the ...Edge() methods to get a new filtered sensor reading.
-    *
-    * @return the median of the filtered buffer.
-    */
-    private static int tapeReader() {
-
-        //if the array is empty, fill it up to be able to compute filtering.
-        if (buffer[0] == 0) {
-            for (int i = 0; i < BUFFER_SIZE; i++) {
-                buffer[i] = getSensorValue(); //get new sensor reading.
-            }
-        }
-        //shift elements tto right to then add a new sensor reading (tape mechanism).
-        else {
-            for (int j = BUFFER_SIZE-1; j > 0; j--) {
-                buffer[j] = buffer[j-1];
-            }
-            buffer[0] = getSensorValue(); //get new sensor reading.
-        }
-
-        int value = medianFilter(buffer); //get the median of the current buffer.
-
-        //System.out.println("median: "+value);
-        return value;
-
-    }
-
 
     /**
-    * This methods calls the SampleProvider methods to receive a new reading from the US sensor
-    * and perform some "filtering" to ensure a correct reading is being returned.
-    *
-    * @return a corrected value of the sensor reading.
-    */
-    private static int getSensorValue() {
-        
-        usSensor.fetchSample(usData, 0);
-        int distance = (int)(usData[0]*100); 
-        /*Ccale sensor reading to cm. and typecast to int.
-        //We do not necessarily need double values for the distance here as it's the difference between
-        that value and the noise margin threshold which is of interest.*/
-
+     * Rudimentary filter - toss out invalid samples corresponding to null signal.
+     * 
+     * @param distance raw distance measured by the sensor in cm
+     * @return the filtered distance in cm
+     */
+    public static int filter(int distance) {
         if (distance >= MAX_SENSOR_DIST && invalidSampleCount < INVALID_SAMPLE_LIMIT) {
-            // bad value, increment the filter value and return the distance remembered from before
+            // bad value, increment the filter value and return the distance remembered from
+            // before
             invalidSampleCount++;
             return prevDistance;
         } else {
@@ -303,13 +255,96 @@ public class Search {
         }
     }
 
+    /**
+     * Returns true if no danger is within a certain distance, false otherwise.
+     * 
+     * @return boolean
+     */
+    private static boolean hasDangerWithin(double hypotenuse) {
+        sampleNumB++;
+
+        if (sampleNumB != SAMPLE_PERIOD) {
+            return true;
+        }
+        sampleNumB = 0;
+
+        double hyp = hypotenuse;
+        while (hyp > 0) {
+            if (isBlackListed(hyp, getCurrentAngle())) {
+                return true;
+            }
+            hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
+        }
+        return false;
+    }
 
     /**
-    * This method implements a basic median filter as seen in the lectures.
-    *
-    * @param arr buffer array to compute median on.
-    * @return the median of the array.
-    */
+     * Method which implements a basic tape technique to fill and update the buffer.
+     * This method is called by the ...Edge() methods to get a new filtered sensor
+     * reading.
+     *
+     * @return the median of the filtered buffer.
+     */
+    private static int tapeReader() {
+
+        // if the array is empty, fill it up to be able to compute filtering.
+        if (buffer[0] == 0) {
+            for (int i = 0; i < BUFFER_SIZE; i++) {
+                buffer[i] = getSensorValue(); // get new sensor reading.
+            }
+        }
+        // shift elements tto right to then add a new sensor reading (tape mechanism).
+        else {
+            for (int j = BUFFER_SIZE - 1; j > 0; j--) {
+                buffer[j] = buffer[j - 1];
+            }
+            buffer[0] = getSensorValue(); // get new sensor reading.
+        }
+
+        int value = medianFilter(buffer); // get the median of the current buffer.
+
+        // System.out.println("median: "+value);
+        return value;
+
+    }
+
+    /**
+     * This methods calls the SampleProvider methods to receive a new reading from
+     * the US sensor and perform some "filtering" to ensure a correct reading is
+     * being returned.
+     *
+     * @return a corrected value of the sensor reading.
+     */
+    private static int getSensorValue() {
+
+        usSensor.fetchSample(usData, 0);
+        int distance = (int) (usData[0] * 100);
+        /*
+         * Ccale sensor reading to cm. and typecast to int. //We do not necessarily need
+         * double values for the distance here as it's the difference between that value
+         * and the noise margin threshold which is of interest.
+         */
+
+        if (distance >= MAX_SENSOR_DIST && invalidSampleCount < INVALID_SAMPLE_LIMIT) {
+            // bad value, increment the filter value and return the distance remembered from
+            // before
+            invalidSampleCount++;
+            return prevDistance;
+        } else {
+            if (distance < MAX_SENSOR_DIST) {
+                invalidSampleCount = 0; // reset filter and remember the input distance.
+            }
+            prevDistance = distance;
+            return distance;
+        }
+    }
+
+    /**
+     * This method implements a basic median filter as seen in the lectures.
+     *
+     * @param arr buffer array to compute median on.
+     * @return the median of the array.
+     */
     private static int medianFilter(int[] arr) {
         int[] temp = new int[BUFFER_SIZE];
 
@@ -318,15 +353,14 @@ public class Search {
         }
         Arrays.sort(temp);
 
-        int median = temp[BUFFER_SIZE/2];
+        int median = temp[BUFFER_SIZE / 2];
 
         return median;
     }
 
-
     /*
-    * This method is used to reset the buffer when needed.
-    */
+     * This method is used to reset the buffer when needed.
+     */
     private static void clearBuffer() {
 
         for (int i = 0; i < BUFFER_SIZE; i++) {
