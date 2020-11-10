@@ -8,6 +8,7 @@ import ca.mcgill.ecse211.playingfield.Rect;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.Utils.*;
+import static simlejos.ExecutionController.*;
 
 public class Search {
 
@@ -70,6 +71,18 @@ public class Search {
      */
     private static double SCAN_FREQUENCY = 20;
 
+
+
+    //Front light sensor used for block identification
+    private static float[] colorSensorDataFront = new float[colorSensorFront.sampleSize()];
+
+    //Array of last 5 light sensor readings to avoid false positives
+    private static int[] lastReadings = new int[5];
+
+    //Distance at which the the light sensor starts reading.
+    private static float detectionThreshold = 20;
+
+
     public static void initializeSearch() {
         // TODO : Transform edges to rectangles and add to blacklist
         blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(15, 5)));
@@ -98,11 +111,16 @@ public class Search {
         while (true) {
             rotateClockwise();
             
-            System.out.println(readUsDistance());
+            //System.out.println(readUsDistance());
 
             if (hasSpotedNewOject()) {
                 System.out.println("Object detected");
-                break;
+                stopMotors();
+                int result = identify(); //0 = unidentified, 1 = Block, 2 = Obstacle
+                //TODO: figure out what to do with result (blacklist, block....)
+                if (result == 1) {
+                    break;
+                }
             }
 
             if (hasFullyRotated()) {
@@ -225,6 +243,94 @@ public class Search {
             return true;
         return false;
     }
+
+    /**
+    * Method to perform the identification step by driving towards obstacle end performing readings
+    * with bothe the US and light sensor
+    * @return the type of object identified (0=Unidentified, 1=Block, 2=Obstacle)
+    */
+    public static int identify() {
+
+        //Speed could be modified but FORWARD_SPEED is too fast for that.
+        setSpeed(LOWER_FORWARD_SPEED);
+        moveForward();
+
+        int result = 0;
+        while(result == 0) {
+            sleepFor(PHYSICS_STEP_PERIOD * 5);
+            float usReading = tapeReader();
+            if (usReading >= detectionThreshold) {
+                //Need to be close enought to object for light sensor readings to detect object
+
+                //System.out.println("not good"); 
+                continue;
+            }
+            int newReading = identifyObject(); //getting result from light sensor
+            int counter = 1;
+            for (int j = 4; j > 0; j--) {  //loop to add new result to array and switch old ones.
+                lastReadings[j] = lastReadings[j-1];
+                if (lastReadings[j] == newReading) {
+                    counter++;
+                }
+
+            }
+            lastReadings[0] = newReading;
+
+            // Needs at least 3 similar readings to ensure that the identification is somewhat accurate.
+            // Attempt to avoid false positives and sensor just seeing noise/background light.
+            if (counter >= 3) { 
+                result = newReading;
+            }
+
+        }
+
+        stopMotors();
+
+        //TODO: define what needs to be done here. 
+        if (result == 2) {
+            setSpeed(FORWARD_SPEED);
+            moveStraightFor(-0.5); //backoff a bit to avoid touching obstacle later.
+        }
+
+        return result;
+
+
+    }
+
+    /**
+    * Method using the front light sensors to perform measurements and attempt to identify if ht eobject is a
+    * block (white) or a wall/obstacle (brown)
+    */
+    private static int identifyObject() {
+        colorSensorFront.fetchSample(colorSensorDataFront, 0);
+        System.out.println(colorSensorDataFront[0] + "   " + colorSensorDataFront[1] + "   " + colorSensorDataFront[2]);
+
+        int red = (int)(colorSensorDataFront[0]);
+        int green = (int)(colorSensorDataFront[1]);
+        int blue = (int)(colorSensorDataFront[2]);
+
+        /*Value differences between each color channel to identify colors
+        White: all 3 channels should be within a +-5 margin.
+        Brown: Red needs to be 10 over Green which itself needs to be 10 over blue. */
+        int WHITE_MARGIN = 5;
+        int BROWN_MARGIN = 10;
+
+        if (red-green <= -5 || red-green <= 5) {
+            if (blue-green <= -5 || blue-green <= 5) {
+                System.out.println("white detected");
+                return 1;
+            }
+        }
+
+        if (red >= green+BROWN_MARGIN && blue <= green-BROWN_MARGIN) {
+            System.out.println("brown detected");
+            return 2;
+
+        }
+        //return: 0 is nothing, 1 is block, 2 is obstacle
+        return 0;
+    }
+
 
     /**
      * Returns the filtered distance between the US sensor and an obstacle in cm.

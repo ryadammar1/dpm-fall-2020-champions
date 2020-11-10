@@ -31,7 +31,7 @@ public class Main {
     
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
-    wifiExample();
+    //wifiExample();
     
     odometer.setX(7 * TILE_SIZE);
     odometer.setY(7.5 * TILE_SIZE);
