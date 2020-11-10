@@ -110,7 +110,7 @@ public class Resources {
   public static final double BLOCK_OFFSET = 0.1498;
   
   /** Length of a block in meters. */
-  public static final double BLOCK_LENGTH = 0.15;
+  public static final double BLOCK_LENGTH = 0.1;
 
   // Hardware resources
 
