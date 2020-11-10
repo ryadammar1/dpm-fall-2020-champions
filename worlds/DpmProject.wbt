@@ -23,8 +23,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.03439859619445244 -0.9989584932143474 -0.02997774866082678 4.848485201823451
-  position 0.5096087283288013 0.07428954809836608 0.18767924829744637
+  orientation 0.9985724653785365 0.037404853113354425 0.03813015016230723 4.691757036139098
+  position 2.297855985676794 0.9209691036966068 0.13764205768858412
 }
 TexturedBackground {
 }
@@ -264,9 +264,8 @@ DPM-Block {
   mass 2
 }
 DPM-Robot {
-  hidden rotation_9 -0.00024575321265220176 -0.9999999686812878 -4.735801658251078e-05 0.37967542276233673
-  translation 0.15 0.086 0.15
-  rotation 0 1 0 -1.5707953071795862
+  translation 2.28 0.086 0.139999
+  rotation 0 1 0 3.14159
   children [
     robot-design-4-fixed-mainframe-frontpart-solid {
       translation 0.0638 -0.033 -0.071
@@ -277,6 +276,7 @@ DPM-Robot {
       rotation 1 0 0 -1.5707953071795862
     }
     EV3-Ultrasonic {
+      name "S1"
       translation -2.03347e-07 -0.038 -0.044
       rotation -7.851293122126192e-08 0.7071062811861697 0.7071072811865674 -3.1415853071795863
     }
@@ -289,14 +289,17 @@ DPM-Robot {
       rotation 1 0 0 -1.5707953071795862
     }
     EV3-ColorSensor {
+      name "S3"
       translation 0.0471 -0.058 -0.0513
       rotation 0 1 0 3.14159
     }
     EV3-ColorSensor {
+      name "S2"
       translation -0.0471 -0.058 -0.0513
       rotation 0 1 0 3.14159
     }
     EV3-LargeMotor {
+      name "D"
       translation 0.039 -0.0485 0.0262
       rotation 1 0 0 -1.5707953071795862
       children [
@@ -307,6 +310,7 @@ DPM-Robot {
       ]
     }
     EV3-LargeMotor {
+      name "A"
       translation -0.04 -0.0485 0.0262
       rotation -0.9999999999999999 0 0 1.5707953071795862
       children [
@@ -324,4 +328,5 @@ DPM-Robot {
       rotation 1 0 0 -1.5708
     }
   ]
+  controller "DpmProject"
 }

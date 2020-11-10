@@ -34,13 +34,13 @@ public class Search {
     private static final double DISTANCE_THREESHOLD = TILE_SIZE;
 
     /** Linked to edge bounding box width in tile size */
-    private static final double EDGE_BOUND_WIDTH = 1;
+    private static final double EDGE_BOUND_WIDTH = 0.5;
 
     /**
-     * Distance between the center of the robot and the front of the usSensor in cm
+     * Offset between the center of the robot and the front of the usSensor in cm
      */
-    private static final double DIST_US_SENSOR_Y = 8;
-    private static final double DIST_US_SENSOR_X = 5;
+    private static final double DIST_US_SENSOR_Y = 5;
+    private static final double DIST_US_SENSOR_X = 0;
 
     /** The number of samples bypassed before sampling.
      * The higher the value, the better theperformance will be.
@@ -174,24 +174,23 @@ public class Search {
      * @param angle
      */
     private static boolean isBlackListed(double hypotenuse, double angle) {
-        System.out.println("Ignoring object, keep rotating");
         
         Point crt = getCurrentPosition();
 
-        /*System.out.println("crt.x = " + crt.x);
-        System.out.println("crt.y = " + crt.y);
         System.out.println("angle = " + angle);
-        System.out.println("hypo = " + (hypotenuse+DIST_US_SENSOR_Y));*/
+        System.out.println("hypo = " + (hypotenuse+DIST_US_SENSOR_Y));
 
         double dx = DIST_US_SENSOR_X + Math.sin(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // x displacement
         double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // y displacement
 
-        /*System.out.println("dx = " + dx+DIST_US_SENSOR_X);
-        System.out.println("dy = " + dy);*/
+        System.out.println("dx = " + dx+DIST_US_SENSOR_X);
+        System.out.println("dy = " + dy);
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
-        //System.out.println("Point seen = " + npt);
+         
+        System.out.println("Point curr = " + crt); 
+        System.out.println("Point seen = " + npt);
 
         for (Circle point : blacklistPoint) {
             if (point.contains(npt))
@@ -240,7 +239,6 @@ public class Search {
         double hyp = hypotenuse;
         while (hyp > 0) {
         if (isBlackListed(hyp, getCurrentAngle())){
-            System.out.println("Danger in front, keep rotating");
             return true;
         }
         hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
