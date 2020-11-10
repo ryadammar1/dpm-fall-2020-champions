@@ -68,7 +68,7 @@ public class Search {
      * Controls the number of scans performed within a distance during @Code
      * hasDangerWithin(). The higher the value, the more precise the scan.
      */
-    private static double SCAN_FREQUENCY = 5;
+    private static double SCAN_FREQUENCY = 20;
 
     public static void initializeSearch() {
         // TODO : Transform edges to rectangles and add to blacklist
@@ -97,6 +97,8 @@ public class Search {
 
         while (true) {
             rotateClockwise();
+            
+            System.out.println(readUsDistance());
 
             if (hasSpotedNewOject()) {
                 System.out.println("Object detected");
@@ -106,7 +108,7 @@ public class Search {
             if (hasFullyRotated()) {
                 /** If no near object is detected, find a secure place to navigate to */
                 System.out.println("Could not find near object");
-                while (hasDangerWithin((int) (1 * DISTANCE_THREESHOLD * 100)))
+                while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100)))
                     rotateClockwise();
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
                 doSearch();
@@ -179,18 +181,17 @@ public class Search {
 
         Point crt = getCurrentPosition();
 
-        System.out.println("angle = " + angle);
-        System.out.println("hypo = " + (hypotenuse + DIST_US_SENSOR_Y));
 
         double dx = DIST_US_SENSOR_X + Math.sin(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // x
                                                                                                           // displacement
         double dy = Math.cos(Math.toRadians(angle)) * (hypotenuse + DIST_US_SENSOR_Y); // y displacement
 
-        System.out.println("dx = " + dx + DIST_US_SENSOR_X);
-        System.out.println("dy = " + dy);
-
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
+        System.out.println("angle = " + angle);
+        System.out.println("hypo = " + (hypotenuse + DIST_US_SENSOR_Y));
+        System.out.println("dx = " + dx + DIST_US_SENSOR_X);
+        System.out.println("dy = " + dy);
         System.out.println("Point curr = " + crt);
         System.out.println("Point seen = " + npt);
 
@@ -255,6 +256,8 @@ public class Search {
         }
     }
 
+    public static final double VIEW_FOV = 50;
+
     /**
      * Returns true if no danger is within a certain distance, false otherwise.
      * 
@@ -270,7 +273,9 @@ public class Search {
 
         double hyp = hypotenuse;
         while (hyp > 0) {
-            if (isBlackListed(hyp, getCurrentAngle())) {
+            if (isBlackListed(hyp, getCurrentAngle())
+            ||  isBlackListed(hyp, getCurrentAngle() + VIEW_FOV / 2)
+            ||  isBlackListed(hyp, getCurrentAngle() - VIEW_FOV / 2)) {
                 return true;
             }
             hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
