@@ -7,6 +7,8 @@ public class FieldEntry {
   //parameters of these two will be given
   static Point TNR_LL = new Point(4,7);
   static Point TNR_UR = new Point(6,8);
+  static Point Island_LL = new Point(6,5);
+  static Point Island_UR = new Point(15,9);
   
   static Point TNR_UL = new Point(TNR_LL.x,TNR_UR.y);
   static Point TNR_LR = new Point(TNR_UR.x,TNR_LL.y );
@@ -14,10 +16,19 @@ public class FieldEntry {
   // localization, goes to 1,1, beep 3 times then enterField is called
   public static void enterField() {
     // first demo map 
-    goInFrontOfHTunnel();
-    Navigation.turnTo(90);
-    //if (isTunnelHorizontal()==true) 
-    crossHTunnel();
+    
+    if(isTunnelHorizontal()==true) {
+      goInFrontOfHTunnel();
+      Navigation.turnTo(90); 
+      crossHTunnel();
+    }
+    else {
+      goInFrontOfVTunnel();
+      Navigation.turnTo(180); 
+      crossVTunnel();
+      
+    }
+ 
     Main.STATE_MACHINE.enteredField();
     
   }
@@ -43,18 +54,18 @@ public static void goInFrontOfVTunnel() {
   
   public static void crossHTunnel() {
    Point destination = new Point((TNR_LR.x+1),(Odometer.getOdometer().getXyt()[1])/0.3048 );
-     Navigation.travelTo(destination);
-    //Navigation.travelTo(destination);
+     //Navigation.travelCorrected(destination);
+    Navigation.travelTo(destination);
   }
   
   public static void crossVTunnel() {
     Point destination = new Point((Odometer.getOdometer().getXyt()[0])/0.3048,TNR_LL.y-1 );
-      Navigation.travelTo(destination);
+      Navigation.travelCorrected(destination);
      //Navigation.travelTo(destination);
    }
   
   public static boolean isTunnelHorizontal() {
-    if (TNR_LL.y == TNR_LR.y) return true;
+    if (TNR_UR.x == Island_LL.x) return true;
     else return false;
   }
 }
