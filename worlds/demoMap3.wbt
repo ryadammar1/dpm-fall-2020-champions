@@ -9,7 +9,8 @@ WorldInfo {
       coulombFriction [
         1000
       ]
-      softERP 0.1
+      softERP 0.4
+      softCFM 0.00025
     }
     ContactProperties {
       material1 "DPM-Tile"
@@ -22,8 +23,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.009238903516168618 0.9999133773050565 -0.009374462556049455 1.5854484602807226
-  position 0.47170072911010513 0.04709006781833664 0.14903775349473067
+  orientation -0.14494155342786286 0.9862260862514839 0.07968721909439776 1.0171161178214223
+  position 0.6758525569880093 0.13504592772912033 0.47630383456291703
 }
 TexturedBackground {
 }
@@ -263,6 +264,7 @@ DPM-Block {
   mass 2
 }
 DPM-Robot {
+  hidden rotation_16 -0.9759382136671312 -0.00841758052538379 -0.21788471135512902 3.066221150565751
   translation 0.15 0.086 0.15
   rotation 0 1 0 -1.5707953071795862
   children [
@@ -294,11 +296,6 @@ DPM-Robot {
     }
     BallCaster {
       translation 0.0005 -0.066008 0.064008
-      rotation 1 0 0 -1.57
-    }
-    BallCaster {
-      name "ballcaster2"
-      translation 0.0005 -0.06614 -0.045992
       rotation 1 0 0 -1.57
     }
     EV3-LargeMotor {
