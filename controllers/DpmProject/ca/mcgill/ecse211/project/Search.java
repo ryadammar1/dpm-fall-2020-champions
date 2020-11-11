@@ -111,7 +111,7 @@ public class Search {
         while (true) {
             rotateClockwise();
             
-            //System.out.println(readUsDistance());
+            System.out.println(readUsDistance());
 
             if (hasSpotedNewOject()) {
                 System.out.println("Object detected");
@@ -175,7 +175,7 @@ public class Search {
 
         double dtheta = (distL - distR) / BASE_WIDTH; // compute change in heading
 
-        if (dtheta >= 2 * Math.PI) {
+        if (dtheta >= 1.975 * Math.PI) {
             return true;
         }
         return false;
