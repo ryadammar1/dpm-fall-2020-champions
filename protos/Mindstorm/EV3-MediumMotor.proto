@@ -34,6 +34,7 @@ PROTO EV3-MediumMotor [
             }
             device [
               RotationalMotor {
+               sound ""
                name IS name
                #https://education.lego.com/en-us/products/lego-mindstorms-education-ev3-medium-servo-motor/45503
                #Max velocity is 250 rpm = 17.80235835 rad/s
