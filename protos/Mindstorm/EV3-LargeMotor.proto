@@ -39,6 +39,7 @@ PROTO EV3-LargeMotor [
                maxTorque 40
                #consumptionFactor = electrical_input_power (watts) / output_torque (N/cm)
                consumptionFactor 0.4
+               sound ""
               }
               PositionSensor {
                 name %{= '"' .. fields.name.value .. '-sensor' .. '"' }%

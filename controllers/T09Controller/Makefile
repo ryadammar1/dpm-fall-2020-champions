@@ -61,15 +61,15 @@ endif
 # add additional JARs here to link with them at compile time
 ifneq ($(strip $(CLASSPATH)),)
   ifeq ($(OSTYPE),windows)
-   JAVAC_OPTS += -Xlint:all,-try -Xlint -classpath "$(WEBOTS_CONTROLLER_LIB_PATH)/java/Controller.jar;lib/simlejos.jar;lib/EV3WiFiClient.jar;$(CLASSPATH);." -target 11 -source 11
+   JAVAC_OPTS += -Xlint:all,-try -Xlint -classpath "$(WEBOTS_CONTROLLER_LIB_PATH)/java/Controller.jar;../lib/simlejos.jar;../lib/EV3WiFiClient.jar;$(CLASSPATH);." -target 11 -source 11
   else
-   JAVAC_OPTS += -Xlint:all,-try -Xlint:-options -Xlint -classpath "$(WEBOTS_CONTROLLER_LIB_PATH)/java/Controller.jar:lib/simlejos.jar:lib/EV3WiFiClient.jar:$(CLASSPATH):." -target 11 -source 11
+   JAVAC_OPTS += -Xlint:all,-try -Xlint:-options -Xlint -classpath "$(WEBOTS_CONTROLLER_LIB_PATH)/java/Controller.jar:../lib/simlejos.jar:../lib/EV3WiFiClient.jar:$(CLASSPATH):." -target 11 -source 11
   endif
  else
   ifeq ($(OSTYPE),windows)
-   JAVAC_OPTS += -Xlint:all,-try -Xlint -classpath "$(WEBOTS_CONTROLLER_LIB_PATH)/java/Controller.jar;lib/simlejos.jar;lib/EV3WiFiClient.jar;." -target 11 -source 11
+   JAVAC_OPTS += -Xlint:all,-try -Xlint -classpath "$(WEBOTS_CONTROLLER_LIB_PATH)/java/Controller.jar;../lib/simlejos.jar;../lib/EV3WiFiClient.jar;." -target 11 -source 11
   else
-   JAVAC_OPTS += -Xlint:all,-try -Xlint:-options -Xlint -classpath "$(WEBOTS_CONTROLLER_LIB_PATH)/java/Controller.jar":lib/simlejos.jar:lib/EV3WiFiClient.jar:. -target 11 -source 11
+   JAVAC_OPTS += -Xlint:all,-try -Xlint:-options -Xlint -classpath "$(WEBOTS_CONTROLLER_LIB_PATH)/java/Controller.jar":../lib/simlejos.jar:../lib/EV3WiFiClient.jar:. -target 11 -source 11
   endif
 endif
 

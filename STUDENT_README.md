@@ -60,10 +60,12 @@ with `make test`. More information is available [here](https://mcgill-dpm.github
 * [`.project`](.project): on line 3, replace the `xx` in `dpm-project-txx`
 with your team number. Add a zero before your team number if it is a
 single digit (eg, `07`).
-* [`Resources.java`](controllers/DpmProject/ca/mcgill/ecse211/project/Resources.java): set the `TEAM_NUMBER` constant to your team number.
-* The `example_data_fill` files in `server/`, to avoid retyping your team
-number every time you run the server 
-* You may be also be asked to rename certain hardware files to include your team number.
+* Rename `TXXController` according to your team name (eg, `T04Controller`, `T19Controller`). Rename both the file and the folder.
+You can use the refactor menu in Eclipse to do this easily.
+number every time you run the server.
+* Your hardware proto files must be prefixed with `TXX`, where `XX` is your team number.
+Add a zero before your team number if it is a single digit (eg, `07`).
+* Your robot name must be `TXXRobot`.
 
 ___
 
