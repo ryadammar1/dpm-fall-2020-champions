@@ -3,13 +3,11 @@ package ca.mcgill.ecse211.project;
 import ca.mcgill.ecse211.playingfield.Point;
 
 public class FieldEntry {
-  //first demo map  
-  //parameters of these two will be given
-  static Point TNR_LL = new Point(4,7);
-  static Point TNR_UR = new Point(6,8);
-  static Point Island_LL = new Point(6,5);
-  static Point Island_UR = new Point(15,9);
-  
+ 
+  static Point Island_LL = Resources.island.ll;
+  static Point Island_UR = Resources.island.ur;
+  static Point TNR_LL = Resources.tnr.ll;
+  static Point TNR_UR = Resources.tnr.ur;
   static Point TNR_UL = new Point(TNR_LL.x,TNR_UR.y);
   static Point TNR_LR = new Point(TNR_UR.x,TNR_LL.y );
   
