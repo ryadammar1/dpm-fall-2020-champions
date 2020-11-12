@@ -21,10 +21,10 @@ WorldInfo {
         1000
       ]
       softERP 0.4
+      softCFM 0.00025
       bumpSound ""
       rollSound ""
       slideSound ""
-      softCFM 0.00025
     }
     ContactProperties {
       material1 "DPM-Tile"
@@ -32,16 +32,16 @@ WorldInfo {
       coulombFriction [
         1000
       ]
+      softCFM 1e-05
       bumpSound ""
       rollSound ""
       slideSound ""
-      softCFM 1e-05
     }
   ]
 }
 Viewpoint {
-  orientation 0.8616886311768138 0.42992892063617005 0.2695437368985718 5.025187628588315
-  position 1.8515496051104783 1.8221517889131427 1.3942766902799195
+  orientation -0.5356962072000665 -0.6120593447259904 -0.5817326981742168 2.11510854538467
+  position 2.1537581843369824 1.665779302486989 0.45729511734789785
   follow "robot"
   followType "Pan and Tilt Shot"
 }
@@ -285,7 +285,7 @@ DPM-Block {
 DPM-Robot {
   hidden rotation_9 -2.547819393950206e-05 -0.9999999996363002 -8.846539995534793e-06 0.668392227283676
   name "T09Robot"
-  translation 2.13 0.086 0.439999
+  translation 2.13 0.086 0.459999
   rotation 0 1 0 -1.5707953071795862
   children [
     robot-design-4-fixed-mainframe-frontpart-solid {

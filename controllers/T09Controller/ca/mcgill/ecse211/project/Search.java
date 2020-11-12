@@ -387,7 +387,7 @@ public class Search {
         }
     }
 
-    public static final double VIEW_FOV = 30;
+    public static final double VIEW_FOV = 40;
 
     /**
      * Returns true if no danger is within a certain distance, false otherwise.
