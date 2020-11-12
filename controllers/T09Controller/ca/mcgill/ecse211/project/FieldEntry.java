@@ -10,6 +10,8 @@ public class FieldEntry {
   static Point TNR_UR = Resources.tnr.ur;
   static Point TNR_UL = new Point(TNR_LL.x,TNR_UR.y);
   static Point TNR_LR = new Point(TNR_UR.x,TNR_LL.y );
+  static Point SZR_LL = Resources.szr.ll;
+  static Point SZR_UR = Resources.szr.ur;
   
   // localization, goes to 1,1, beep 3 times then enterField is called
   public static void enterField() {
@@ -26,9 +28,11 @@ public class FieldEntry {
       crossVTunnel();
       
     }
- 
+    boolean inSearchZone = isInSearchZone();
+    if (inSearchZone == true) {
+      System.out.println("In Search Zone");
     Main.STATE_MACHINE.enteredField();
-    
+    }
   }
   
   public static void goInFrontOfHTunnel() {
@@ -65,5 +69,22 @@ public static void goInFrontOfVTunnel() {
   public static boolean isTunnelHorizontal() {
     if (TNR_UR.x == Island_LL.x) return true;
     else return false;
+  }
+  
+  public static boolean isInSearchZone() {
+  
+   double currentX = (Odometer.getOdometer().getXyt()[0])/0.3048;
+   double currentY = (Odometer.getOdometer().getXyt()[1])/0.3048;
+   
+   if (currentX > SZR_LL.x && currentX < SZR_UR.x) {
+     if (currentY>SZR_LL.y && currentY < SZR_UR.y) {
+      return true;
+     }
+     return false;
+         
+   }
+   
+   return false;
+   
   }
 }
