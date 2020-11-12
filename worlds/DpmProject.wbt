@@ -4,12 +4,26 @@ WorldInfo {
   coordinateSystem "NUE"
   contactProperties [
     ContactProperties {
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "DPM-Tile"
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
       material1 "DPM-Tile"
       material2 "Rubber"
       coulombFriction [
         1000
       ]
       softERP 0.4
+      bumpSound ""
+      rollSound ""
+      slideSound ""
       softCFM 0.00025
     }
     ContactProperties {
@@ -18,6 +32,9 @@ WorldInfo {
       coulombFriction [
         1000
       ]
+      bumpSound ""
+      rollSound ""
+      slideSound ""
       softCFM 1e-05
     }
   ]
@@ -267,6 +284,7 @@ DPM-Block {
 }
 DPM-Robot {
   hidden rotation_9 -2.547819393950206e-05 -0.9999999996363002 -8.846539995534793e-06 0.668392227283676
+  name "T09Robot"
   translation 2.13 0.086 0.439999
   rotation 0 1 0 -1.5707953071795862
   children [
@@ -332,5 +350,5 @@ DPM-Robot {
       rotation 1 0 0 -1.5708
     }
   ]
-  controller "DpmProject"
+  controller "T09Controller"
 }
