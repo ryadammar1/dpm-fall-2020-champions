@@ -40,14 +40,14 @@ public class Search {
     /**
      * Offset between the center of the robot and the front of the usSensor in cm
      */
-    private static final double DIST_US_SENSOR_Y = 8;
+    private static final double DIST_US_SENSOR_Y = 9;
     private static final double DIST_US_SENSOR_X = 0;
 
     /**
      * The number of samples bypassed before sampling. The higher the value, the
      * better theperformance will be.
      */
-    private static final int SAMPLE_PERIOD = 300;
+    private static final int SAMPLE_PERIOD = 400;
 
     /**
      * All blacklisted points identified as obstacles/walls Circle are used instead
@@ -107,7 +107,7 @@ public class Search {
         while (true) {
             rotateClockwise();
 
-            System.out.println(readUsDistance());
+            System.out.println(""); // Helps synchronize thread? Don't remove
 
             if (hasSpotedNewOject()) {
                 System.out.println("Object detected");
@@ -135,14 +135,11 @@ public class Search {
                 System.out.println("Could not find near object");
                 while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100)))
                     rotateClockwise();
-                setSpeed(FORWARD_SPEED);
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
                 doSearch();
             }
         }
-
         stopMotors();
-
     }
 
     private static Rect creatRectFromEdge(Point pt1, Point pt2) {
@@ -226,12 +223,12 @@ public class Search {
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
-        /*System.out.println("angle = " + angle);
+        System.out.println("angle = " + angle);
         System.out.println("hypo = " + (hypotenuse + DIST_US_SENSOR_Y));
         System.out.println("dx = " + dx + DIST_US_SENSOR_X);
         System.out.println("dy = " + dy);
         System.out.println("Point curr = " + crt);
-        System.out.println("Point seen = " + npt);*/
+        System.out.println("Point seen = " + npt);
 
         for (Circle point : blacklistPoint) {
             if (point.contains(npt))
@@ -314,7 +311,6 @@ public class Search {
             addToBlackList(tapeReader(), getCurrentAngle());
             setSpeed(FORWARD_SPEED);
             moveStraightFor(-0.5); // backoff a bit to avoid touching obstacle later.
-            turnBy(15);
         }
 
         return result;
