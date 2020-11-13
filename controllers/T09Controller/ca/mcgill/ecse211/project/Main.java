@@ -52,6 +52,17 @@ public class Main {
           odometer.setX(1 * TILE_SIZE);
           odometer.setY(8 * TILE_SIZE);
           odometer.setTheta(90);*/
+          LocalEV3.getAudio().beep();
+          try {
+            Thread.sleep(TIMEOUT_PERIOD / 2);
+        } catch (InterruptedException e) {
+        }
+          LocalEV3.getAudio().beep();
+          try {
+            Thread.sleep(TIMEOUT_PERIOD / 2);
+        } catch (InterruptedException e) {
+        }
+          LocalEV3.getAudio().beep();
           STATE_MACHINE.doneLocalizing(); // TEMPORARY : Add this at the end of the function it self
           }
         case ("Standard.Initialization.EntryField"): {
