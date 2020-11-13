@@ -88,6 +88,8 @@ public class Search {
         blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ur.y), szr.ur));
         // left wall
         blacklistEdge.add(creatRectFromEdge(szr.ll, new Point(szr.ll.x, szr.ur.y)));
+        // right wall
+        blacklistEdge.add(creatRectFromEdge(new Point(szr.ur.x, szr.ll.y), szr.ur));
         
         blacklistEdge.add(new Rect(new Point(rr.left.x - TILE_SIZE * 0.25, rr.left.y - TILE_SIZE * 0.25), new Point(rr.right.x + TILE_SIZE * 0.25, rr.right.y + TILE_SIZE * 2.25))); // Ramp
         
