@@ -145,7 +145,7 @@ public class Search {
         while (true) {
             rotateClockwise();
 
-            System.out.println(readUsDistance()); // Helps synchronize thread? Don't remove
+            //System.out.println(readUsDistance()); // Helps synchronize thread? Don't remove
 
             if (hasSpotedNewOject()) {
                 System.out.println("Object detected");
@@ -185,7 +185,7 @@ public class Search {
                 while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100)))
                     rotateClockwise();
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
-                doSearch();
+                return;
             }
         }
         stopMotors();
