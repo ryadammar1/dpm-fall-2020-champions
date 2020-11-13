@@ -1,6 +1,8 @@
 package ca.mcgill.ecse211.project;
 
+import static ca.mcgill.ecse211.project.Resources.TIMEOUT_PERIOD;
 import ca.mcgill.ecse211.playingfield.Point;
+import simlejos.hardware.ev3.LocalEV3;
 
 public class FieldEntry {
  
@@ -28,10 +30,14 @@ public class FieldEntry {
       crossVTunnel();
       
     }
-    boolean inSearchZone = isInSearchZone();
-    if (inSearchZone == true) {
-      System.out.println("In Search Zone");
-    Main.STATE_MACHINE.enteredField();
+    boolean inSearchZone = checkIfInSearchZone();
+    if (checkIfInSearchZone() == true) {
+      enteredSearchZone();
+    }
+    else {
+      goToSearchZone();
+      enteredSearchZone(); 
+      
     }
   }
   
@@ -62,8 +68,8 @@ public static void goInFrontOfVTunnel() {
   
   public static void crossVTunnel() {
     Point destination = new Point((Odometer.getOdometer().getXyt()[0])/0.3048,TNR_LL.y-1 );
-      Navigation.travelCorrected(destination);
-     //Navigation.travelTo(destination);
+     // Navigation.travelCorrected(destination);
+     Navigation.travelTo(destination);
    }
   
   public static boolean isTunnelHorizontal() {
@@ -71,7 +77,7 @@ public static void goInFrontOfVTunnel() {
     else return false;
   }
   
-  public static boolean isInSearchZone() {
+ public static boolean checkIfInSearchZone() {
   
    double currentX = (Odometer.getOdometer().getXyt()[0])/0.3048;
    double currentY = (Odometer.getOdometer().getXyt()[1])/0.3048;
@@ -87,4 +93,34 @@ public static void goInFrontOfVTunnel() {
    return false;
    
   }
+  
+  public static void goToSearchZone() {
+    if (checkIfInSearchZone()==false) {
+     double  xInSZ = SZR_LL.x+1;
+     double  yInSZ = SZR_LL.y+1;
+     Point inSZ = new Point(xInSZ, yInSZ);
+      Navigation.travelToPerpendicular(inSZ);
+      
+      
+    }
+ 
+    
+  }
+  
+  public static void enteredSearchZone() {
+    System.out.println("In Search Zone");
+    LocalEV3.getAudio().beep();
+    try {
+      Thread.sleep(TIMEOUT_PERIOD / 2);
+  } catch (InterruptedException e) {
+  }
+    LocalEV3.getAudio().beep();
+    try {
+      Thread.sleep(TIMEOUT_PERIOD / 2);
+  } catch (InterruptedException e) {
+  }
+    LocalEV3.getAudio().beep();
+    Main.STATE_MACHINE.enteredField();
+  }
+  
 }
