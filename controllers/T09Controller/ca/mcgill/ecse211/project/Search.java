@@ -82,11 +82,16 @@ public class Search {
 
     public static void initializeSearch() {
         // TODO : Transform edges to rectangles and add to blacklist
-        blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(15, 5)));
-        blacklistEdge.add(creatRectFromEdge(new Point(6, 9), new Point(15, 9)));
-        blacklistEdge.add(creatRectFromEdge(new Point(6, 5), new Point(6, 9)));
-        blacklistEdge.add(new Rect(new Point(8.5, 6.5), new Point(10.5, 9.5))); // Ramp
-        blacklistEdge.add(new Rect(new Point(3.75, 6.75), new Point(6.25, 8.25))); // tunnel
+        // bottom wall
+        blacklistEdge.add(creatRectFromEdge(szr.ll, new Point(szr.ur.x, szr.ll.y)));
+        // top wall
+        blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ur.y), szr.ur));
+        // left wall
+        blacklistEdge.add(creatRectFromEdge(szr.ll, new Point(szr.ll.x, szr.ur.y)));
+        
+        blacklistEdge.add(new Rect(new Point(rr.left.x - TILE_SIZE * 0.25, rr.left.y - TILE_SIZE * 0.25), new Point(rr.right.x + TILE_SIZE * 0.25, rr.right.y + TILE_SIZE * 2.25))); // Ramp
+        
+        blacklistEdge.add(new Rect(new Point(tnr.ll.x - TILE_SIZE * 0.25, tnr.ll.y - TILE_SIZE * 0.25), new Point(tnr.ur.x + TILE_SIZE * 0.25, tnr.ur.y + TILE_SIZE * 0.25))); // tunnel
     }
 
     public static void doSearch() {
