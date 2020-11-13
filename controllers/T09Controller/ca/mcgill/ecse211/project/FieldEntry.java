@@ -46,7 +46,7 @@ public class FieldEntry {
    */
   public static void goInFrontOfHTunnel() {
 
-    Point inFront = new Point((TNR_LL.x - 2), (TNR_LL.y + TNR_UL.y) / 2);
+    Point inFront = new Point((TNR_LL.x - 1), (TNR_LL.y + TNR_UL.y) / 2);
     Navigation.travelToPerpendicular(inFront);
 
   }
