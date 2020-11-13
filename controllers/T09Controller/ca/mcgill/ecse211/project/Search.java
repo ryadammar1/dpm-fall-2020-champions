@@ -83,17 +83,48 @@ public class Search {
     public static void initializeSearch() {
         // TODO : Transform edges to rectangles and add to blacklist
         // bottom wall
-        blacklistEdge.add(creatRectFromEdge(szr.ll, new Point(szr.ur.x, szr.ll.y)));
+        blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ur.x, szr.ll.y)));
         // top wall
-        blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ur.y), szr.ur));
+        blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ur.y), new Point(szr.ur.x, szr.ur.y)));
         // left wall
-        blacklistEdge.add(creatRectFromEdge(szr.ll, new Point(szr.ll.x, szr.ur.y)));
+        blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ll.x, szr.ur.y)));
         // right wall
-        blacklistEdge.add(creatRectFromEdge(new Point(szr.ur.x, szr.ll.y), szr.ur));
+        blacklistEdge.add(creatRectFromEdge(new Point(szr.ur.x, szr.ll.y), new Point(szr.ur.x, szr.ur.y)));
         
-        blacklistEdge.add(new Rect(new Point(rr.left.x - TILE_SIZE * 0.25, rr.left.y - TILE_SIZE * 0.25), new Point(rr.right.x + TILE_SIZE * 0.25, rr.right.y + TILE_SIZE * 2.25))); // Ramp
+        final double facingX = Math.signum(rr.right.y - rr.left.y);
+        final double facingY = Math.signum(rr.right.x - rr.left.x);
         
-        blacklistEdge.add(new Rect(new Point(tnr.ll.x - TILE_SIZE * 0.25, tnr.ll.y - TILE_SIZE * 0.25), new Point(tnr.ur.x + TILE_SIZE * 0.25, tnr.ur.y + TILE_SIZE * 0.25))); // tunnel
+        if (facingY != 0) {
+          if (facingY > 0) {
+            blacklistEdge.add(new Rect(
+                new Point(rr.left.x - 0.25, rr.left.y - 0.25), 
+                new Point(rr.right.x + 0.25, rr.right.y  + 2.25))
+            ); // Ramp
+          }
+          if (facingY < 0) {
+            blacklistEdge.add(new Rect(
+                new Point(rr.right.x - 0.25 , rr.right.y - 2.25), 
+                new Point(rr.left.x + 0.25, rr.left.y  + 0.25))
+            ); // Ramp
+          }
+        }
+        
+        if (facingX != 0) {
+          if (facingX > 0) {
+            blacklistEdge.add(new Rect(
+                new Point(rr.left.x - 2.25, rr.left.y - 0.25), 
+                new Point(rr.right.x + 0.25, rr.right.y  + 0.25))
+            ); // Ramp
+          }
+          if (facingX < 0) {
+            blacklistEdge.add(new Rect(
+                new Point(rr.right.x - 0.25 , rr.right.y - 0.25), 
+                new Point(rr.left.x + 2.25, rr.left.y  + 0.25))
+            ); // Ramp
+          }
+        }
+        
+        blacklistEdge.add(new Rect(new Point(tnr.ll.x - 0.25, tnr.ll.y - 0.25), new Point(tnr.ur.x + 0.25, tnr.ur.y + 0.25))); // tunnel
     }
 
     public static void doSearch() {
