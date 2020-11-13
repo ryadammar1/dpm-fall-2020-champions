@@ -6,7 +6,7 @@
 # LeoCAD is distributed under the GNU General Public License (GPL) version 2.
 # The Parts Library used by LeoCAD is a copy of LDraw's Library, which is distributed under the LDraw License Agreement and based on the Creative Commons 2 License.
 # LEGO(R) is a trademark of the LEGO Group of companies which does not sponsor, authorize or endorse this file.
-PROTO robot-design-4-fixed-mainframe-frontpart-boundingbox [
+PROTO T09robot-design-4-fixed-mainframe-frontpart-boundingbox [
 ]
 {
 		Box {

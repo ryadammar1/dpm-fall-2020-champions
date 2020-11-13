@@ -6,8 +6,8 @@
 # LeoCAD is distributed under the GNU General Public License (GPL) version 2.
 # The Parts Library used by LeoCAD is a copy of LDraw's Library, which is distributed under the LDraw License Agreement and based on the Creative Commons 2 License.
 # LEGO(R) is a trademark of the LEGO Group of companies which does not sponsor, authorize or endorse this file.
-PROTO robot-design-4-fixed-mainframe-frontpart-solid [
-	field SFString   name     "robot-design-4-fixed-mainframe-frontpart-solid"
+PROTO T09robot-design-4-fixed-mainframe-frontpart-solid [
+	field SFString   name     "T09robot-design-4-fixed-mainframe-frontpart-solid"
 	field SFVec3f    translation   0 0 0
 	field SFRotation rotation      0 0 1 0
 ]
@@ -17,10 +17,10 @@ PROTO robot-design-4-fixed-mainframe-frontpart-solid [
 		rotation IS rotation
 		translation IS translation
 		children [
-			robot-design-4-fixed-mainframe-frontpart-shape{
+			T09robot-design-4-fixed-mainframe-frontpart-shape{
 			}
 		]
-		boundingObject robot-design-4-fixed-mainframe-frontpart-boundingbox {
+		boundingObject T09robot-design-4-fixed-mainframe-frontpart-boundingbox {
 		}
 		physics Physics {
 			density -1
