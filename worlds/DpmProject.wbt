@@ -287,11 +287,11 @@ DPM-Robot {
   translation 2.13 0.086 0.449999
   rotation 0 1 0 -1.5707953071795862
   children [
-    robot-design-4-fixed-mainframe-frontpart-solid {
+    T09robot-design-4-fixed-mainframe-frontpart-solid {
       translation 0.0638 -0.033 -0.071
       rotation 1 0 0 -1.5707953071795862
     }
-    robot-design-4-fixed-mainframe-frontpart-solid {
+    T09robot-design-4-fixed-mainframe-frontpart-solid {
       translation -0.063 -0.033 -0.071
       rotation 1 0 0 -1.5707953071795862
     }
@@ -341,7 +341,7 @@ DPM-Robot {
         }
       ]
     }
-    robot-design-4-fixed-mainframe-solid {
+    T09robot-design-4-fixed-mainframe-solid {
       translation 0.0005 -0.0255 0.005
       rotation 1 0 0 -1.5707953071795862
     }
