@@ -5,7 +5,7 @@ import java.util.Arrays;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.Circle;
 import ca.mcgill.ecse211.playingfield.Rect;
-
+import simlejos.hardware.ev3.LocalEV3;
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.Utils.*;
 import static simlejos.ExecutionController.*;
@@ -145,7 +145,7 @@ public class Search {
         while (true) {
             rotateClockwise();
 
-            System.out.println(""); // Helps synchronize thread? Don't remove
+            System.out.println(readUsDistance()); // Helps synchronize thread? Don't remove
 
             if (hasSpotedNewOject()) {
                 System.out.println("Object detected");
@@ -159,6 +159,17 @@ public class Search {
                     case (1): {
                         Main.STATE_MACHINE.setBlockDetected(true);
                         Main.STATE_MACHINE.detectObstacle();
+                        LocalEV3.getAudio().beep();
+                        try {
+                          LocalEV3.getAudio().beep();
+                          Thread.sleep(TIMEOUT_PERIOD / 2);
+                          LocalEV3.getAudio().beep();
+                          Thread.sleep(TIMEOUT_PERIOD / 2);
+                          LocalEV3.getAudio().beep();
+                        } catch (InterruptedException e) {
+                          e.printStackTrace();
+                        }
+                        
                         break;
                     }
                     case (2): {

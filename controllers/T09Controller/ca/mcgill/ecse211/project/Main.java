@@ -32,10 +32,6 @@ public class Main {
     // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
     //wifiExample();
-    
-    odometer.setX(7 * TILE_SIZE);
-    odometer.setY(7.5 * TILE_SIZE);
-    odometer.setTheta(90);
    
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
@@ -46,12 +42,12 @@ public class Main {
           }
         case ("Standard.Initialization.Localization"): {
           System.out.println("Localizing");
-          /*UltrasonicLocalizer.localize();
+          UltrasonicLocalizer.localize();
           LightSensorCalibration.calibrate();
           LightLocalizer.localize();
           odometer.setX(1 * TILE_SIZE);
           odometer.setY(8 * TILE_SIZE);
-          odometer.setTheta(90);*/
+          odometer.setTheta(90);
           LocalEV3.getAudio().beep();
           try {
             Thread.sleep(TIMEOUT_PERIOD / 2);
@@ -67,8 +63,7 @@ public class Main {
           }
         case ("Standard.Initialization.EntryField"): {
           System.out.println("Entering field");
-          //FieldEntry.enterField();
-          STATE_MACHINE.enteredField();
+          FieldEntry.enterField();
           }
         case ("Standard.Operation.Search"): {
           System.out.println("Searching");
