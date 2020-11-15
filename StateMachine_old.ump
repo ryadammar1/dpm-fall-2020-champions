@@ -1,0 +1,49 @@
+class RobotSTM
+{
+   status {
+     Standard{
+      	Initialization  { 
+          Configuration
+          { 
+            doneConfiguration -> Localization;
+          }
+          Localization { doneLocalizing -> EntryField ;}
+          
+          
+          EntryField{
+            detectObstacle -> Avoidance;
+            enteredField ->  Operation;  
+          }
+        }
+      
+	Operation {
+      Search{
+        detectObstacle[!blockDetected()] -> Avoidance;
+        detectObstacle[blockDetected()] -> Transfer;
+      }
+      
+      Transfer{
+       detectObstacle -> Avoidance; blockTransfered[numTransfer<numBlocks]/{numTransfer++;} -> Search;
+        
+       blockTransfered[numTransfer==numBlocks] -> Termination;
+        
+        
+      }
+      timeUp -> Termination;
+  }
+     Termination{
+       ExitField{
+         detectObstacle -> Avoidance;
+       }
+     }
+     
+   
+   }
+    Avoidance{
+        obstacleAvoided -> Standard.HStar;
+      }
+   }
+  Integer numTransfer=0;
+  Integer numBlocks=0; //set the total number of blocks in the field
+}//$?[End_of_model]$?
+

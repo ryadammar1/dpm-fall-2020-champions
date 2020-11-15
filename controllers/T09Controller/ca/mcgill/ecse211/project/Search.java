@@ -145,9 +145,9 @@ public class Search {
         while (true) {
             rotateClockwise();
 
-            //System.out.println(readUsDistance()); // Helps synchronize thread? Don't remove
+            System.out.println(readUsDistance()); // Helps synchronize thread? Don't remove
 
-            if (hasSpotedNewOject()) {
+            if (hasSpottedNewOject()) {
                 System.out.println("Object detected");
                 stopMotors();
                 int result = identify(); // 0 = unidentified, 1 = Block, 2 = Obstacle
@@ -296,7 +296,7 @@ public class Search {
      * 
      * @return boolean
      */
-    private static boolean hasSpotedNewOject() {
+    private static boolean hasSpottedNewOject() {
         sampleNumA++;
 
         if (sampleNumA != SAMPLE_PERIOD) {
@@ -304,7 +304,7 @@ public class Search {
         }
         sampleNumA = 0;
 
-        int hypotenuse = tapeReader();
+        int hypotenuse = readUsDistance();
         if (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle()))
             return true;
         return false;
