@@ -22,7 +22,7 @@ public class Search {
     public enum Mode {
         Memorize, Recognize
     }
-    
+
     /** Search mode */
     private static final Mode MODE = Mode.Recognize;
 
@@ -32,11 +32,11 @@ public class Search {
     private static final int MAX_US_SENSOR_DIFFERENCE = 10;
 
     /** Front light sensor used for block identification */
-    private static float[] colorSensorDataFront = new float[colorSensorFront.sampleSize()];
+    private static float[] colorSensorDataFront;
 
     /** Buffer (array) to store US samples */
     private static float[] usData1 = new float[usSensor1.sampleSize()];
-    private static float[] usData2 = new float[usSensor2.sampleSize()];
+    private static float[] usData2;
 
     /**
      * The limit of invalid samples that we read from the US sensor before assuming
@@ -105,8 +105,16 @@ public class Search {
     /** View FOV used by @code hasDangerWithin(distance) */
     public static final double VIEW_FOV = 40;
 
-    /** Initialzes the bounding boxes of known obstacles before starting the search */
+    /**
+     * Initialzes the bounding boxes of known obstacles before starting the search
+     */
     public static void initializeSearch() {
+
+        if (MODE == Mode.Recognize)
+            usData2 = new float[usSensor2.sampleSize()];
+        else{
+            colorSensorDataFront = new float[colorSensorFront.sampleSize()];
+        }
 
         // bottom wall
         blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ur.x, szr.ll.y)));
@@ -166,7 +174,8 @@ public class Search {
             rotateClockwise();
 
             System.out.println(readUsDistance(1)); // Helps synchronize thread? Don't remove
-            System.out.println(readUsDistance(2)); // Helps synchronize thread? Don't remove
+            if (MODE == Mode.Recognize)
+                System.out.println(readUsDistance(2)); // Helps synchronize thread? Don't remove
 
             if (MODE == Mode.Memorize && hasSpottedNewOject()) {
                 System.out.println("Object detected");
@@ -315,12 +324,13 @@ public class Search {
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
-        /*System.out.println("angle = " + angle);
-        System.out.println("hypo = " + (hypotenuse + DIST_US_SENSOR_Y));
-        System.out.println("dx = " + dx + DIST_US_SENSOR_X);
-        System.out.println("dy = " + dy);
-        System.out.println("Point curr = " + crt);
-        System.out.println("Point seen = " + npt);*/
+        /*
+         * System.out.println("angle = " + angle); System.out.println("hypo = " +
+         * (hypotenuse + DIST_US_SENSOR_Y)); System.out.println("dx = " + dx +
+         * DIST_US_SENSOR_X); System.out.println("dy = " + dy);
+         * System.out.println("Point curr = " + crt); System.out.println("Point seen = "
+         * + npt);
+         */
 
         for (Circle point : blacklistPoint) {
             if (point.contains(npt))
@@ -355,12 +365,8 @@ public class Search {
                 && (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle())))
                 || ((MODE == Mode.Recognize)
                         && (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle())
-                                && !(Math.abs(hypotenuse - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE)))) {
-            System.out.println("BRUH: " + Math.abs(hypotenuse - readUsDistance(2)));
-            System.out.println("hyp1: " + hypotenuse);
-            System.out.println("hyp2: " + readUsDistance(2));
+                                && !(Math.abs(hypotenuse - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE))))
             return true;
-        }
         return false;
     }
 
