@@ -33,6 +33,8 @@ public class Main {
     LocalEV3.getAudio().beep(); // beeps once
     //wifiExample();
    
+    Search.doSearch();
+
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
       switch (STATE_MACHINE.getStatusFullName()) {

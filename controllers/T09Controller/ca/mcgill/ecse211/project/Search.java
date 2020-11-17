@@ -6,28 +6,46 @@ import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.Circle;
 import ca.mcgill.ecse211.playingfield.Rect;
 import simlejos.hardware.ev3.LocalEV3;
+
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.Utils.*;
 import static simlejos.ExecutionController.*;
 
 public class Search {
 
-    /** Buffer (array) to store US samples. */
-    private static float[] usData = new float[usSensor.sampleSize()];
+    /**
+     * Different methodologies used by the robot Memorize: The robot memorizes the
+     * position of each encountered obstacles found using the color sensor.
+     * Recognize: The robot recognizes in real time the obstacles based on their
+     * height.
+     */
+    public enum Mode {
+        Memorize, Recognize
+    }
 
-    // Buffer size used to receive US sensor readings and perform filtering.
-    private static int BUFFER_SIZE = 3;
+    private static final Mode MODE = Mode.Memorize;
 
-    // Buffer array to store sensor readings and perform filtering.
-    private static int[] buffer = new int[BUFFER_SIZE];
+    /**
+     * Maximum distance difference between sensor usSensor1 and usSensor2
+     */
+    private static final int MAX_US_SENSOR_DIFFERENCE = 10;
+
+    /** Front light sensor used for block identification */
+    private static float[] colorSensorDataFront = new float[colorSensorFront.sampleSize()];
+
+    /** Buffer (array) to store US samples */
+    private static float[] usData1 = new float[usSensor1.sampleSize()];
+    private static float[] usData2 = new float[usSensor2.sampleSize()];
 
     /**
      * The limit of invalid samples that we read from the US sensor before assuming
      * no obstacle.
      */
     public static final int INVALID_SAMPLE_LIMIT = 20;
+
     /** The distance remembered by the filter() method. */
     private static int prevDistance;
+
     /** The number of invalid samples seen by filter() so far. */
     private static int invalidSampleCount;
 
@@ -71,17 +89,14 @@ public class Search {
      */
     private static double SCAN_FREQUENCY = 20;
 
-    // Front light sensor used for block identification
-    private static float[] colorSensorDataFront = new float[colorSensorFront.sampleSize()];
-
-    // Array of last 5 light sensor readings to avoid false positives
+    /** Array of last 5 light sensor readings to avoid false positives */
     private static int[] lastReadings = new int[5];
 
-    // Distance at which the the light sensor starts reading.
+    /** Distance at which the the light sensor starts reading. */
     private static float detectionThreshold = 20;
 
     public static void initializeSearch() {
-        // TODO : Transform edges to rectangles and add to blacklist
+
         // bottom wall
         blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ur.x, szr.ll.y)));
         // top wall
@@ -90,41 +105,34 @@ public class Search {
         blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ll.x, szr.ur.y)));
         // right wall
         blacklistEdge.add(creatRectFromEdge(new Point(szr.ur.x, szr.ll.y), new Point(szr.ur.x, szr.ur.y)));
-        
+
         final double facingX = Math.signum(rr.right.y - rr.left.y);
         final double facingY = Math.signum(rr.right.x - rr.left.x);
-        
+
         if (facingY != 0) {
-          if (facingY > 0) {
-            blacklistEdge.add(new Rect(
-                new Point(rr.left.x - 0.25, rr.left.y - 0.25), 
-                new Point(rr.right.x + 0.25, rr.right.y  + 2.25))
-            ); // Ramp
-          }
-          if (facingY < 0) {
-            blacklistEdge.add(new Rect(
-                new Point(rr.right.x - 0.25 , rr.right.y - 2.25), 
-                new Point(rr.left.x + 0.25, rr.left.y  + 0.25))
-            ); // Ramp
-          }
+            if (facingY > 0) {
+                blacklistEdge.add(new Rect(new Point(rr.left.x - 0.25, rr.left.y - 0.25),
+                        new Point(rr.right.x + 0.25, rr.right.y + 2.25))); // Ramp
+            }
+            if (facingY < 0) {
+                blacklistEdge.add(new Rect(new Point(rr.right.x - 0.25, rr.right.y - 2.25),
+                        new Point(rr.left.x + 0.25, rr.left.y + 0.25))); // Ramp
+            }
         }
-        
+
         if (facingX != 0) {
-          if (facingX > 0) {
-            blacklistEdge.add(new Rect(
-                new Point(rr.left.x - 2.25, rr.left.y - 0.25), 
-                new Point(rr.right.x + 0.25, rr.right.y  + 0.25))
-            ); // Ramp
-          }
-          if (facingX < 0) {
-            blacklistEdge.add(new Rect(
-                new Point(rr.right.x - 0.25 , rr.right.y - 0.25), 
-                new Point(rr.left.x + 2.25, rr.left.y  + 0.25))
-            ); // Ramp
-          }
+            if (facingX > 0) {
+                blacklistEdge.add(new Rect(new Point(rr.left.x - 2.25, rr.left.y - 0.25),
+                        new Point(rr.right.x + 0.25, rr.right.y + 0.25))); // Ramp
+            }
+            if (facingX < 0) {
+                blacklistEdge.add(new Rect(new Point(rr.right.x - 0.25, rr.right.y - 0.25),
+                        new Point(rr.left.x + 2.25, rr.left.y + 0.25))); // Ramp
+            }
         }
-        
-        blacklistEdge.add(new Rect(new Point(tnr.ll.x - 0.25, tnr.ll.y - 0.25), new Point(tnr.ur.x + 0.25, tnr.ur.y + 0.25))); // tunnel
+
+        blacklistEdge.add(
+                new Rect(new Point(tnr.ll.x - 0.25, tnr.ll.y - 0.25), new Point(tnr.ur.x + 0.25, tnr.ur.y + 0.25))); // tunnel
     }
 
     public static void doSearch() {
@@ -145,9 +153,9 @@ public class Search {
         while (true) {
             rotateClockwise();
 
-            System.out.println(readUsDistance()); // Helps synchronize thread? Don't remove
+            System.out.println(readUsDistance(1)); // Helps synchronize thread? Don't remove
 
-            if (hasSpottedNewOject()) {
+            if (MODE == Mode.Memorize && hasSpottedNewOject()) {
                 System.out.println("Object detected");
                 stopMotors();
                 int result = identify(); // 0 = unidentified, 1 = Block, 2 = Obstacle
@@ -159,23 +167,40 @@ public class Search {
                     case (1): {
                         Main.STATE_MACHINE.setBlockDetected(true);
                         Main.STATE_MACHINE.detectObstacle();
+
                         LocalEV3.getAudio().beep();
                         try {
-                          LocalEV3.getAudio().beep();
-                          Thread.sleep(TIMEOUT_PERIOD / 2);
-                          LocalEV3.getAudio().beep();
-                          Thread.sleep(TIMEOUT_PERIOD / 2);
-                          LocalEV3.getAudio().beep();
+                            LocalEV3.getAudio().beep();
+                            Thread.sleep(TIMEOUT_PERIOD / 2);
+                            LocalEV3.getAudio().beep();
+                            Thread.sleep(TIMEOUT_PERIOD / 2);
+                            LocalEV3.getAudio().beep();
                         } catch (InterruptedException e) {
-                          e.printStackTrace();
+                            e.printStackTrace();
                         }
-                        
-                        break;
                     }
                     case (2): {
 
                     }
                 }
+                break;
+            }
+
+            if (MODE == Mode.Recognize && hasSpottedNewOject()) {
+                Main.STATE_MACHINE.setBlockDetected(true);
+                Main.STATE_MACHINE.detectObstacle();
+
+                LocalEV3.getAudio().beep();
+                try {
+                    LocalEV3.getAudio().beep();
+                    Thread.sleep(TIMEOUT_PERIOD / 2);
+                    LocalEV3.getAudio().beep();
+                    Thread.sleep(TIMEOUT_PERIOD / 2);
+                    LocalEV3.getAudio().beep();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 break;
             }
 
@@ -291,7 +316,12 @@ public class Search {
     }
 
     /**
-     * Returns true if the robot has spotted an non-blacklisted object, false
+     * Memorize:
+     * Returns true if usSensor1 has spotted an non-blacklisted object, false
+     * otherwise.
+     * 
+     * Recognize:
+     * Returns true if usSensor1 has spotted an non-blacklisted object and usSensor2 did not, false
      * otherwise.
      * 
      * @return boolean
@@ -304,8 +334,12 @@ public class Search {
         }
         sampleNumA = 0;
 
-        int hypotenuse = readUsDistance();
-        if (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle()))
+        int hypotenuse = readUsDistance(1);
+        if (((MODE == Mode.Memorize)
+                && (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle())))
+                || ((MODE == Mode.Recognize)
+                        && (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle())
+                                && Math.abs(hypotenuse - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE)))
             return true;
         return false;
     }
@@ -325,7 +359,7 @@ public class Search {
         int result = 0;
         while (result == 0) {
             sleepFor(PHYSICS_STEP_PERIOD * 5);
-            float usReading = tapeReader();
+            float usReading = readUsDistance(1);
             if (usReading >= detectionThreshold) {
                 // Need to be close enought to object for light sensor readings to detect object
 
@@ -357,7 +391,7 @@ public class Search {
 
         // TODO: define what needs to be done here.
         if (result == 2) {
-            addToBlackList(tapeReader(), getCurrentAngle());
+            addToBlackList(readUsDistance(1), getCurrentAngle());
             setSpeed(FORWARD_SPEED);
             moveStraightFor(-0.5); // backoff a bit to avoid touching obstacle later.
         }
@@ -405,10 +439,16 @@ public class Search {
     /**
      * Returns the filtered distance between the US sensor and an obstacle in cm.
      */
-    public static int readUsDistance() {
-        usSensor.fetchSample(usData, 0);
-        // extract from buffer, cast to int, and filter
-        return filter((int) (usData[0] * 100.0));
+    public static int readUsDistance(int usId) {
+        if (usId == 1) {
+            usSensor1.fetchSample(usData1, 0);
+            return filter((int) (usData1[0] * 100.0));
+        }
+        if (usId == 2) {
+            usSensor2.fetchSample(usData2, 0);
+            return filter((int) (usData2[0] * 100.0));
+        }
+        return -1;
     }
 
     /**
@@ -456,96 +496,6 @@ public class Search {
             hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
         }
         return false;
-    }
-
-    /**
-     * Method which implements a basic tape technique to fill and update the buffer.
-     * This method is called by the ...Edge() methods to get a new filtered sensor
-     * reading.
-     *
-     * @return the median of the filtered buffer.
-     */
-    private static int tapeReader() {
-
-        // if the array is empty, fill it up to be able to compute filtering.
-        if (buffer[0] == 0) {
-            for (int i = 0; i < BUFFER_SIZE; i++) {
-                buffer[i] = getSensorValue(); // get new sensor reading.
-            }
-        }
-        // shift elements tto right to then add a new sensor reading (tape mechanism).
-        else {
-            for (int j = BUFFER_SIZE - 1; j > 0; j--) {
-                buffer[j] = buffer[j - 1];
-            }
-            buffer[0] = getSensorValue(); // get new sensor reading.
-        }
-
-        int value = medianFilter(buffer); // get the median of the current buffer.
-
-        // System.out.println("median: "+value);
-        return value;
-
-    }
-
-    /**
-     * This methods calls the SampleProvider methods to receive a new reading from
-     * the US sensor and perform some "filtering" to ensure a correct reading is
-     * being returned.
-     *
-     * @return a corrected value of the sensor reading.
-     */
-    private static int getSensorValue() {
-
-        usSensor.fetchSample(usData, 0);
-        int distance = (int) (usData[0] * 100);
-        /*
-         * Ccale sensor reading to cm. and typecast to int. //We do not necessarily need
-         * double values for the distance here as it's the difference between that value
-         * and the noise margin threshold which is of interest.
-         */
-
-        if (distance >= MAX_SENSOR_DIST && invalidSampleCount < INVALID_SAMPLE_LIMIT) {
-            // bad value, increment the filter value and return the distance remembered from
-            // before
-            invalidSampleCount++;
-            return prevDistance;
-        } else {
-            if (distance < MAX_SENSOR_DIST) {
-                invalidSampleCount = 0; // reset filter and remember the input distance.
-            }
-            prevDistance = distance;
-            return distance;
-        }
-    }
-
-    /**
-     * This method implements a basic median filter as seen in the lectures.
-     *
-     * @param arr buffer array to compute median on.
-     * @return the median of the array.
-     */
-    private static int medianFilter(int[] arr) {
-        int[] temp = new int[BUFFER_SIZE];
-
-        for (int i = 0; i < BUFFER_SIZE; i++) {
-            temp[i] = arr[i];
-        }
-        Arrays.sort(temp);
-
-        int median = temp[BUFFER_SIZE / 2];
-
-        return median;
-    }
-
-    /*
-     * This method is used to reset the buffer when needed.
-     */
-    private static void clearBuffer() {
-
-        for (int i = 0; i < BUFFER_SIZE; i++) {
-            buffer[i] = 0;
-        }
     }
 
 }

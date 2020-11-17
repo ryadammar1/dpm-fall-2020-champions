@@ -8,7 +8,7 @@ public class UltrasonicLocalizer {
 
   // These arrays are used to avoid creating new ones at each iteration.
   /** Buffer (array) to store US samples. */
-  private static float[] usData = new float[usSensor.sampleSize()];
+  private static float[] usData = new float[usSensor1.sampleSize()];
   /** The limit of invalid samples that we read from the US sensor before assuming no obstacle. */
   public static final int INVALID_SAMPLE_LIMIT = 20;
   /** The distance remembered by the filter() method. */
@@ -78,7 +78,7 @@ public class UltrasonicLocalizer {
 
   /** Returns the filtered distance between the US sensor and an obstacle in cm. */
   public static int readUsDistance() {
-    usSensor.fetchSample(usData, 0);
+    usSensor1.fetchSample(usData, 0);
     // extract from buffer, cast to int, and filter
     return filter((int) (usData[0] * 100.0));
   }
