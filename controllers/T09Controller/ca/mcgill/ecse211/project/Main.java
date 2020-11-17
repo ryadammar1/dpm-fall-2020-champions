@@ -28,11 +28,17 @@ public class Main {
     
     // Start the odometer thread
     new Thread(odometer).start();
-    
-    // TODO Replace these method calls with your own logic
     LocalEV3.getAudio().beep(); // beeps once
-    //wifiExample();
    
+    STATE_MACHINE.doneConfiguring();
+    STATE_MACHINE.doneLocalizing();
+    STATE_MACHINE.enteredField();
+          odometer.setX(8 * TILE_SIZE);
+          odometer.setY(8.5 * TILE_SIZE);
+          odometer.setTheta(90);
+    Search.initializeSearch();
+    Search.doSearch();
+
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
       switch (STATE_MACHINE.getStatusFullName()) {
