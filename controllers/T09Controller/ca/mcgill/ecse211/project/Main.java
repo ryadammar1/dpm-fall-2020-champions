@@ -33,6 +33,9 @@ public class Main {
     STATE_MACHINE.doneConfiguring();
     STATE_MACHINE.doneLocalizing();
     STATE_MACHINE.enteredField();
+          odometer.setX(8 * TILE_SIZE);
+          odometer.setY(8.5 * TILE_SIZE);
+          odometer.setTheta(90);
     Search.initializeSearch();
     Search.doSearch();
 

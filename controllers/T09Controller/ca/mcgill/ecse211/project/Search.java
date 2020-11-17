@@ -6,6 +6,10 @@ import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.Circle;
 import ca.mcgill.ecse211.playingfield.Rect;
 import simlejos.hardware.ev3.LocalEV3;
+import simlejos.hardware.port.SensorPort;
+import simlejos.hardware.sensor.EV3ColorSensor;
+import simlejos.hardware.sensor.EV3UltrasonicSensor;
+import simlejos.robotics.SampleProvider;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.Utils.*;
@@ -32,9 +36,11 @@ public class Search {
     private static final int MAX_US_SENSOR_DIFFERENCE = 10;
 
     /** Front light sensor used for block identification */
+    private static SampleProvider colorSensorFront;
     private static float[] colorSensorDataFront;
 
     /** Buffer (array) to store US samples */
+    private static EV3UltrasonicSensor usSensor2;
     private static float[] usData1 = new float[usSensor1.sampleSize()];
     private static float[] usData2;
 
@@ -84,12 +90,6 @@ public class Search {
     private static int sampleNumA = 0;
     private static int sampleNumB = 0;
 
-    /** Buffer size used to receive US sensor readings and perform filtering. */
-    private static int BUFFER_SIZE = 3;
-
-    /** Buffer array to store sensor readings and perform filtering. */
-    private static int[] buffer = new int[BUFFER_SIZE];
-
     /**
      * Controls the number of scans performed within a distance during @Code
      * hasDangerWithin(). The higher the value, the more precise the scan.
@@ -110,10 +110,15 @@ public class Search {
      */
     public static void initializeSearch() {
 
-        if (MODE == Mode.Recognize)
-            usData2 = new float[usSensor2.sampleSize()];
-        else{
-            colorSensorDataFront = new float[colorSensorFront.sampleSize()];
+        switch (MODE) {
+            case Recognize: {
+                usSensor2 = new EV3UltrasonicSensor(SensorPort.S4);
+                usData2 = new float[usSensor2.sampleSize()];
+            }
+            case Memorize: {
+                colorSensorFront = new EV3ColorSensor(SensorPort.S4).getRGBMode();
+                colorSensorDataFront = new float[colorSensorFront.sampleSize()];
+            }
         }
 
         // bottom wall
@@ -363,9 +368,8 @@ public class Search {
         int hypotenuse = readUsDistance(1);
         if (((MODE == Mode.Memorize)
                 && (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle())))
-                || ((MODE == Mode.Recognize)
-                        && (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle())
-                                && !(Math.abs(hypotenuse - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE))))
+                || ((MODE == Mode.Recognize) && !(Math.abs(hypotenuse - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE))
+                        && (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle())))
             return true;
         return false;
     }
@@ -521,106 +525,6 @@ public class Search {
             }
             prevDistance = distance;
             return distance;
-        }
-    }
-
-    /**
-     * Method which implements a basic tape technique to fill and update the buffer.
-     * This method is called by the ...Edge() methods to get a new filtered sensor
-     * reading.
-     *
-     * @return the median of the filtered buffer.
-     */
-    private static int tapeReader(int usId) {
-
-        // if the array is empty, fill it up to be able to compute filtering.
-        if (buffer[0] == 0) {
-            for (int i = 0; i < BUFFER_SIZE; i++) {
-                buffer[i] = getSensorValue(usId); // get new sensor reading.
-            }
-        }
-        // shift elements tto right to then add a new sensor reading (tape mechanism).
-        else {
-            for (int j = BUFFER_SIZE - 1; j > 0; j--) {
-                buffer[j] = buffer[j - 1];
-            }
-            buffer[0] = getSensorValue(usId); // get new sensor reading.
-        }
-
-        int value = medianFilter(buffer); // get the median of the current buffer.
-
-        // System.out.println("median: "+value);
-        return value;
-
-    }
-
-    /**
-     * This methods calls the SampleProvider methods to receive a new reading from
-     * the US sensor and perform some "filtering" to ensure a correct reading is
-     * being returned.
-     *
-     * @return a corrected value of the sensor reading.
-     */
-    private static int getSensorValue(int usId) {
-
-        int distance = 0;
-
-        switch (usId) {
-            case 1: {
-                usSensor1.fetchSample(usData1, 0);
-                distance = (int) (usData1[0] * 100);
-            }
-            case 2: {
-                usSensor2.fetchSample(usData2, 0);
-                distance = (int) (usData2[0] * 100);
-            }
-        }
-        /*
-         * Ccale sensor reading to cm. and typecast to int. //We do not necessarily need
-         * double values for the distance here as it's the difference between that value
-         * and the noise margin threshold which is of interest.
-         */
-
-        if (distance >= MAX_SENSOR_DIST && invalidSampleCount < INVALID_SAMPLE_LIMIT) {
-            // bad value, increment the filter value and return the distance remembered from
-            // before
-            invalidSampleCount++;
-            return prevDistance;
-        } else {
-            if (distance < MAX_SENSOR_DIST) {
-                invalidSampleCount = 0; // reset filter and remember the input distance.
-            }
-            prevDistance = distance;
-            return distance;
-        }
-    }
-
-    /**
-     * This method implements a basic median filter as seen in the lectures.
-     *
-     * @param arr buffer array to compute median on.
-     * @return the median of the array.
-     */
-    private static int medianFilter(int[] arr) {
-        int[] temp = new int[BUFFER_SIZE];
-
-        for (int i = 0; i < BUFFER_SIZE; i++) {
-            temp[i] = arr[i];
-        }
-        Arrays.sort(temp);
-
-        int median = temp[BUFFER_SIZE / 2];
-
-        return median;
-    }
-
-    /*
-     * This method is used to reset the buffer when needed.
-     */
-    private static void clearBuffer() {
-
-        for (int i = 0; i < BUFFER_SIZE; i++) {
-            buffer[i] = 0;
         }
     }
 
