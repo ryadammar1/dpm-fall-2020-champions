@@ -236,11 +236,16 @@ public class Search {
             }
 
             if (hasFullyRotated()) {
-                // If no near object is detected, find a secure place to navigate to
+                // If no near object is detected, find a secure place to navigate to               
+                boolean hasSeenDanger = false;
 
                 System.out.println("Could not find near object");
-                while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100)))
+                while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100))) {
                     rotateClockwise();
+                    hasSeenDanger = true;
+                }
+                if (MODE == Mode.Recognize && hasSeenDanger)
+                    turnBy(20);
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
                 return;
             }
@@ -388,14 +393,19 @@ public class Search {
         sampleNumB = 0;
 
         double hyp = hypotenuse;
+
         while (hyp > 0) {
-            if (isBlackListed(hyp, getCurrentAngle()) || isBlackListed(hyp, getCurrentAngle() + VIEW_FOV / 2)
-                    || isBlackListed(hyp, getCurrentAngle() - VIEW_FOV / 2)) {
-                return true;
+                if (isBlackListed(hyp, getCurrentAngle()) || isBlackListed(hyp, getCurrentAngle() + VIEW_FOV / 2)
+                        || isBlackListed(hyp, getCurrentAngle() - VIEW_FOV / 2)) {
+                    return true;
+                }
+                hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
             }
-            hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
-        }
-        return false;
+            if (MODE == Mode.Recognize && (Math.abs(readUsDistance(1) - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE)) // Necessary second check for recognize
+            return true;
+
+            return false;
+
     }
 
     /**
