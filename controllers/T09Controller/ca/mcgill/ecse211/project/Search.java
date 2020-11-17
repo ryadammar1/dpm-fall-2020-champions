@@ -22,8 +22,9 @@ public class Search {
     public enum Mode {
         Memorize, Recognize
     }
-
-    private static final Mode MODE = Mode.Memorize;
+    
+    /** Search mode */
+    private static final Mode MODE = Mode.Recognize;
 
     /**
      * Maximum distance difference between sensor usSensor1 and usSensor2
@@ -83,6 +84,12 @@ public class Search {
     private static int sampleNumA = 0;
     private static int sampleNumB = 0;
 
+    /** Buffer size used to receive US sensor readings and perform filtering. */
+    private static int BUFFER_SIZE = 3;
+
+    /** Buffer array to store sensor readings and perform filtering. */
+    private static int[] buffer = new int[BUFFER_SIZE];
+
     /**
      * Controls the number of scans performed within a distance during @Code
      * hasDangerWithin(). The higher the value, the more precise the scan.
@@ -95,6 +102,10 @@ public class Search {
     /** Distance at which the the light sensor starts reading. */
     private static float detectionThreshold = 20;
 
+    /** View FOV used by @code hasDangerWithin(distance) */
+    public static final double VIEW_FOV = 40;
+
+    /** Initialzes the bounding boxes of known obstacles before starting the search */
     public static void initializeSearch() {
 
         // bottom wall
@@ -135,6 +146,7 @@ public class Search {
                 new Rect(new Point(tnr.ll.x - 0.25, tnr.ll.y - 0.25), new Point(tnr.ur.x + 0.25, tnr.ur.y + 0.25))); // tunnel
     }
 
+    /** Main method of search */
     public static void doSearch() {
 
         odometer.printPosition();
@@ -154,6 +166,7 @@ public class Search {
             rotateClockwise();
 
             System.out.println(readUsDistance(1)); // Helps synchronize thread? Don't remove
+            System.out.println(readUsDistance(2)); // Helps synchronize thread? Don't remove
 
             if (MODE == Mode.Memorize && hasSpottedNewOject()) {
                 System.out.println("Object detected");
@@ -187,6 +200,8 @@ public class Search {
             }
 
             if (MODE == Mode.Recognize && hasSpottedNewOject()) {
+                stopMotors();
+
                 Main.STATE_MACHINE.setBlockDetected(true);
                 Main.STATE_MACHINE.detectObstacle();
 
@@ -201,11 +216,14 @@ public class Search {
                     e.printStackTrace();
                 }
 
-                break;
+                while (true) {
+                    // hold
+                }
             }
 
             if (hasFullyRotated()) {
-                /** If no near object is detected, find a secure place to navigate to */
+                // If no near object is detected, find a secure place to navigate to
+
                 System.out.println("Could not find near object");
                 while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100)))
                     rotateClockwise();
@@ -297,12 +315,12 @@ public class Search {
 
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
-        System.out.println("angle = " + angle);
+        /*System.out.println("angle = " + angle);
         System.out.println("hypo = " + (hypotenuse + DIST_US_SENSOR_Y));
         System.out.println("dx = " + dx + DIST_US_SENSOR_X);
         System.out.println("dy = " + dy);
         System.out.println("Point curr = " + crt);
-        System.out.println("Point seen = " + npt);
+        System.out.println("Point seen = " + npt);*/
 
         for (Circle point : blacklistPoint) {
             if (point.contains(npt))
@@ -316,13 +334,11 @@ public class Search {
     }
 
     /**
-     * Memorize:
-     * Returns true if usSensor1 has spotted an non-blacklisted object, false
-     * otherwise.
+     * Memorize: Returns true if usSensor1 has spotted an non-blacklisted object,
+     * false otherwise.
      * 
-     * Recognize:
-     * Returns true if usSensor1 has spotted an non-blacklisted object and usSensor2 did not, false
-     * otherwise.
+     * Recognize: Returns true if usSensor1 has spotted an non-blacklisted object
+     * and usSensor2 did not, false otherwise.
      * 
      * @return boolean
      */
@@ -339,8 +355,36 @@ public class Search {
                 && (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle())))
                 || ((MODE == Mode.Recognize)
                         && (hypotenuse < DISTANCE_THREESHOLD * 100 && !isBlackListed(hypotenuse, getCurrentAngle())
-                                && Math.abs(hypotenuse - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE)))
+                                && !(Math.abs(hypotenuse - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE)))) {
+            System.out.println("BRUH: " + Math.abs(hypotenuse - readUsDistance(2)));
+            System.out.println("hyp1: " + hypotenuse);
+            System.out.println("hyp2: " + readUsDistance(2));
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if no danger is within a certain distance, false otherwise.
+     * 
+     * @return boolean
+     */
+    private static boolean hasDangerWithin(double hypotenuse) {
+        sampleNumB++;
+
+        if (sampleNumB != SAMPLE_PERIOD) {
+            return true;
+        }
+        sampleNumB = 0;
+
+        double hyp = hypotenuse;
+        while (hyp > 0) {
+            if (isBlackListed(hyp, getCurrentAngle()) || isBlackListed(hyp, getCurrentAngle() + VIEW_FOV / 2)
+                    || isBlackListed(hyp, getCurrentAngle() - VIEW_FOV / 2)) {
+                return true;
+            }
+            hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
+        }
         return false;
     }
 
@@ -436,6 +480,8 @@ public class Search {
         return 0;
     }
 
+    // ULTRASONIC SENSOR RELATED //
+
     /**
      * Returns the filtered distance between the US sensor and an obstacle in cm.
      */
@@ -472,30 +518,104 @@ public class Search {
         }
     }
 
-    public static final double VIEW_FOV = 40;
+    /**
+     * Method which implements a basic tape technique to fill and update the buffer.
+     * This method is called by the ...Edge() methods to get a new filtered sensor
+     * reading.
+     *
+     * @return the median of the filtered buffer.
+     */
+    private static int tapeReader(int usId) {
+
+        // if the array is empty, fill it up to be able to compute filtering.
+        if (buffer[0] == 0) {
+            for (int i = 0; i < BUFFER_SIZE; i++) {
+                buffer[i] = getSensorValue(usId); // get new sensor reading.
+            }
+        }
+        // shift elements tto right to then add a new sensor reading (tape mechanism).
+        else {
+            for (int j = BUFFER_SIZE - 1; j > 0; j--) {
+                buffer[j] = buffer[j - 1];
+            }
+            buffer[0] = getSensorValue(usId); // get new sensor reading.
+        }
+
+        int value = medianFilter(buffer); // get the median of the current buffer.
+
+        // System.out.println("median: "+value);
+        return value;
+
+    }
 
     /**
-     * Returns true if no danger is within a certain distance, false otherwise.
-     * 
-     * @return boolean
+     * This methods calls the SampleProvider methods to receive a new reading from
+     * the US sensor and perform some "filtering" to ensure a correct reading is
+     * being returned.
+     *
+     * @return a corrected value of the sensor reading.
      */
-    private static boolean hasDangerWithin(double hypotenuse) {
-        sampleNumB++;
+    private static int getSensorValue(int usId) {
 
-        if (sampleNumB != SAMPLE_PERIOD) {
-            return true;
-        }
-        sampleNumB = 0;
+        int distance = 0;
 
-        double hyp = hypotenuse;
-        while (hyp > 0) {
-            if (isBlackListed(hyp, getCurrentAngle()) || isBlackListed(hyp, getCurrentAngle() + VIEW_FOV / 2)
-                    || isBlackListed(hyp, getCurrentAngle() - VIEW_FOV / 2)) {
-                return true;
+        switch (usId) {
+            case 1: {
+                usSensor1.fetchSample(usData1, 0);
+                distance = (int) (usData1[0] * 100);
             }
-            hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
+            case 2: {
+                usSensor2.fetchSample(usData2, 0);
+                distance = (int) (usData2[0] * 100);
+            }
         }
-        return false;
+        /*
+         * Ccale sensor reading to cm. and typecast to int. //We do not necessarily need
+         * double values for the distance here as it's the difference between that value
+         * and the noise margin threshold which is of interest.
+         */
+
+        if (distance >= MAX_SENSOR_DIST && invalidSampleCount < INVALID_SAMPLE_LIMIT) {
+            // bad value, increment the filter value and return the distance remembered from
+            // before
+            invalidSampleCount++;
+            return prevDistance;
+        } else {
+            if (distance < MAX_SENSOR_DIST) {
+                invalidSampleCount = 0; // reset filter and remember the input distance.
+            }
+            prevDistance = distance;
+            return distance;
+        }
+    }
+
+    /**
+     * This method implements a basic median filter as seen in the lectures.
+     *
+     * @param arr buffer array to compute median on.
+     * @return the median of the array.
+     */
+    private static int medianFilter(int[] arr) {
+        int[] temp = new int[BUFFER_SIZE];
+
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+            temp[i] = arr[i];
+        }
+        Arrays.sort(temp);
+
+        int median = temp[BUFFER_SIZE / 2];
+
+        return median;
+    }
+
+    /*
+     * This method is used to reset the buffer when needed.
+     */
+    private static void clearBuffer() {
+
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+            buffer[i] = 0;
+        }
     }
 
 }
