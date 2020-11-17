@@ -192,6 +192,8 @@ public class Search {
                         break;
                     }
                     case (1): {
+                        stopMotors();
+
                         Main.STATE_MACHINE.setBlockDetected(true);
                         Main.STATE_MACHINE.detectObstacle();
 
@@ -207,7 +209,7 @@ public class Search {
                         }
                     }
                     case (2): {
-
+                        // Ignore
                     }
                 }
                 break;
@@ -230,9 +232,7 @@ public class Search {
                     e.printStackTrace();
                 }
 
-                while (true) {
-                    // hold
-                }
+                break;
             }
 
             if (hasFullyRotated()) {
