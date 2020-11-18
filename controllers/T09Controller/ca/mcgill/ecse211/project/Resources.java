@@ -7,7 +7,6 @@ import java.util.Map;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.RampEdge;
 import ca.mcgill.ecse211.playingfield.Region;
-import ca.mcgill.ecse211.project.Search.Mode;
 import ca.mcgill.ecse211.wificlient.WifiConnection;
 import simlejos.hardware.motor.Motor;
 import simlejos.hardware.port.SensorPort;
@@ -15,7 +14,6 @@ import simlejos.hardware.sensor.EV3ColorSensor;
 import simlejos.hardware.sensor.EV3UltrasonicSensor;
 import simlejos.robotics.RegulatedMotor;
 import simlejos.robotics.SampleProvider;
-
 
 /* (non-Javadoc comment)
  * TODO Integrate this carefully with your existing Resources class (See below for where to add
@@ -76,40 +74,46 @@ public class Resources {
 
   /** Timeout period in milliseconds. */
   public static final int TIMEOUT_PERIOD = 3000;
-  
+
   /** The maximum distance detected by the ultrasonic sensor, in cm. */
   public static final int MAX_SENSOR_DIST = 255;
-  
-  /** The limit of invalid samples that we read from the US sensor before assuming no obstacle. */
+
+  /**
+   * The limit of invalid samples that we read from the US sensor before assuming
+   * no obstacle.
+   */
   public static final int INVALID_SAMPLE_LIMIT = 20;
-  
+
   /** The wheel radius in meters. */
   public static final double WHEEL_RAD = 0.021;
-  
+
   /** The robot width in meters. */
-  public static final double BASE_WIDTH = 0.12505; //was 0.155
-  
+  public static final double BASE_WIDTH = 0.12505; // was 0.155
+
   /** The distance between the color sensors and the wheels in meters. */
   public static final double COLOR_SENSOR_TO_WHEEL_DIST = 0;
-  
+
   /** The speed at which the robot moves forward in degrees per second. */
   public static final int FORWARD_SPEED = 300;
-  
+
   /** The speed at which the robot moves forward slowly in degrees per second. */
   public static final int LOWER_FORWARD_SPEED = 150;
-  
+
   /** The speed at which the robot rotates in degrees per second. */
   public static final int ROTATE_SPEED = 200;
-  
+
   /** The motor acceleration in degrees per second squared. */
   public static final int ACCELERATION = 3000;
-  
+
   /** The tile size in meters. Note that 0.3048 m = 1 ft. */
   public static final double TILE_SIZE = 0.3048;
 
-  /** Robot offset from Block when block is on grid point in meters. Used to stop robot after pushing block. */
+  /**
+   * Robot offset from Block when block is on grid point in meters. Used to stop
+   * robot after pushing block.
+   */
   public static final double BLOCK_OFFSET = 0.1498;
-  
+
   /** Length of a block in meters. */
   public static final double BLOCK_LENGTH = 0.1;
 
@@ -128,23 +132,23 @@ public class Resources {
 
   /** The color sensor sample provider. */
   public static final SampleProvider colorSensorLeft = new EV3ColorSensor(SensorPort.S2).getRGBMode();
-  
+
   public static final SampleProvider colorSensorRight = new EV3ColorSensor(SensorPort.S3).getRGBMode();
 
   public static SampleProvider colorSensorFront;
 
   /** Initializes the used sensors */
-  public static void initSensors()  { 
+  public static void initSensors() {
     switch (Search.getMode()) {
       case Recognize: {
-          usSensor2 = new EV3UltrasonicSensor(SensorPort.S4);
-          Search.setUsData2(new float[usSensor2.sampleSize()]);
+        usSensor2 = new EV3UltrasonicSensor(SensorPort.S4);
+        Search.setUsData2(new float[usSensor2.sampleSize()]);
       }
       case Memorize: {
-          colorSensorFront = new EV3ColorSensor(SensorPort.S4).getRGBMode();
-          Search.setColorSensorDataFront(new float[colorSensorFront.sampleSize()]);
+        colorSensorFront = new EV3ColorSensor(SensorPort.S4).getRGBMode();
+        Search.setColorSensorDataFront(new float[colorSensorFront.sampleSize()]);
       }
-  }
+    }
   }
 
   /** The differential minimal margin object. */

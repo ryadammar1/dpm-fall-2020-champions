@@ -312,7 +312,6 @@ public class Navigation {
    */
   private static float getColorLeft() {
     colorSensorLeft.fetchSample(colorSensorDataLeft, 0);
-    float average = (colorSensorDataLeft[0] + colorSensorDataLeft[1] + colorSensorDataLeft[2]) / 3;
     return colorSensorDataLeft[0];
   }
 

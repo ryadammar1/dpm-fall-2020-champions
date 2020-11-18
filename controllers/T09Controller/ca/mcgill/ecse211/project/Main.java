@@ -30,11 +30,13 @@ public class Main {
     new Thread(odometer).start();
     LocalEV3.getAudio().beep(); // beeps once
    
+    // TESTING PURPOSES
+    Search.initializeSearch();
     STATE_MACHINE.doneConfiguring();
     STATE_MACHINE.doneLocalizing();
     STATE_MACHINE.enteredField();
-    STATE_MACHINE.setBlockDetected(true);
-    STATE_MACHINE.detectObstacle();
+    /*STATE_MACHINE.setBlockDetected(true);
+    STATE_MACHINE.detectObstacle();*/
 
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop

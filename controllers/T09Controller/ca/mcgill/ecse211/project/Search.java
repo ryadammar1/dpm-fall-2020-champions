@@ -191,7 +191,7 @@ public class Search {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        
+
                         return;
                     }
                     case (2): {
@@ -222,7 +222,7 @@ public class Search {
             }
 
             if (hasFullyRotated()) {
-                // If no near object is detected, find a secure place to navigate to               
+                // If no near object is detected, find a secure place to navigate to
                 boolean hasSeenDanger = false;
 
                 System.out.println("Could not find near object");
@@ -383,16 +383,20 @@ public class Search {
         double hyp = hypotenuse;
 
         while (hyp > 0) {
-                if (isBlackListed(hyp, getCurrentAngle()) || isBlackListed(hyp, getCurrentAngle() + VIEW_FOV / 2)
-                        || isBlackListed(hyp, getCurrentAngle() - VIEW_FOV / 2)) {
-                    return true;
-                }
-                hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
+            if (isBlackListed(hyp, getCurrentAngle()) || isBlackListed(hyp, getCurrentAngle() + VIEW_FOV / 2)
+                    || isBlackListed(hyp, getCurrentAngle() - VIEW_FOV / 2)) {
+                return true;
             }
-            if (MODE == Mode.Recognize && (Math.abs(readUsDistance(1) - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE)) // Necessary second check for recognize
+            hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
+        }
+        if (MODE == Mode.Recognize && (Math.abs(readUsDistance(1) - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE)) // Necessary
+                                                                                                                    // second
+                                                                                                                    // check
+                                                                                                                    // for
+                                                                                                                    // recognize
             return true;
 
-            return false;
+        return false;
 
     }
 
@@ -523,16 +527,18 @@ public class Search {
         }
     }
 
-    public static Mode getMode(){
+    // GETTERS AND SETTERS
+
+    public static Mode getMode() {
         return Search.MODE;
     }
 
-    public static void setUsData2(float[] usData2){
+    public static void setUsData2(float[] usData2) {
         Search.usData2 = usData2;
     }
 
-    public static void setColorSensorDataFront (float[] colorSensorDataFront ){
-        Search.colorSensorDataFront  = colorSensorDataFront ;
+    public static void setColorSensorDataFront(float[] colorSensorDataFront) {
+        Search.colorSensorDataFront = colorSensorDataFront;
     }
 
 }
