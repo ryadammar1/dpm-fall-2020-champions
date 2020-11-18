@@ -1,15 +1,10 @@
 package ca.mcgill.ecse211.project;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.Circle;
 import ca.mcgill.ecse211.playingfield.Rect;
 import simlejos.hardware.ev3.LocalEV3;
-import simlejos.hardware.port.SensorPort;
-import simlejos.hardware.sensor.EV3ColorSensor;
-import simlejos.hardware.sensor.EV3UltrasonicSensor;
-import simlejos.robotics.SampleProvider;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.Utils.*;
@@ -36,11 +31,9 @@ public class Search {
     private static final int MAX_US_SENSOR_DIFFERENCE = 10;
 
     /** Front light sensor used for block identification */
-    private static SampleProvider colorSensorFront;
     private static float[] colorSensorDataFront;
 
     /** Buffer (array) to store US samples */
-    private static EV3UltrasonicSensor usSensor2;
     private static float[] usData1 = new float[usSensor1.sampleSize()];
     private static float[] usData2;
 
@@ -110,16 +103,7 @@ public class Search {
      */
     public static void initializeSearch() {
 
-        switch (MODE) {
-            case Recognize: {
-                usSensor2 = new EV3UltrasonicSensor(SensorPort.S4);
-                usData2 = new float[usSensor2.sampleSize()];
-            }
-            case Memorize: {
-                colorSensorFront = new EV3ColorSensor(SensorPort.S4).getRGBMode();
-                colorSensorDataFront = new float[colorSensorFront.sampleSize()];
-            }
-        }
+        Resources.initSensors();
 
         // bottom wall
         blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ur.x, szr.ll.y)));
@@ -471,7 +455,7 @@ public class Search {
      * identify if ht eobject is a block (white) or a wall/obstacle (brown)
      */
     private static int identifyObject() {
-        colorSensorFront.fetchSample(colorSensorDataFront, 0);
+        Resources.colorSensorFront.fetchSample(colorSensorDataFront, 0);
         System.out.println(colorSensorDataFront[0] + "   " + colorSensorDataFront[1] + "   " + colorSensorDataFront[2]);
 
         int red = (int) (colorSensorDataFront[0]);
@@ -483,7 +467,6 @@ public class Search {
          * channels should be within a +-5 margin. Brown: Red needs to be 10 over Green
          * which itself needs to be 10 over blue.
          */
-        int WHITE_MARGIN = 5;
         int BROWN_MARGIN = 10;
 
         if (red - green <= -5 || red - green <= 5) {
@@ -538,6 +521,18 @@ public class Search {
             prevDistance = distance;
             return distance;
         }
+    }
+
+    public static Mode getMode(){
+        return Search.MODE;
+    }
+
+    public static void setUsData2(float[] usData2){
+        Search.usData2 = usData2;
+    }
+
+    public static void setColorSensorDataFront (float[] colorSensorDataFront ){
+        Search.colorSensorDataFront  = colorSensorDataFront ;
     }
 
 }

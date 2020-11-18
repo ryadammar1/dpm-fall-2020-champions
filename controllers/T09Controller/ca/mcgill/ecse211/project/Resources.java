@@ -7,6 +7,7 @@ import java.util.Map;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.RampEdge;
 import ca.mcgill.ecse211.playingfield.Region;
+import ca.mcgill.ecse211.project.Search.Mode;
 import ca.mcgill.ecse211.wificlient.WifiConnection;
 import simlejos.hardware.motor.Motor;
 import simlejos.hardware.port.SensorPort;
@@ -123,10 +124,28 @@ public class Resources {
   /** The ultrasonic sensor. */
   public static final EV3UltrasonicSensor usSensor1 = new EV3UltrasonicSensor(SensorPort.S1);
 
+  public static EV3UltrasonicSensor usSensor2;
+
   /** The color sensor sample provider. */
   public static final SampleProvider colorSensorLeft = new EV3ColorSensor(SensorPort.S2).getRGBMode();
   
   public static final SampleProvider colorSensorRight = new EV3ColorSensor(SensorPort.S3).getRGBMode();
+
+  public static SampleProvider colorSensorFront;
+
+  /** Initializes the used sensors */
+  public static void initSensors()  { 
+    switch (Search.getMode()) {
+      case Recognize: {
+          usSensor2 = new EV3UltrasonicSensor(SensorPort.S4);
+          Search.setUsData2(new float[usSensor2.sampleSize()]);
+      }
+      case Memorize: {
+          colorSensorFront = new EV3ColorSensor(SensorPort.S4).getRGBMode();
+          Search.setColorSensorDataFront(new float[colorSensorFront.sampleSize()]);
+      }
+  }
+  }
 
   /** The differential minimal margin object. */
   public static DifferentialMinimalMargin dmm = new DifferentialMinimalMargin();

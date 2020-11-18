@@ -33,11 +33,8 @@ public class Main {
     STATE_MACHINE.doneConfiguring();
     STATE_MACHINE.doneLocalizing();
     STATE_MACHINE.enteredField();
-          odometer.setX(8 * TILE_SIZE);
-          odometer.setY(8.5 * TILE_SIZE);
-          odometer.setTheta(90);
-    Search.initializeSearch();
-    Search.doSearch();
+    STATE_MACHINE.setBlockDetected(true);
+    STATE_MACHINE.detectObstacle();
 
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
@@ -75,6 +72,10 @@ public class Main {
         case ("Standard.Operation.Search"): {
           System.out.println("Searching");
           Search.doSearch();
+        }
+        case ("Standard.Operation.Transfer"): {
+          System.out.println("Transfering");
+          Transfer.doTransfer();
         }
         default: break;
         }
