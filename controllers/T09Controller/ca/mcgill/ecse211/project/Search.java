@@ -207,6 +207,8 @@ public class Search {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        
+                        return;
                     }
                     case (2): {
                         // Ignore
@@ -335,6 +337,8 @@ public class Search {
         Point npt = new Point(crt.x + dx / (TILE_SIZE * 100), crt.y + dy / (TILE_SIZE * 100));
 
         /*
+         * Debug:
+         *
          * System.out.println("angle = " + angle); System.out.println("hypo = " +
          * (hypotenuse + DIST_US_SENSOR_Y)); System.out.println("dx = " + dx +
          * DIST_US_SENSOR_X); System.out.println("dy = " + dy);
@@ -426,8 +430,6 @@ public class Search {
             float usReading = readUsDistance(1);
             if (usReading >= detectionThreshold) {
                 // Need to be close enought to object for light sensor readings to detect object
-
-                // System.out.println("not good");
                 continue;
             }
             int newReading = identifyObject(); // getting result from light sensor
