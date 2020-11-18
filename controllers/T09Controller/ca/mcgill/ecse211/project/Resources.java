@@ -123,14 +123,10 @@ public class Resources {
   /** The ultrasonic sensor. */
   public static final EV3UltrasonicSensor usSensor1 = new EV3UltrasonicSensor(SensorPort.S1);
 
-  public static final EV3UltrasonicSensor usSensor2 = new EV3UltrasonicSensor(SensorPort.S4);
-
   /** The color sensor sample provider. */
   public static final SampleProvider colorSensorLeft = new EV3ColorSensor(SensorPort.S2).getRGBMode();
   
   public static final SampleProvider colorSensorRight = new EV3ColorSensor(SensorPort.S3).getRGBMode();
-
-  public static final SampleProvider colorSensorFront = new EV3ColorSensor(SensorPort.S4).getRGBMode();
 
   /** The differential minimal margin object. */
   public static DifferentialMinimalMargin dmm = new DifferentialMinimalMargin();
