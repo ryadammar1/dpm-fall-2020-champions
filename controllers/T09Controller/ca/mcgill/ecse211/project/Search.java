@@ -195,7 +195,9 @@ public class Search {
                         return;
                     }
                     case (2): {
-                        // Ignore
+                        addToBlackList(readUsDistance(1), getCurrentAngle());
+                        setSpeed(FORWARD_SPEED);
+                        moveStraightFor(-0.5); // backoff a bit to avoid touching obstacle later.
                     }
                 }
                 break;
@@ -442,13 +444,6 @@ public class Search {
         }
 
         stopMotors();
-
-        // TODO: define what needs to be done here.
-        if (result == 2) {
-            addToBlackList(readUsDistance(1), getCurrentAngle());
-            setSpeed(FORWARD_SPEED);
-            moveStraightFor(-0.5); // backoff a bit to avoid touching obstacle later.
-        }
 
         return result;
 
