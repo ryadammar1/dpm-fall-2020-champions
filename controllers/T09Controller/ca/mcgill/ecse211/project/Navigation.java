@@ -32,6 +32,21 @@ public class Navigation {
   }
 
   /**
+   * Travels to the given destination. Does not wait until target is reached.
+   */
+  public static void travelToImmReturn(Point destination) {
+    var xyt = odometer.getXyt();
+    var currentLocation = new Point(xyt[0] / TILE_SIZE, xyt[1] / TILE_SIZE);
+    var currentTheta = xyt[2];
+    var destinationTheta = getDestinationAngle(currentLocation, destination);
+    turnBy(minimalAngle(currentTheta, destinationTheta));
+    moveStraightFor(distanceBetween(currentLocation, destination));
+
+    while (Main.STATE_MACHINE.getStatusFullName() == "Standard.Operation.Avoidance")
+      waitUntilNextStep(); // Sleep for one physics step
+  }
+
+  /**
    * Returns the angle that the robot should point towards to face the destination
    * in degrees.
    */
@@ -104,7 +119,8 @@ public class Navigation {
   // TODO Bring Navigation-related helper methods from Labs 2 and 3 here
 
   /**
-   * Moves the robot straight for the given distance.
+   * Moves the robot straight for the given distance. waits until target is
+   * reached.
    * 
    * @param distance in feet (tile sizes), may be negative
    */
@@ -112,6 +128,18 @@ public class Navigation {
     setSpeed(FORWARD_SPEED);
     leftMotor.rotate(convertDistance(distance * TILE_SIZE), true);
     rightMotor.rotate(convertDistance(distance * TILE_SIZE), false);
+  }
+
+  /**
+   * Moves the robot straight for the given distance. Does not wait until target
+   * is reached.
+   * 
+   * @param distance in feet (tile sizes), may be negative
+   */
+  public static void moveStraightForImmReturn(double distance) {
+    setSpeed(FORWARD_SPEED);
+    leftMotor.rotate(convertDistance(distance * TILE_SIZE), true);
+    rightMotor.rotate(convertDistance(distance * TILE_SIZE), true);
   }
 
   /** Moves the robot forward for an indeterminate distance. */
