@@ -3,7 +3,9 @@ package ca.mcgill.ecse211.playingfield;
 import static ca.mcgill.ecse211.playingfield.Vector.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet; 
+import java.util.HashSet;
+
+import ca.mcgill.ecse211.project.Search;
 
 /**
  * Rect class represents a rectangular region
@@ -139,4 +141,26 @@ public class Rect extends Region {
     return p.x >= ll.x && p.x <= ur.x
         && p.y >= ll.y && p.y <= ur.y;
   }
+
+  public static Rect creatRectFromEdge(Point pt1, Point pt2) {
+    double centerY;
+    double centerX;
+    double height;
+    double width;
+
+    /** If the line is vertical */
+    if (pt1.x == pt2.x) {
+        centerY = pt1.y > pt2.y ? (pt1.y - pt2.y) / 2 + pt2.y : (pt2.y - pt1.y) / 2 + pt1.y;
+        centerX = pt1.x;
+        height = pt1.y > pt2.y ? (pt1.y - pt2.y) : (pt2.y - pt1.y);
+        width = Search.EDGE_BOUND_WIDTH;
+    } else {
+        centerX = pt1.x > pt2.x ? (pt1.x - pt2.x) / 2 + pt2.x : (pt2.x - pt1.x) / 2 + pt1.x;
+        centerY = pt1.y;
+        height = Search.EDGE_BOUND_WIDTH;
+        width = pt1.x > pt2.x ? (pt1.x - pt2.x) : (pt2.x - pt1.x);
+    }
+
+    return new Rect(new Point(centerX, centerY), width, height);
+}
 }
