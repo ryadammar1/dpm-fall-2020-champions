@@ -77,7 +77,7 @@ DEF ARENA DPM-CompetitionArena {
     }
     DEF OBSTACLE5 DPM-Obstacle {
       name "obstacle5"
-      position 1 5
+      position 1.5 8.5
       sections 8
     }
     DEF BRIDGE2 DPM-Bridge {
