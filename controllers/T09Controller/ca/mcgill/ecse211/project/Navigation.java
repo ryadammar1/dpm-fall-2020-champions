@@ -131,6 +131,7 @@ public class Navigation {
         && (leftMotor.isMoving() || rightMotor.isMoving()))
       waitUntilNextStep(); // Sleep for one physics step
 
+      stopMotors();
   }
 
   public static void turnTo(double angle) {
