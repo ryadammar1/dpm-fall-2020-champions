@@ -224,13 +224,6 @@ DEF ARENA DPM-CompetitionArena {
   tileHeight_14_8 -0.1
 }
 DPM-Block {
-  name "block2"
-  translation 2.28 0.05 2.59
-  rotation 0 1 0 0
-  dimension 0.1
-  mass 1
-}
-DPM-Block {
   name "block4"
   translation 0.94 0.05 2.31
   rotation 0 1 0 0
