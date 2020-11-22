@@ -78,7 +78,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the right of the starting zone
    */
   public static boolean isTunnelRight() {
-    if (TN_UR.x >= Island_LL.x)
+    if (TN_UR.x <= Island_LL.x)
       return true;
     else
       return false;
@@ -88,7 +88,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the left of the starting zone
    */
   public static boolean isTunnelLeft() {
-    if (TN_LL.x <= Island_UR.x)
+    if (TN_LL.x >= Island_UR.x)
       return true;
     else
       return false;
@@ -98,7 +98,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the top of the starting zone
    */
   public static boolean isTunnelTop() {
-    if (TN_UR.y >= Island_LL.y)
+    if (TN_UR.y <= Island_LL.y)
       return true;
     else
       return false;
@@ -108,7 +108,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the bottom of the starting zone
    */
   public static boolean isTunnelBottom() {
-    if (TN_LL.y <= Island_UR.y)
+    if (TN_LL.y >= Island_UR.y)
       return true;
     else
       return false;
