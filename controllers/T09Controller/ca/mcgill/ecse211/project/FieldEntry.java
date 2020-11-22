@@ -56,40 +56,29 @@ public class FieldEntry {
 
 
 
-  public static boolean isRedTeam() {
-    if (Resources.redTeam == Resources.TEAM_NUMBER) {
-      return true;
-    } else
-      return false;
-  }
+//  public static boolean isRedTeam() {
+//    if (Resources.redTeam == Resources.TEAM_NUMBER) {
+//      return true;
+//    } else
+//      return false;
+//  }
 
   public static void setTunnelAndSearchZone() {
-    if (isRedTeam() == true) {
-      Z_LL = Resources.red.ll;
-      Z_UR = Resources.red.ur;
-      TN_LL = Resources.tnr.ll;
-      TN_UR = Resources.tnr.ur;
-      TN_UL = new Point(TN_LL.x, TN_UR.y);
-      TN_LR = new Point(TN_UR.x, TN_LL.y);
-      SZ_LL = Resources.szr.ll;
-      SZ_UR = Resources.szr.ur;
-    } else {
-      Z_LL = Resources.green.ll;
-      Z_UR = Resources.green.ur;
-      TN_LL = Resources.tng.ll;
-      TN_UR = Resources.tng.ur;
-      TN_UL = new Point(TN_LL.x, TN_UR.y);
-      TN_LR = new Point(TN_UR.x, TN_LL.y);
-      SZ_LL = Resources.szg.ll;
-      SZ_UR = Resources.szg.ur;
-    }
+    Z_LL = Resources.startZone.ll;
+    Z_UR = Resources.startZone.ur;
+    TN_LL = Resources.tunnel.ll;
+    TN_UR = Resources.tunnel.ur;
+    TN_UL = new Point(TN_LL.x, TN_UR.y);
+    TN_LR = new Point(TN_UR.x, TN_LL.y);
+    SZ_LL = Resources.searchZone.ll;
+    SZ_UR = Resources.searchZone.ur;
   }
 
   /**
    * Verifies if tunnel is on the right of the starting zone
    */
   public static boolean isTunnelRight() {
-    if (TN_UR.x == Island_LL.x)
+    if (TN_UR.x <= Island_LL.x)
       return true;
     else
       return false;
@@ -99,7 +88,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the left of the starting zone
    */
   public static boolean isTunnelLeft() {
-    if (TN_LL.x == Island_UR.x)
+    if (TN_LL.x >= Island_UR.x)
       return true;
     else
       return false;
@@ -109,7 +98,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the top of the starting zone
    */
   public static boolean isTunnelTop() {
-    if (TN_UR.y == Island_LL.y)
+    if (TN_UR.y <= Island_LL.y)
       return true;
     else
       return false;
@@ -119,7 +108,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the bottom of the starting zone
    */
   public static boolean isTunnelBottom() {
-    if (TN_LL.y == Island_UR.y)
+    if (TN_LL.y >= Island_UR.y)
       return true;
     else
       return false;
