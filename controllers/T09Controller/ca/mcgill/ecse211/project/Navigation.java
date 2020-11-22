@@ -40,10 +40,13 @@ public class Navigation {
     var currentTheta = xyt[2];
     var destinationTheta = getDestinationAngle(currentLocation, destination);
     turnBy(minimalAngle(currentTheta, destinationTheta));
-    moveStraightFor(distanceBetween(currentLocation, destination));
+    moveStraightForImmReturn(distanceBetween(currentLocation, destination));
 
-    while (Main.STATE_MACHINE.getStatusFullName() == "Standard.Operation.Avoidance")
+    while (Main.STATE_MACHINE.getStatusFullName() != "Standard.Operation.Avoidance"
+        && (leftMotor.isMoving() || rightMotor.isMoving()))
       waitUntilNextStep(); // Sleep for one physics step
+
+    stopMotors();
   }
 
   /**
@@ -60,9 +63,6 @@ public class Navigation {
 
     Point currentX = new Point(odometer.getXyt()[0] / TILE_SIZE, 0);
     Point currentY = new Point(0, odometer.getXyt()[1] / TILE_SIZE);
-
-    System.out.println(currentX);
-    System.out.println(currentY);
 
     Point destinationX = new Point(destination.x, 0);
     Point destinationY = new Point(0, destination.y);
@@ -88,6 +88,48 @@ public class Navigation {
       setSpeed(FORWARD_SPEED);
       moveStraightFor(distanceY);
     }
+
+  }
+
+  public static void travelToPerpendicularImmReturn(Point destination) {
+    // Perpendicular traveling
+    System.out.println("Traveling to " + destination.toString());
+
+    Point currentX = new Point(odometer.getXyt()[0] / TILE_SIZE, 0);
+    Point currentY = new Point(0, odometer.getXyt()[1] / TILE_SIZE);
+
+    Point destinationX = new Point(destination.x, 0);
+    Point destinationY = new Point(0, destination.y);
+
+    double angleX = getDestinationAngle(currentX, destinationX);
+    double angleY = getDestinationAngle(currentY, destinationY);
+
+    double distanceX = distanceBetween(currentX, destinationX);
+    double distanceY = distanceBetween(currentY, destinationY);
+
+    if (distanceX >= 0.2) {
+      // Move along the X axis
+      setSpeed(ROTATE_SPEED);
+      turnTo(angleX);
+      setSpeed(FORWARD_SPEED);
+      moveStraightForImmReturn(distanceX);
+    }
+
+    while (Main.STATE_MACHINE.getStatusFullName() != "Standard.Operation.Avoidance"
+        && (leftMotor.isMoving() || rightMotor.isMoving()))
+      waitUntilNextStep(); // Sleep for one physics step
+
+    if (distanceY >= 0.2) {
+      // Move along the Y axis
+      setSpeed(ROTATE_SPEED);
+      turnTo(angleY);
+      setSpeed(FORWARD_SPEED);
+      moveStraightForImmReturn(distanceY);
+    }
+
+    while (Main.STATE_MACHINE.getStatusFullName() != "Standard.Operation.Avoidance"
+        && (leftMotor.isMoving() || rightMotor.isMoving()))
+      waitUntilNextStep(); // Sleep for one physics step
 
   }
 
