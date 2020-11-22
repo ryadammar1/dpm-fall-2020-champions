@@ -38,7 +38,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation -1 0 0 1.58
-  position 1.9600296399307984 8.711234447821854 1.3741596875270905
+  position 2.3757931896662723 9.257644724561338 1.21289764335344
 }
 TexturedBackground {
 }
@@ -59,7 +59,7 @@ DEF ARENA DPM-CompetitionArena {
     }
     DEF OBSTACLE2 DPM-Obstacle {
       name "obstacle2"
-      position 0.5 5.9
+      position 12 6
       rotation 1.57
     }
     DEF OBSTACLE4 DPM-Obstacle {
