@@ -68,7 +68,7 @@ public class Main {
         } catch (InterruptedException e) {
         }
           LocalEV3.getAudio().beep();
-          STATE_MACHINE.doneLocalizing(); // TEMPORARY : Add this at the end of the function it self
+          STATE_MACHINE.doneLocalizing();
           }
         case ("Standard.Initialization.EntryField"): {
           System.out.println("Entering field");
