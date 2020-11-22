@@ -24,14 +24,13 @@ public class Main {
   
   /** Main entry point. */
   public static void main(String[] args) {
-    initialize();
-
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
       switch (STATE_MACHINE.getStatusFullName()) {
         case ("Standard.Initialization.Configuration"): {
           System.out.println("Configuring");
 
+          Main.initialize();
           Search.initializeSearch(); 
           ObstacleAvoidance.initializeObstacleAvoidance();   
     
