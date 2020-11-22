@@ -153,7 +153,22 @@ public class Resources {
 
   /** The differential minimal margin object. */
   public static DifferentialMinimalMargin dmm = new DifferentialMinimalMargin();
+  
+  /** The starting corner. */
+  public static int corner;
 
+  /** The edge when facing the ramp. */
+  public static RampEdge ramp;
+
+  /** The start Zone. */
+  public static Region startZone;
+
+  /** The tunnel footprint. */
+  public static Region tunnel;
+
+  /** The red search zone. */
+  public static Region searchZone;
+  
   // Software singletons
 
   /** The odometer. */
@@ -210,6 +225,22 @@ public class Resources {
 
   /** The green search zone. */
   public static Region szg = makeRegion("SZG");
+  
+  static {
+    if (Resources.redTeam == Resources.TEAM_NUMBER) {
+      corner = redCorner;
+      ramp = rr;
+      startZone = red;
+      tunnel = tnr;
+      searchZone = szr;
+    } else {
+      corner = greenCorner;
+      ramp = gr;
+      startZone = green;
+      tunnel = tng;
+      searchZone = szg;
+    }
+  }
 
   /**
    * Receives Wi-Fi parameters from the server program.

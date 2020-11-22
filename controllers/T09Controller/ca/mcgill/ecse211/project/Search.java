@@ -53,7 +53,7 @@ public class Search {
     private static final double DISTANCE_THREESHOLD = TILE_SIZE;
 
     /** Linked to edge bounding box width in tile size */
-    private static final double EDGE_BOUND_WIDTH = 0.5;
+    public static final double EDGE_BOUND_WIDTH = 0.5;
 
     /**
      * Offset between the center of the robot and the front of the usSensor in cm
@@ -106,13 +106,13 @@ public class Search {
         Resources.initSensors();
 
         // bottom wall
-        blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ur.x, szr.ll.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ur.x, szr.ll.y)));
         // top wall
-        blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ur.y), new Point(szr.ur.x, szr.ur.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ll.x, szr.ur.y), new Point(szr.ur.x, szr.ur.y)));
         // left wall
-        blacklistEdge.add(creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ll.x, szr.ur.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ll.x, szr.ur.y)));
         // right wall
-        blacklistEdge.add(creatRectFromEdge(new Point(szr.ur.x, szr.ll.y), new Point(szr.ur.x, szr.ur.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ur.x, szr.ll.y), new Point(szr.ur.x, szr.ur.y)));
 
         final double facingX = Math.signum(rr.right.y - rr.left.y);
         final double facingY = Math.signum(rr.right.x - rr.left.x);
@@ -195,7 +195,9 @@ public class Search {
                         return;
                     }
                     case (2): {
-                        // Ignore
+                        addToBlackList(readUsDistance(1), getCurrentAngle());
+                        setSpeed(FORWARD_SPEED);
+                        moveStraightFor(-0.5); // backoff a bit to avoid touching obstacle later.
                     }
                 }
                 break;
@@ -237,28 +239,6 @@ public class Search {
             }
         }
         stopMotors();
-    }
-
-    private static Rect creatRectFromEdge(Point pt1, Point pt2) {
-        double centerY;
-        double centerX;
-        double height;
-        double width;
-
-        /** If the line is vertical */
-        if (pt1.x == pt2.x) {
-            centerY = pt1.y > pt2.y ? (pt1.y - pt2.y) / 2 + pt2.y : (pt2.y - pt1.y) / 2 + pt1.y;
-            centerX = pt1.x;
-            height = pt1.y > pt2.y ? (pt1.y - pt2.y) : (pt2.y - pt1.y);
-            width = EDGE_BOUND_WIDTH;
-        } else {
-            centerX = pt1.x > pt2.x ? (pt1.x - pt2.x) / 2 + pt2.x : (pt2.x - pt1.x) / 2 + pt1.x;
-            centerY = pt1.y;
-            height = EDGE_BOUND_WIDTH;
-            width = pt1.x > pt2.x ? (pt1.x - pt2.x) : (pt2.x - pt1.x);
-        }
-
-        return new Rect(new Point(centerX, centerY), width, height);
     }
 
     /**
@@ -442,13 +422,6 @@ public class Search {
         }
 
         stopMotors();
-
-        // TODO: define what needs to be done here.
-        if (result == 2) {
-            addToBlackList(readUsDistance(1), getCurrentAngle());
-            setSpeed(FORWARD_SPEED);
-            moveStraightFor(-0.5); // backoff a bit to avoid touching obstacle later.
-        }
 
         return result;
 

@@ -9,29 +9,42 @@ public class FieldEntry {
   /** Values retrieved from server */
   static Point Island_LL = Resources.island.ll;
   static Point Island_UR = Resources.island.ur;
-  static Point TNR_LL = Resources.tnr.ll;
-  static Point TNR_UR = Resources.tnr.ur;
-  static Point TNR_UL = new Point(TNR_LL.x, TNR_UR.y);
-  static Point TNR_LR = new Point(TNR_UR.x, TNR_LL.y);
-  static Point SZR_LL = Resources.szr.ll;
-  static Point SZR_UR = Resources.szr.ur;
+
+  static Point Z_LL;
+  static Point Z_UR;
+  static Point TN_LL;
+  static Point TN_UR;
+  static Point TN_UL;
+  static Point TN_LR;
+  static Point SZ_LL;
+  static Point SZ_UR;
+
+
 
   /**
    * Main method that performs the enter field
    */
   public static void enterField() {
 
-    if (isTunnelHorizontal() == true) {
-      goInFrontOfHTunnel();
+    if (isTunnelRight() == true) {
+      goInFrontOfRightTunnel();
       Navigation.turnTo(90);
-      crossHTunnel();
-    } else {
-      goInFrontOfVTunnel();
+      crossRightTunnel();
+    } else if (isTunnelLeft() == true) {
+      goInFrontOfLeftTunnel();
+      Navigation.turnTo(270);
+      crossLeftTunnel();
+    } else if (isTunnelTop() == true) {
+      goInFrontOfTopTunnel();
+      Navigation.turnTo(0);
+      crossTopTunnel();
+    } else if (isTunnelBottom() == true) {
+      goInFrontOfBottomTunnel();
       Navigation.turnTo(180);
-      crossVTunnel();
-
+      crossBottomTunnel();
     }
-    boolean inSearchZone = checkIfInSearchZone();
+
+
     if (checkIfInSearchZone() == true) {
       enteredSearchZone();
     } else {
@@ -41,53 +54,134 @@ public class FieldEntry {
     }
   }
 
-  /**
-   * Makes robot go in front of a horizontal tunnel
-   */
-  public static void goInFrontOfHTunnel() {
-
-    Point inFront = new Point((TNR_LL.x - 1), (TNR_LL.y + TNR_UL.y) / 2);
-    Navigation.travelToPerpendicular(inFront);
-
+  public static void setTunnelAndSearchZone() {
+      Z_LL = Resources.startZone.ll;
+      Z_UR = Resources.startZone.ur;
+      TN_LL = Resources.tunnel.ll;
+      TN_UR = Resources.tunnel.ur;
+      TN_UL = new Point(TN_LL.x, TN_UR.y);
+      TN_LR = new Point(TN_UR.x, TN_LL.y);
+      SZ_LL = Resources.searchZone.ll;
+      SZ_UR = Resources.searchZone.ur;
   }
 
   /**
-   * Makes robot go in front of a vertical tunnel
+   * Verifies if tunnel is on the right of the starting zone
    */
-  public static void goInFrontOfVTunnel() {
-
-    Point inFront = new Point((TNR_UL.x + TNR_UR.x) / 2, (TNR_UL.y + 1));
-    Navigation.travelToPerpendicular(inFront);
-
-  }
-
-  /**
-   * Robot crosses horizontal tunnel
-   */
-  public static void crossHTunnel() {
-    Point destination = new Point((TNR_LR.x + 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
-    // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
-  }
-
-  /**
-   * Robot crosses vertical tunnel
-   */
-  public static void crossVTunnel() {
-    Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TNR_LL.y - 1);
-    // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
-  }
-
-  /**
-   * Verifies the orientation of the tunnel
-   */
-  public static boolean isTunnelHorizontal() {
-    if (TNR_UR.x == Island_LL.x)
+  public static boolean isTunnelRight() {
+    if (TN_UR.x >= Island_LL.x)
       return true;
     else
       return false;
   }
+
+  /**
+   * Verifies if tunnel is on the left of the starting zone
+   */
+  public static boolean isTunnelLeft() {
+    if (TN_LL.x <= Island_UR.x)
+      return true;
+    else
+      return false;
+  }
+
+  /**
+   * Verifies if tunnel is on the top of the starting zone
+   */
+  public static boolean isTunnelTop() {
+    if (TN_UR.y >= Island_LL.y)
+      return true;
+    else
+      return false;
+  }
+
+  /**
+   * Verifies if tunnel is on the bottom of the starting zone
+   */
+  public static boolean isTunnelBottom() {
+    if (TN_LL.y <= Island_UR.y)
+      return true;
+    else
+      return false;
+  }
+
+  /**
+   * Makes robot go in front of a tunnel that is on the right of the starting zone
+   */
+  public static void goInFrontOfRightTunnel() {
+
+    Point inFront = new Point((TN_LL.x - 1), (TN_LL.y + TN_UL.y) / 2);
+    Navigation.travelToPerpendicular(inFront);
+
+  }
+
+  /**
+   * Makes robot go in front of a tunnel that is on the left of the starting zone
+   */
+  public static void goInFrontOfLeftTunnel() {
+
+    Point inFront = new Point((TN_UR.x + 1), (TN_LL.y + TN_UL.y) / 2);
+    Navigation.travelToPerpendicular(inFront);
+
+  }
+
+  /**
+   * Makes robot go in front of a tunnel that is on the top of the starting zone
+   */
+  public static void goInFrontOfTopTunnel() {
+
+    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 1));
+    Navigation.travelToPerpendicular(inFront);
+
+  }
+
+  /**
+   * Makes robot go in front of a tunnel that is on the bottom of the starting zone
+   */
+  public static void goInFrontOfBottomTunnel() {
+
+    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 1));
+    Navigation.travelToPerpendicular(inFront);
+
+  }
+
+  /**
+   * Robot crosses tunnel on the right of start zone
+   */
+  public static void crossRightTunnel() {
+    Point destination = new Point((TN_LR.x + 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
+    // Navigation.travelCorrected(destination);
+    Navigation.travelTo(destination);
+  }
+
+  /**
+   * Robot crosses tunnel on the left of start zone
+   */
+  public static void crossLeftTunnel() {
+    Point destination = new Point((TN_LL.x + 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
+    // Navigation.travelCorrected(destination);
+    Navigation.travelTo(destination);
+  }
+
+  /**
+   * Robot crosses tunnel on the top of start zone
+   */
+  public static void crossTopTunnel() {
+    Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_UR.y + 1);
+    // Navigation.travelCorrected(destination);
+    Navigation.travelTo(destination);
+  }
+
+  /**
+   * Robot crosses tunnel on the bottom of start zone
+   */
+  public static void crossBottomTunnel() {
+    Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_LL.y - 1);
+    // Navigation.travelCorrected(destination);
+    Navigation.travelTo(destination);
+  }
+
+
 
   /**
    * Checks if the robot is located inside the search zone
@@ -97,8 +191,8 @@ public class FieldEntry {
     double currentX = (Odometer.getOdometer().getXyt()[0]) / 0.3048;
     double currentY = (Odometer.getOdometer().getXyt()[1]) / 0.3048;
 
-    if (currentX > SZR_LL.x && currentX < SZR_UR.x) {
-      if (currentY > SZR_LL.y && currentY < SZR_UR.y) {
+    if (currentX > SZ_LL.x && currentX < SZ_UR.x) {
+      if (currentY > SZ_LL.y && currentY < SZ_UR.y) {
         return true;
       }
       return false;
@@ -114,8 +208,8 @@ public class FieldEntry {
    */
   public static void goToSearchZone() {
     if (checkIfInSearchZone() == false) {
-      double xInSZ = SZR_LL.x + 1;
-      double yInSZ = SZR_LL.y + 1;
+      double xInSZ = SZ_LL.x + 1;
+      double yInSZ = SZ_LL.y + 1;
       Point inSZ = new Point(xInSZ, yInSZ);
       Navigation.travelToPerpendicular(inSZ);
 
@@ -141,5 +235,6 @@ public class FieldEntry {
     LocalEV3.getAudio().beep();
     Main.STATE_MACHINE.enteredField();
   }
+
 
 }
