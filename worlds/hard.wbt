@@ -37,8 +37,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.999735289306728 -0.017448114007051038 -0.014997154143033826 1.420261746539951
-  position 3.179921422167409 9.807000946044415 2.7254212066028587
+  orientation -0.9999962065928445 -0.002017719840267218 -0.001874995084621914 1.4975037832296503
+  position 2.8020011060247696 9.906718289060098 1.9570167243040641
 }
 TexturedBackground {
 }
@@ -47,7 +47,7 @@ TexturedBackgroundLight {
 DEF ARENA DPM-CompetitionArena {
   children [
     DPM-Obstacle {
-      position 14.5 3.1
+      position 13 3.7
     }
     DPM-Chute {
       position 2 6
@@ -55,15 +55,15 @@ DEF ARENA DPM-CompetitionArena {
     }
     DEF OBSTACLE3 DPM-Obstacle {
       name "obstacle3"
-      position 13 4.5
+      position 13.5 4.5
     }
     DEF OBSTACLE3 DPM-Obstacle {
       name "obstacle3"
-      position 9.5 3.5
+      position 10 3.8
     }
     DEF OBSTACLE4 DPM-Obstacle {
       name "obstacle4"
-      position 9.5 4.5
+      position 10.5 4.5
       sections 6
     }
     DEF OBSTACLE4 DPM-Obstacle {
@@ -267,7 +267,7 @@ DEF ARENA DPM-CompetitionArena {
 }
 DPM-Block {
   name "block6(1)"
-  translation 3.19 0.0499955 1.39
+  translation 3.66 0.0499909 1.39
   rotation 0.9775293359881532 5.604792398431759e-06 0.21079942421920184 -5.190841163750209e-05
   dimension 0.1
   mass 0.5
