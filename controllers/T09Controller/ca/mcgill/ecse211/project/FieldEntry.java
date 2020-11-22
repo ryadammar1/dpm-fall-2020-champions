@@ -167,7 +167,7 @@ public class FieldEntry {
    * Robot crosses tunnel on the left of start zone
    */
   public static void crossLeftTunnel() {
-    Point destination = new Point((TN_LL.x + 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
+    Point destination = new Point((TN_LL.x - 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
   }
