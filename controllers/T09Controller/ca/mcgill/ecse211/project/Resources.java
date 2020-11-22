@@ -174,6 +174,9 @@ public class Resources {
   /** The odometer. */
   public static Odometer odometer = Odometer.getOdometer();
 
+  /** The obstacle Avoidance. */
+  public static ObstacleAvoidance obstacleavoidance = ObstacleAvoidance.getAvoider();
+
   // Wi-Fi parameters
 
   /** Container for the Wi-Fi parameters. */

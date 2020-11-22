@@ -20,7 +20,7 @@ public class Main {
    * The number of threads used in the program (main, odometer), other than the one used to
    * perform physics steps.
    */
-  public static final int NUMBER_OF_THREADS = 2;
+  public static final int NUMBER_OF_THREADS = 3;
   
   /** Main entry point. */
   public static void main(String[] args) {
@@ -29,12 +29,17 @@ public class Main {
     // Start the odometer thread
     new Thread(odometer).start();
     LocalEV3.getAudio().beep(); // beeps once
-   
+
+    new Thread(obstacleavoidance).start();
+    obstacleavoidance.resume();
+    System.out.println("Avoidance on....");
+    
     // TESTING PURPOSES
     Search.initializeSearch();
     STATE_MACHINE.doneConfiguring();
     STATE_MACHINE.doneLocalizing();
-    STATE_MACHINE.enteredField();
+    //STATE_MACHINE.enteredField();
+    
     /*STATE_MACHINE.setBlockDetected(true);
     STATE_MACHINE.detectObstacle();*/
 
@@ -78,6 +83,10 @@ public class Main {
         case ("Standard.Operation.Transfer"): {
           System.out.println("Transfering");
           Transfer.doTransfer();
+        }
+        case ("Avoidance"): {
+          System.out.println("Avoiding");
+          ObstacleAvoidance.correct();
         }
         default: break;
         }
