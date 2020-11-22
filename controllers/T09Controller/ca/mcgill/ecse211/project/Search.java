@@ -104,6 +104,8 @@ public class Search {
     public static void initializeSearch() {
 
         Resources.initSensors();
+        if (MODE == Mode.Recognize)
+            usData2 = new float[usSensor2.sampleSize()];
 
         // bottom wall
         blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ur.x, szr.ll.y)));

@@ -11,7 +11,7 @@ public class ObstacleAvoidance implements Runnable {
 
 	// These arrays are used to avoid creating new ones at each iteration.
 	/** Buffer (array) to store US samples. */
-	private static float[] usData2 = new float[usSensor2.sampleSize()];
+	private static float[] usData = new float[usSensor1.sampleSize()];
 	/**
 	 * The limit of invalid samples that we read from the US sensor before assuming
 	 * no obstacle.
@@ -25,11 +25,22 @@ public class ObstacleAvoidance implements Runnable {
 	/** Threshold to trigger obstacle avoidance corrections. in cm. */
 	private static int THRESHOLD = 20;
 
-	/** Sensor to use. (can be changed depending on state). */
-	public static int SENSOR = 2;
+	/** Sensor to use. (can be changed depending on search mode). */
+	public static int SENSOR = 1;
 
 	/** Boolean to enable obstacle avoidance or not. */
 	public static boolean PAUSE = true;
+
+	/**
+	 * Initializes the obstacle avoidance depending on the search mode.
+	 * Selects which sensor to use.
+	 */
+	public static void initializeObstacleAvoidance(){
+		if (Search.getMode() == Search.Mode.Recognize){
+			SENSOR = 2;
+			usData = new float[usSensor2.sampleSize()];
+		}
+	}
 
 	/**
 	 * Returns the Odometer Object. Use this method to obtain an instance of
@@ -123,14 +134,14 @@ public class ObstacleAvoidance implements Runnable {
 	public static int readUsDistance(int usId) {
 		if (usId == 1) {
 			for (int i = 0; i < 3; i++) {
-				usSensor1.fetchSample(usData2, 0);
+				usSensor1.fetchSample(usData, 0);
 			}
-			usSensor1.fetchSample(usData2, 0);
-			return filter((int) (usData2[0] * 100.0));
+			usSensor1.fetchSample(usData, 0);
+			return filter((int) (usData[0] * 100.0));
 		}
 		if (usId == 2) {
-			usSensor2.fetchSample(usData2, 0);
-			return filter((int) (usData2[0] * 100.0));
+			usSensor2.fetchSample(usData, 0);
+			return filter((int) (usData[0] * 100.0));
 		}
 		return -1;
 	}

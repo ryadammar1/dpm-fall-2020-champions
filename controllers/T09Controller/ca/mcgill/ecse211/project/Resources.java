@@ -125,6 +125,9 @@ public class Resources {
   /** The right motor. */
   public static final RegulatedMotor rightMotor = Motor.D;
 
+  /** The right motor. */
+  public static final RegulatedMotor cageMotor = Motor.B;
+
   /** The ultrasonic sensor. */
   public static final EV3UltrasonicSensor usSensor1 = new EV3UltrasonicSensor(SensorPort.S1);
 

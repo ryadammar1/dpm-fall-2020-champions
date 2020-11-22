@@ -25,31 +25,29 @@ public class Main {
   /** Main entry point. */
   public static void main(String[] args) {
     initialize();
-    
-    // Start the odometer thread
-    new Thread(odometer).start();
-    LocalEV3.getAudio().beep(); // beeps once
-
-    new Thread(obstacleavoidance).start();
-    obstacleavoidance.resume();
-    System.out.println("Avoidance on....");
-    
-    // TESTING PURPOSES
-    Search.initializeSearch();
-    STATE_MACHINE.doneConfiguring();
-    STATE_MACHINE.doneLocalizing();
-    //STATE_MACHINE.enteredField();
-    
-    /*STATE_MACHINE.setBlockDetected(true);
-    STATE_MACHINE.detectObstacle();*/
 
     // TODO : Poll states and call corresponding functions
     while (true) { // main loop
       switch (STATE_MACHINE.getStatusFullName()) {
         case ("Standard.Initialization.Configuration"): {
           System.out.println("Configuring");
-          Search.initializeSearch();
-          STATE_MACHINE.doneConfiguring(); // TEMPORARY : Add this at the end of the function it self
+
+          Search.initializeSearch(); 
+          ObstacleAvoidance.initializeObstacleAvoidance();   
+    
+          // Start the odometer and obstacle avoidance thread
+          new Thread(odometer).start();
+
+          new Thread(obstacleavoidance).start();
+          obstacleavoidance.resume();
+          
+          System.out.println("Avoidance on....");
+
+          LocalEV3.getAudio().beep(); // beeps once
+
+          cageMotor.rotate(-180, false);
+
+          STATE_MACHINE.doneConfiguring();
           }
         case ("Standard.Initialization.Localization"): {
           System.out.println("Localizing");
