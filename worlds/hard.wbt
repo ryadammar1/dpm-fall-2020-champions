@@ -37,8 +37,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.9998900395337182 -0.01095098929618912 -0.009999233705349433 1.4801095140889664
-  position 2.594516179323584 9.938763951589257 1.7154618492125973
+  orientation -0.999735289306728 -0.017448114007051038 -0.014997154143033826 1.420261746539951
+  position 3.179921422167409 9.807000946044415 2.7254212066028587
 }
 TexturedBackground {
 }
@@ -59,7 +59,7 @@ DEF ARENA DPM-CompetitionArena {
     }
     DEF OBSTACLE3 DPM-Obstacle {
       name "obstacle3"
-      position 11 3
+      position 9.5 3.5
     }
     DEF OBSTACLE4 DPM-Obstacle {
       name "obstacle4"
@@ -95,11 +95,6 @@ DEF ARENA DPM-CompetitionArena {
       name "obstacle4"
       position 11 6.5
       sections 6
-    }
-    DEF BRIDGE1 DPM-Bridge {
-      name "bridge1"
-      length 0.6096
-      sections 10
     }
     DEF BRIDGE2 DPM-Bridge {
       name "bridge2"
@@ -272,7 +267,7 @@ DEF ARENA DPM-CompetitionArena {
 }
 DPM-Block {
   name "block6(1)"
-  translation 2.9 0.0499769 0.949997
+  translation 3.19 0.0499955 1.39
   rotation 0.9775293359881532 5.604792398431759e-06 0.21079942421920184 -5.190841163750209e-05
   dimension 0.1
   mass 0.5
