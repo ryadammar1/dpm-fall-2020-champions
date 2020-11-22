@@ -18,21 +18,19 @@ public class Transfer {
     private static int invalidSampleCount;
 
     public static void doTransfer() {
+        setSpeed(FORWARD_SPEED);
+        while(readUsDistance()>=0)
+            moveForward();
 
-        getIntoPosition();
+        /**
+         * Secure block
+         */
 
-    }
-
-    private static void getIntoPosition() {
         
-
     }
 
     // ULTRASONIC SENSOR RELATED //
 
-    /**
-     * Returns the filtered distance between the US sensor and an obstacle in cm.
-     */
     /**
      * Returns the filtered distance between the US sensor and an obstacle in cm.
      */

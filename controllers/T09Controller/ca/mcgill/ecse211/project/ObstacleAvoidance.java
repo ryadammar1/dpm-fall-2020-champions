@@ -57,8 +57,8 @@ public class ObstacleAvoidance implements Runnable {
 					Main.STATE_MACHINE.setBlockDetected(false);
 					Main.STATE_MACHINE.detectObstacle();
 					System.out.println("Obstacle detected...." + reading);
+					return;
 				}
-
 			}
 			waitUntilNextStep();
 		}

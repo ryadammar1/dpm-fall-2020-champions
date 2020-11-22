@@ -54,22 +54,42 @@ public class FieldEntry {
     }
   }
 
+
+
+  public static boolean isRedTeam() {
+    if (Resources.redTeam == Resources.TEAM_NUMBER) {
+      return true;
+    } else
+      return false;
+  }
+
   public static void setTunnelAndSearchZone() {
-      Z_LL = Resources.startZone.ll;
-      Z_UR = Resources.startZone.ur;
-      TN_LL = Resources.tunnel.ll;
-      TN_UR = Resources.tunnel.ur;
+    if (isRedTeam() == true) {
+      Z_LL = Resources.red.ll;
+      Z_UR = Resources.red.ur;
+      TN_LL = Resources.tnr.ll;
+      TN_UR = Resources.tnr.ur;
       TN_UL = new Point(TN_LL.x, TN_UR.y);
       TN_LR = new Point(TN_UR.x, TN_LL.y);
-      SZ_LL = Resources.searchZone.ll;
-      SZ_UR = Resources.searchZone.ur;
+      SZ_LL = Resources.szr.ll;
+      SZ_UR = Resources.szr.ur;
+    } else {
+      Z_LL = Resources.green.ll;
+      Z_UR = Resources.green.ur;
+      TN_LL = Resources.tng.ll;
+      TN_UR = Resources.tng.ur;
+      TN_UL = new Point(TN_LL.x, TN_UR.y);
+      TN_LR = new Point(TN_UR.x, TN_LL.y);
+      SZ_LL = Resources.szg.ll;
+      SZ_UR = Resources.szg.ur;
+    }
   }
 
   /**
    * Verifies if tunnel is on the right of the starting zone
    */
   public static boolean isTunnelRight() {
-    if (TN_UR.x >= Island_LL.x)
+    if (TN_UR.x == Island_LL.x)
       return true;
     else
       return false;
@@ -79,7 +99,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the left of the starting zone
    */
   public static boolean isTunnelLeft() {
-    if (TN_LL.x <= Island_UR.x)
+    if (TN_LL.x == Island_UR.x)
       return true;
     else
       return false;
@@ -89,7 +109,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the top of the starting zone
    */
   public static boolean isTunnelTop() {
-    if (TN_UR.y >= Island_LL.y)
+    if (TN_UR.y == Island_LL.y)
       return true;
     else
       return false;
@@ -99,7 +119,7 @@ public class FieldEntry {
    * Verifies if tunnel is on the bottom of the starting zone
    */
   public static boolean isTunnelBottom() {
-    if (TN_LL.y <= Island_UR.y)
+    if (TN_LL.y == Island_UR.y)
       return true;
     else
       return false;
@@ -111,7 +131,7 @@ public class FieldEntry {
   public static void goInFrontOfRightTunnel() {
 
     Point inFront = new Point((TN_LL.x - 1), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToPerpendicular(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -121,7 +141,7 @@ public class FieldEntry {
   public static void goInFrontOfLeftTunnel() {
 
     Point inFront = new Point((TN_UR.x + 1), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToPerpendicular(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -131,7 +151,7 @@ public class FieldEntry {
   public static void goInFrontOfTopTunnel() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 1));
-    Navigation.travelToPerpendicular(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -141,7 +161,7 @@ public class FieldEntry {
   public static void goInFrontOfBottomTunnel() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 1));
-    Navigation.travelToPerpendicular(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -151,7 +171,7 @@ public class FieldEntry {
   public static void crossRightTunnel() {
     Point destination = new Point((TN_LR.x + 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
+    Navigation.travelToImmReturn(destination);
   }
 
   /**
@@ -160,7 +180,7 @@ public class FieldEntry {
   public static void crossLeftTunnel() {
     Point destination = new Point((TN_LL.x + 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
+    Navigation.travelToImmReturn(destination);
   }
 
   /**
@@ -169,7 +189,7 @@ public class FieldEntry {
   public static void crossTopTunnel() {
     Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_UR.y + 1);
     // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
+    Navigation.travelToImmReturn(destination);
   }
 
   /**
@@ -178,7 +198,7 @@ public class FieldEntry {
   public static void crossBottomTunnel() {
     Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_LL.y - 1);
     // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
+    Navigation.travelToImmReturn(destination);
   }
 
 
@@ -211,7 +231,7 @@ public class FieldEntry {
       double xInSZ = SZ_LL.x + 1;
       double yInSZ = SZ_LL.y + 1;
       Point inSZ = new Point(xInSZ, yInSZ);
-      Navigation.travelToPerpendicular(inSZ);
+      Navigation.travelToPerpendicularImmReturn(inSZ);
 
     }
 
