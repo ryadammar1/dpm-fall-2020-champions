@@ -84,6 +84,10 @@ public class Main {
           System.out.println("Transfering");
           Transfer.doTransfer();
         }
+        case ("Avoidance"): {
+          System.out.println("Avoiding");
+          ObstacleAvoidance.correct();
+        }
         default: break;
         }
       }
