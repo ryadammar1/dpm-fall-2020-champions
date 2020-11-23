@@ -31,6 +31,7 @@ public class Main {
           System.out.println("Configuring");
 
           Main.initialize();
+          Resources.initializeResources();
           Search.initializeSearch();
           ObstacleAvoidance.initializeObstacleAvoidance();
           FieldEntry.setTunnelAndSearchZone();
@@ -39,25 +40,26 @@ public class Main {
           new Thread(odometer).start();
 
           new Thread(obstacleavoidance).start();
-          obstacleavoidance.resume();
+          obstacleavoidance.pause();
+
+          cageMotor.setSpeed(20);
+          cageMotor.rotate(-180, false);
 
           System.out.println("Avoidance on....");
 
           LocalEV3.getAudio().beep(); // beeps once
 
-          //cageMotor.rotate(-180, false);
-
           STATE_MACHINE.doneConfiguring();
         }
         case ("Standard.Initialization.Localization"): {
           System.out.println("Localizing");
-          //UltrasonicLocalizer.localize();
-          //LightSensorCalibration.calibrate();
-          //LightLocalizer.localize();
+          UltrasonicLocalizer.localize();
+          LightSensorCalibration.calibrate();
+          LightLocalizer.localize();
           odometer.setX(1 * TILE_SIZE);
           odometer.setY(8 * TILE_SIZE);
           odometer.setTheta(90);
-          /*LocalEV3.getAudio().beep();
+          LocalEV3.getAudio().beep();
           try {
             Thread.sleep(TIMEOUT_PERIOD / 2);
           } catch (InterruptedException e) {
@@ -67,12 +69,11 @@ public class Main {
             Thread.sleep(TIMEOUT_PERIOD / 2);
           } catch (InterruptedException e) {
           }
-          LocalEV3.getAudio().beep();*/
+          LocalEV3.getAudio().beep();
           STATE_MACHINE.doneLocalizing();
         }
         case ("Standard.Initialization.EntryField"): {
           System.out.println("Entering field");
-          FieldEntry.setTunnelAndSearchZone();
           FieldEntry.enterField();
         }
         case ("Standard.Operation.Search"): {

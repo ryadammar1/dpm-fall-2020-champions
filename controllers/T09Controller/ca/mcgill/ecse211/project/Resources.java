@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.RampEdge;
+import ca.mcgill.ecse211.playingfield.Rect;
 import ca.mcgill.ecse211.playingfield.Region;
 import ca.mcgill.ecse211.wificlient.WifiConnection;
 import simlejos.hardware.motor.Motor;
@@ -154,9 +155,68 @@ public class Resources {
     }
   }
 
+  public static void initializeResources() {
+    makeGreenRamp();
+    makeRedRamp();
+  }
+
+  private static void makeRedRamp() {
+    double facingX = Math.signum(Resources.rr.right.y - Resources.rr.left.y);
+    double facingY = Math.signum(Resources.rr.right.x - Resources.rr.left.x);
+
+    if (facingY != 0) {
+      if (facingY > 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 0.25, Resources.rr.left.y - 0.25),
+            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 2.25));
+      }
+      if (facingY < 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 2.25),
+            new Point(Resources.rr.left.x + 0.25, Resources.rr.left.y + 0.25)); // Ramp
+      }
+    }
+
+    if (facingX != 0) {
+      if (facingX > 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 2.25, Resources.rr.left.y - 0.25),
+            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 0.25)); // Ramp
+      }
+      if (facingX < 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 0.25),
+            new Point(Resources.rr.left.x + 2.25, Resources.rr.left.y + 0.25)); // Ramp
+      }
+    }
+  }
+
+  private static void makeGreenRamp() {
+    double facingX = Math.signum(Resources.rr.right.y - Resources.rr.left.y);
+    double facingY = Math.signum(Resources.rr.right.x - Resources.rr.left.x);
+
+    if (facingY != 0) {
+      if (facingY > 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 0.25, Resources.rr.left.y - 0.25),
+            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 2.25));
+      }
+      if (facingY < 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 2.25),
+            new Point(Resources.rr.left.x + 0.25, Resources.rr.left.y + 0.25)); // Ramp
+      }
+    }
+
+    if (facingX != 0) {
+      if (facingX > 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 2.25, Resources.rr.left.y - 0.25),
+            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 0.25)); // Ramp
+      }
+      if (facingX < 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 0.25),
+            new Point(Resources.rr.left.x + 2.25, Resources.rr.left.y + 0.25)); // Ramp
+      }
+    }
+  }
+
   /** The differential minimal margin object. */
   public static DifferentialMinimalMargin dmm = new DifferentialMinimalMargin();
-  
+
   /** The starting corner. */
   public static int corner;
 
@@ -171,7 +231,7 @@ public class Resources {
 
   /** The red search zone. */
   public static Region searchZone;
-  
+
   // Software singletons
 
   /** The odometer. */
@@ -208,6 +268,12 @@ public class Resources {
   /** The edge when facing the Green ramp. */
   public static RampEdge gr = makeRampEdge("GR");
 
+  /** The Red ramp bounding box. */
+  public static Rect rrbb;
+
+  /** The Green ramp bounding box. */
+  public static Rect grbb;
+
   /** The Red Zone. */
   public static Region red = makeRegion("Red");
 
@@ -228,7 +294,7 @@ public class Resources {
 
   /** The green search zone. */
   public static Region szg = makeRegion("SZG");
-  
+
   static {
     if (Resources.redTeam == Resources.TEAM_NUMBER) {
       corner = redCorner;

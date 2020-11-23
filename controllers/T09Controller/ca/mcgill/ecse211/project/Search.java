@@ -116,30 +116,10 @@ public class Search {
         // right wall
         blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ur.x, szr.ll.y), new Point(szr.ur.x, szr.ur.y)));
 
-        final double facingX = Math.signum(rr.right.y - rr.left.y);
-        final double facingY = Math.signum(rr.right.x - rr.left.x);
-
-        if (facingY != 0) {
-            if (facingY > 0) {
-                blacklistEdge.add(new Rect(new Point(rr.left.x - 0.25, rr.left.y - 0.25),
-                        new Point(rr.right.x + 0.25, rr.right.y + 2.25))); // Ramp
-            }
-            if (facingY < 0) {
-                blacklistEdge.add(new Rect(new Point(rr.right.x - 0.25, rr.right.y - 2.25),
-                        new Point(rr.left.x + 0.25, rr.left.y + 0.25))); // Ramp
-            }
-        }
-
-        if (facingX != 0) {
-            if (facingX > 0) {
-                blacklistEdge.add(new Rect(new Point(rr.left.x - 2.25, rr.left.y - 0.25),
-                        new Point(rr.right.x + 0.25, rr.right.y + 0.25))); // Ramp
-            }
-            if (facingX < 0) {
-                blacklistEdge.add(new Rect(new Point(rr.right.x - 0.25, rr.right.y - 0.25),
-                        new Point(rr.left.x + 2.25, rr.left.y + 0.25))); // Ramp
-            }
-        }
+        // red ramp
+        blacklistEdge.add(rrbb);
+        // green ramp
+        blacklistEdge.add(grbb);
 
         blacklistEdge.add(
                 new Rect(new Point(tnr.ll.x - 0.25, tnr.ll.y - 0.25), new Point(tnr.ur.x + 0.25, tnr.ur.y + 0.25))); // tunnel
