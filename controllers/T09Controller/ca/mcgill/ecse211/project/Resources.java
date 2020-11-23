@@ -188,28 +188,28 @@ public class Resources {
   }
 
   private static void makeGreenRamp() {
-    double facingX = Math.signum(Resources.rr.right.y - Resources.rr.left.y);
-    double facingY = Math.signum(Resources.rr.right.x - Resources.rr.left.x);
+    double facingX = Math.signum(Resources.gr.right.y - Resources.gr.left.y);
+    double facingY = Math.signum(Resources.gr.right.x - Resources.gr.left.x);
 
     if (facingY != 0) {
       if (facingY > 0) {
-        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 0.25, Resources.rr.left.y - 0.25),
-            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 2.25));
+        Resources.grbb = new Rect(new Point(Resources.gr.left.x - 0.25, Resources.gr.left.y - 0.25),
+            new Point(Resources.gr.right.x + 0.25, Resources.gr.right.y + 2.25));
       }
       if (facingY < 0) {
-        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 2.25),
-            new Point(Resources.rr.left.x + 0.25, Resources.rr.left.y + 0.25)); // Ramp
+        Resources.grbb = new Rect(new Point(Resources.gr.right.x - 0.25, Resources.gr.right.y - 2.25),
+            new Point(Resources.gr.left.x + 0.25, Resources.gr.left.y + 0.25)); // Ramp
       }
     }
 
     if (facingX != 0) {
       if (facingX > 0) {
-        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 2.25, Resources.rr.left.y - 0.25),
-            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 0.25)); // Ramp
+        Resources.grbb = new Rect(new Point(Resources.gr.left.x - 2.25, Resources.gr.left.y - 0.25),
+            new Point(Resources.gr.right.x + 0.25, Resources.gr.right.y + 0.25)); // Ramp
       }
       if (facingX < 0) {
-        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 0.25),
-            new Point(Resources.rr.left.x + 2.25, Resources.rr.left.y + 0.25)); // Ramp
+        Resources.grbb = new Rect(new Point(Resources.gr.right.x - 0.25, Resources.gr.right.y - 0.25),
+            new Point(Resources.gr.left.x + 2.25, Resources.gr.left.y + 0.25)); // Ramp
       }
     }
   }
