@@ -42,10 +42,8 @@ public class Main {
           new Thread(obstacleavoidance).start();
           obstacleavoidance.pause();
 
-          cageMotor.setSpeed(20);
-          cageMotor.rotate(-180, false);
-
-          System.out.println("Avoidance on....");
+          //cageMotor.setSpeed(20);
+          //cageMotor.rotate(-180, false);
 
           LocalEV3.getAudio().beep(); // beeps once
 
@@ -74,6 +72,8 @@ public class Main {
         }
         case ("Standard.Initialization.EntryField"): {
           System.out.println("Entering field");
+          obstacleavoidance.resume();
+          System.out.println("Avoidance on....");
           FieldEntry.enterField();
         }
         case ("Standard.Operation.Search"): {
@@ -86,7 +86,7 @@ public class Main {
         }
         case ("Avoidance"): {
           System.out.println("Avoiding");
-          ObstacleAvoidance.correct();
+          Avoidance.correct();
         }
         default:
           break;

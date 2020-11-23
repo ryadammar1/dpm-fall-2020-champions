@@ -43,7 +43,7 @@ public class UltrasonicLocalizer {
         rotateClockwise();
       }
       
-      while (readUsDistance() > 40) {
+      while (readUsDistance() > 30) {
         rotateCounterClockwise();
       }
 
@@ -56,7 +56,7 @@ public class UltrasonicLocalizer {
       }
       
       // Rotate the robot clockwise until it detects a wall and saves the current angle
-      while (readUsDistance() > 40) {
+      while (readUsDistance() > 30) {
         rotateClockwise();
       }
       

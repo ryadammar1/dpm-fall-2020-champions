@@ -2,12 +2,8 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.Utils.*;
-import static simlejos.ExecutionController.waitUntilNextStep;
 
-public class ObstacleAvoidance implements Runnable {
-
-	/** The singleton odometer instance. */
-	private static ObstacleAvoidance avoider;
+public class Avoidance {
 
 	// These arrays are used to avoid creating new ones at each iteration.
 	/** Buffer (array) to store US samples. */
@@ -28,62 +24,6 @@ public class ObstacleAvoidance implements Runnable {
 	/** Sensor to use. (can be changed depending on search mode). */
 	public static int SENSOR = 1;
 
-	/** Boolean to enable obstacle avoidance or not. */
-	public static boolean ENABLED = false;
-
-
-	/**
-	 * Initializes the obstacle avoidance depending on the search mode.
-	 * Selects which sensor to use.
-	 */
-	public static void initializeObstacleAvoidance(){
-		if (Search.getMode() == Search.Mode.Recognize){
-			SENSOR = 2;
-			usData = new float[usSensor2.sampleSize()];
-		}
-	}
-
-	/**
-	 * Returns the Odometer Object. Use this method to obtain an instance of
-	 * Odometer.
-	 */
-	public static synchronized ObstacleAvoidance getAvoider() {
-		if (avoider == null) {
-			avoider = new ObstacleAvoidance();
-		}
-		return avoider;
-	}
-
-	/**
-	 * Main method run in a separate thread. Monitors second ultrasonic sensor and
-	 * triggers state machine's "detect obstacle" event when the reading is under a
-	 * set threshold.
-	 */
-	@Override
-	public void run() {
-		System.out.println("Running obstacle avoidance..");
-		while (true) {
-			if (ENABLED == true) {
-				int reading = readUsDistance(SENSOR);
-				if (reading <= THRESHOLD) {
-					System.out.println(Main.STATE_MACHINE.getStatusFullName());
-					Main.STATE_MACHINE.setBlockDetected(false);
-					Main.STATE_MACHINE.detectObstacle();
-					System.out.println("Obstacle detected...." + reading);
-					System.out.println(Main.STATE_MACHINE.getStatus());
-					ENABLED = false;
-					//return;
-				}
-			}
-			waitUntilNextStep();
-		}
-
-	}
-/*
-	public static void correct() {
-		correction();
-	}
-*/
 	/**
 	 * Method to decide which direction to go around the obstacle
 	 */
@@ -116,7 +56,7 @@ public class ObstacleAvoidance implements Runnable {
 		}
 
 		System.out.println("goAround(1)");
-		//goaround(1)
+		//goAround(1);
 
 		Main.STATE_MACHINE.obstacleAvoided();
 	}
@@ -181,16 +121,5 @@ public class ObstacleAvoidance implements Runnable {
 			prevDistance = distance;
 			return distance;
 		}
-	}
-
-	/**
-	 * Method to pause the obstacle avoidance system
-	 */
-	public void pause() {
-		ENABLED = false;
-	}
-
-	public void resume() {
-		ENABLED = true;
 	}
 }

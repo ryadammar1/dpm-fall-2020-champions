@@ -45,6 +45,10 @@ public class Navigation {
     while (Main.STATE_MACHINE.getStatusFullName() != "Standard.Operation.Avoidance"
         && (leftMotor.isMoving() || rightMotor.isMoving()))
       waitUntilNextStep(); // Sleep for one physics step
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+      System.out.println("travelToImmReturn returning");
+      return;
+    }
 
     stopMotors();
   }
@@ -118,6 +122,11 @@ public class Navigation {
     while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance"
         && (leftMotor.isMoving() || rightMotor.isMoving()))
       waitUntilNextStep(); // Sleep for one physics step
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+      System.out.println("travelToPerpendicularImmReturn 1 returning");
+      stopMotors();
+      return;
+    }
 
     if (distanceY >= 0.2) {
       // Move along the Y axis
@@ -130,6 +139,10 @@ public class Navigation {
     while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance"
         && (leftMotor.isMoving() || rightMotor.isMoving()))
       waitUntilNextStep(); // Sleep for one physics step
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+      System.out.println("travelToPerpendicularImmReturn 2 returning");
+      return;
+    }
 
       stopMotors();
   }
