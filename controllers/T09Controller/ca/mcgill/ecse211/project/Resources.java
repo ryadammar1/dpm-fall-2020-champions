@@ -147,10 +147,12 @@ public class Resources {
       case Recognize: {
         usSensor2 = new EV3UltrasonicSensor(SensorPort.S4);
         Search.setUsData2(new float[usSensor2.sampleSize()]);
+        break;
       }
       case Memorize: {
         colorSensorFront = new EV3ColorSensor(SensorPort.S4).getRGBMode();
         Search.setColorSensorDataFront(new float[colorSensorFront.sampleSize()]);
+        break;
       }
     }
   }
