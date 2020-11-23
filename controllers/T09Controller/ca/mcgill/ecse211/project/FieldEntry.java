@@ -54,6 +54,15 @@ public class FieldEntry {
     }
   }
 
+
+
+//  public static boolean isRedTeam() {
+//    if (Resources.redTeam == Resources.TEAM_NUMBER) {
+//      return true;
+//    } else
+//      return false;
+//  }
+
   public static void setTunnelAndSearchZone() {
     Z_LL = Resources.startZone.ll;
     Z_UR = Resources.startZone.ur;
@@ -111,7 +120,7 @@ public class FieldEntry {
   public static void goInFrontOfRightTunnel() {
 
     Point inFront = new Point((TN_LL.x - 1), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToPerpendicular(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -121,7 +130,7 @@ public class FieldEntry {
   public static void goInFrontOfLeftTunnel() {
 
     Point inFront = new Point((TN_UR.x + 1), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToPerpendicular(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -131,7 +140,7 @@ public class FieldEntry {
   public static void goInFrontOfTopTunnel() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 1));
-    Navigation.travelToPerpendicular(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -141,7 +150,7 @@ public class FieldEntry {
   public static void goInFrontOfBottomTunnel() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 1));
-    Navigation.travelToPerpendicular(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -151,7 +160,7 @@ public class FieldEntry {
   public static void crossRightTunnel() {
     Point destination = new Point((TN_LR.x + 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
+    Navigation.travelToImmReturn(destination);
   }
 
   /**
@@ -160,7 +169,7 @@ public class FieldEntry {
   public static void crossLeftTunnel() {
     Point destination = new Point((TN_LL.x - 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
+    Navigation.travelToImmReturn(destination);
   }
 
   /**
@@ -169,7 +178,7 @@ public class FieldEntry {
   public static void crossTopTunnel() {
     Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_UR.y + 1);
     // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
+    Navigation.travelToImmReturn(destination);
   }
 
   /**
@@ -178,7 +187,7 @@ public class FieldEntry {
   public static void crossBottomTunnel() {
     Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_LL.y - 1);
     // Navigation.travelCorrected(destination);
-    Navigation.travelTo(destination);
+    Navigation.travelToImmReturn(destination);
   }
 
 
@@ -211,7 +220,7 @@ public class FieldEntry {
       double xInSZ = SZ_LL.x + 1;
       double yInSZ = SZ_LL.y + 1;
       Point inSZ = new Point(xInSZ, yInSZ);
-      Navigation.travelToPerpendicular(inSZ);
+      Navigation.travelToPerpendicularImmReturn(inSZ);
 
     }
 
