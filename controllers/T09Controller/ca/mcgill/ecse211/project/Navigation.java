@@ -115,7 +115,7 @@ public class Navigation {
       moveStraightForImmReturn(distanceX);
     }
 
-    while (Main.STATE_MACHINE.getStatusFullName() != "Standard.Operation.Avoidance"
+    while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance"
         && (leftMotor.isMoving() || rightMotor.isMoving()))
       waitUntilNextStep(); // Sleep for one physics step
 
@@ -127,7 +127,7 @@ public class Navigation {
       moveStraightForImmReturn(distanceY);
     }
 
-    while (Main.STATE_MACHINE.getStatusFullName() != "Standard.Operation.Avoidance"
+    while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance"
         && (leftMotor.isMoving() || rightMotor.isMoving()))
       waitUntilNextStep(); // Sleep for one physics step
 
