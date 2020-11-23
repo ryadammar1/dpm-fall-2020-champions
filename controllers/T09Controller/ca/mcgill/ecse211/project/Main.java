@@ -72,6 +72,7 @@ public class Main {
         }
         case ("Standard.Initialization.EntryField"): {
           System.out.println("Entering field");
+          FieldEntry.setTunnelAndSearchZone();
           FieldEntry.enterField();
         }
         case ("Standard.Operation.Search"): {
