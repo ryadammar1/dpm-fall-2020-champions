@@ -56,9 +56,28 @@ public class Main {
           UltrasonicLocalizer.localize();
           LightSensorCalibration.calibrate();
           LightLocalizer.localize();
-          odometer.setX(1 * TILE_SIZE);
-          odometer.setY(8 * TILE_SIZE);
-          odometer.setTheta(90);
+          switch (Resources.corner) {
+            case 0:
+              odometer.setX(1 * TILE_SIZE);
+              odometer.setY(1 * TILE_SIZE);
+              odometer.setTheta(0);
+              break;
+            case 1:
+              odometer.setX(8 * TILE_SIZE);
+              odometer.setY(1 * TILE_SIZE);
+              odometer.setTheta(270);
+              break;
+            case 2:
+              odometer.setX(8 * TILE_SIZE);
+              odometer.setY(8 * TILE_SIZE);
+              odometer.setTheta(180);
+              break;
+            case 3:
+              odometer.setX(1 * TILE_SIZE);
+              odometer.setY(8 * TILE_SIZE);
+              odometer.setTheta(90);
+              break;
+          }
           LocalEV3.getAudio().beep();
           try {
             Thread.sleep(TIMEOUT_PERIOD / 2);
