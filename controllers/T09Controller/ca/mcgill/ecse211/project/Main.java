@@ -42,8 +42,8 @@ public class Main {
           new Thread(obstacleavoidance).start();
           obstacleavoidance.pause();
 
-          //cageMotor.setSpeed(20);
-          //cageMotor.rotate(-180, false);
+          cageMotor.setSpeed(20);
+          cageMotor.rotate(-180, false);
 
           LocalEV3.getAudio().beep(); // beeps once
 
@@ -52,9 +52,9 @@ public class Main {
         }
         case ("Standard.Initialization.Localization"): {
           System.out.println("Localizing");
-          //UltrasonicLocalizer.localize();
-          //LightSensorCalibration.calibrate();
-          //LightLocalizer.localize();
+          UltrasonicLocalizer.localize();
+          LightSensorCalibration.calibrate();
+          LightLocalizer.localize();
           odometer.setX(1 * TILE_SIZE);
           odometer.setY(8 * TILE_SIZE);
           odometer.setTheta(90);
