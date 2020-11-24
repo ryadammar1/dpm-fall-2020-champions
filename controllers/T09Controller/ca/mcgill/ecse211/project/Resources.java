@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.RampEdge;
+import ca.mcgill.ecse211.playingfield.Rect;
 import ca.mcgill.ecse211.playingfield.Region;
 import ca.mcgill.ecse211.wificlient.WifiConnection;
 import simlejos.hardware.motor.Motor;
@@ -124,6 +125,9 @@ public class Resources {
 
   /** The right motor. */
   public static final RegulatedMotor rightMotor = Motor.D;
+  
+  /** The medium motor. */
+  public static final RegulatedMotor cageMotor = Motor.B;
 
   /** The ultrasonic sensor. */
   public static final EV3UltrasonicSensor usSensor1 = new EV3UltrasonicSensor(SensorPort.S1);
@@ -176,6 +180,75 @@ public class Resources {
 
   /** The obstacle Avoidance. */
   public static ObstacleAvoidance obstacleavoidance = ObstacleAvoidance.getAvoider();
+  
+  public static void initializeResources() {
+    makeGreenRamp();
+    makeRedRamp();
+  }
+  
+  /** The Red ramp bounding box. */
+  public static Rect rrbb;
+  public static double rFacingX;
+  public static double rFacingY;
+
+  private static void makeRedRamp() {
+    rFacingX = Math.signum(Resources.rr.right.y - Resources.rr.left.y);
+    rFacingY = Math.signum(Resources.rr.right.x - Resources.rr.left.x);
+  
+    if (rFacingY != 0) {
+      if (rFacingY > 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 0.25, Resources.rr.left.y - 0.25),
+            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 2.25));
+      }
+      if (rFacingY < 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 2.25),
+            new Point(Resources.rr.left.x + 0.25, Resources.rr.left.y + 0.25)); // Ramp
+      }
+    }
+  
+    if (rFacingX != 0) {
+      if (rFacingX > 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 2.25, Resources.rr.left.y - 0.25),
+            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 0.25)); // Ramp
+      }
+      if (rFacingX < 0) {
+        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 0.25),
+            new Point(Resources.rr.left.x + 2.25, Resources.rr.left.y + 0.25)); // Ramp
+      }
+    }
+  }
+
+  /** The Green ramp bounding box. */
+  public static Rect grbb;
+  public static double gFacingX;
+  public static double gFacingY;
+
+  private static void makeGreenRamp() {
+    gFacingX = Math.signum(Resources.gr.right.y - Resources.gr.left.y);
+    gFacingY = Math.signum(Resources.gr.right.x - Resources.gr.left.x);
+  
+    if (gFacingY != 0) {
+      if (gFacingY > 0) {
+        Resources.grbb = new Rect(new Point(Resources.gr.left.x - 0.25, Resources.gr.left.y - 0.25),
+            new Point(Resources.gr.right.x + 0.25, Resources.gr.right.y + 2.25));
+      }
+      if (gFacingY < 0) {
+        Resources.grbb = new Rect(new Point(Resources.gr.right.x - 0.25, Resources.gr.right.y - 2.25),
+            new Point(Resources.gr.left.x + 0.25, Resources.gr.left.y + 0.25)); // Ramp
+      }
+    }
+  
+    if (gFacingX != 0) {
+      if (gFacingX > 0) {
+        Resources.grbb = new Rect(new Point(Resources.gr.left.x - 2.25, Resources.gr.left.y - 0.25),
+            new Point(Resources.gr.right.x + 0.25, Resources.gr.right.y + 0.25)); // Ramp
+      }
+      if (gFacingX < 0) {
+        Resources.grbb = new Rect(new Point(Resources.gr.right.x - 0.25, Resources.gr.right.y - 0.25),
+            new Point(Resources.gr.left.x + 2.25, Resources.gr.left.y + 0.25)); // Ramp
+      }
+    }
+  }
 
   // Wi-Fi parameters
 

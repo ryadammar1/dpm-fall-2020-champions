@@ -49,6 +49,7 @@ public class Main {
         case ("Standard.Initialization.Configuration"): {
           System.out.println("Configuring");
           Search.initializeSearch();
+          Resources.initializeResources();
           STATE_MACHINE.doneConfiguring(); // TEMPORARY : Add this at the end of the function it self
           }
         case ("Standard.Initialization.Localization"): {

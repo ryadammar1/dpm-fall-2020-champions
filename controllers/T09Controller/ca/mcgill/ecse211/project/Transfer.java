@@ -2,6 +2,8 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.Utils.*;
+import java.util.ArrayList;
+import ca.mcgill.ecse211.playingfield.Point;
 
 public class Transfer {
 
@@ -17,16 +19,50 @@ public class Transfer {
     /** The number of invalid samples seen by filter() so far. */
     private static int invalidSampleCount;
 
+    // TODO: Handle the case when the block is stuck inside the cage
+    // TODO: Obstacle avoidance around other bin and ramp
     public static void doTransfer() {
-        setSpeed(FORWARD_SPEED);
-        while(readUsDistance()>=0)
-            moveForward();
+      // bad idea to close a cage when obstacle avoidance is involved in another thread during transfer
+      /**
+       * Secure block
+       */
+    
+      // setSpeed(FORWARD_SPEED);
+      // while(readUsDistance()>=0)
+      //     moveForward();
 
-        /**
-         * Secure block
-         */
+      // cageMotor.setSpeed(60);
+      // cageMotor.rotate(180, false);
+      
+      Point midPoint = new Point((ramp.left.x + ramp.right.x) / 2, (ramp.left.y + ramp.right.y) / 2);
+      ArrayList<Point> path;
+      
+      if (Resources.ramp == Resources.rr) {
+          Point tail = new Point(midPoint.x + Resources.rFacingX, midPoint.y + Resources.rFacingY);
+          path = PathPlanning.plan(Utils.getCurrentPosition(), tail, midPoint);
+      } else {
+          Point tail = new Point(midPoint.x + Resources.gFacingX, midPoint.y + Resources.gFacingY);
+          path = PathPlanning.plan(Utils.getCurrentPosition(), tail, midPoint);
+      }
 
-        
+      for (Point p : path) {
+          System.out.println(p);
+          Navigation.travelTo(p);
+      }
+      
+      Point destination;
+      if (Resources.ramp == Resources.rr) {
+          destination = new Point(midPoint.x + Resources.rFacingX, midPoint.y + Resources.rFacingY);
+      } else {
+          destination = new Point(midPoint.x + Resources.gFacingX, midPoint.y + Resources.gFacingY);
+      }
+
+      Navigation.travelTo(destination);
+
+      Navigation.moveStraightFor(-1.5);
+
+      cageMotor.setSpeed(60);
+      cageMotor.rotate(-180, false);
     }
 
     // ULTRASONIC SENSOR RELATED //
