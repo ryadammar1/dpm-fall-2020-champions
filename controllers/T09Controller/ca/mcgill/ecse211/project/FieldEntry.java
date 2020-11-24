@@ -28,36 +28,24 @@ public class FieldEntry {
 
     if (isTunnelRight() == true) {
       goInFrontOfRightTunnel();
-      if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
-        System.out.println("enterField returning");
-        return;
-      }
-      Navigation.turnTo(90);
+      Navigation.turnToImmReturn(90);
       crossRightTunnel();
     } else if (isTunnelLeft() == true) {
       goInFrontOfLeftTunnel();
-      if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
-        System.out.println("enterField returning");
-        return;
-      }
-      Navigation.turnTo(270);
+      Navigation.turnToImmReturn(270);
       crossLeftTunnel();
     } else if (isTunnelTop() == true) {
       goInFrontOfTopTunnel();
-      if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
-        System.out.println("enterField returning");
-        return;
-      }
-      Navigation.turnTo(0);
+      Navigation.turnToImmReturn(0);
       crossTopTunnel();
     } else if (isTunnelBottom() == true) {
       goInFrontOfBottomTunnel();
-      if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
-        System.out.println("enterField returning");
-        return;
-      }
-      Navigation.turnTo(180);
+      Navigation.turnToImmReturn(180);
       crossBottomTunnel();
+    }
+
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+        return;
     }
 
 
@@ -65,10 +53,6 @@ public class FieldEntry {
       enteredSearchZone();
     } else {
       goToSearchZone();
-      if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
-        System.out.println("enterField returning");
-        return;
-      }
       enteredSearchZone();
 
     }
@@ -232,7 +216,6 @@ public class FieldEntry {
       double yInSZ = SZ_LL.y + 1;
       Point inSZ = new Point(xInSZ, yInSZ);
       Navigation.travelToPerpendicularImmReturn(inSZ);
-      System.out.println("goToSearchZone returning....");
     }
 
   }
