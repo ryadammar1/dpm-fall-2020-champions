@@ -146,6 +146,9 @@ public class Navigation {
     System.out.println("Done traveling y");
   }
 
+  /**
+   * Waits until the avoidance state is asserted or until the motors have stopped moving before returning. 
+   */
   public static void waitUntilStopped() {
     // Wait while motor is moving
     double positionl = leftMotor.getTachoCount();
