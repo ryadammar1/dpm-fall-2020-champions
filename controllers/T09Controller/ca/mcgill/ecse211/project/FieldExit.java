@@ -1,6 +1,6 @@
 package ca.mcgill.ecse211.project;
 
-import static ca.mcgill.ecse211.project.Resources.TIMEOUT_PERIOD;
+import static ca.mcgill.ecse211.project.Resources.*;
 import ca.mcgill.ecse211.playingfield.Point;
 import simlejos.hardware.ev3.LocalEV3;
 
@@ -154,26 +154,26 @@ public static void setTunnelAndSearchZone() {
   public static void goToCorner(){
       
     if (Resources.corner == 0){
-        double x = 0.3048/2;
-        double y = 0.3048/2;
+        double x = TILE_SIZE/2;
+        double y = TILE_SIZE/2;
         Point startingCorner = new Point(x, y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
       else if (Resources.corner == 1){
-        double x = ((15*0.3048)-(0.3048/2));
-        double y = 0.3048/2;
+        double x = ((15*TILE_SIZE)-(TILE_SIZE/2));
+        double y = TILE_SIZE/2;
         Point startingCorner = new Point(x,y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
       else if (Resources.corner == 2){
-        double x = ((15*0.3048)-(0.3048/2));
-        double y = ((9*0.3048)-(0.3048/2));
+        double x = ((15*TILE_SIZE)-(TILE_SIZE/2));
+        double y = ((9*TILE_SIZE)-(TILE_SIZE/2));
         Point startingCorner = new Point(x,y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
       else if (Resources.corner == 3){
-        double x = 0.3048/2;
-        double y = ((9*0.3048)-(0.3048/2));
+        double x = TILE_SIZE/2;
+        double y = ((9*TILE_SIZE)-(TILE_SIZE/2));
         Point startingCorner = new Point(x,y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
