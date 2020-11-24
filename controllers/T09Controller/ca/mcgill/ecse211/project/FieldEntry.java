@@ -122,7 +122,7 @@ public class FieldEntry {
    */
   public static void goInFrontOfRightTunnel() {
 
-    Point inFront = new Point((TN_LL.x - 1), (TN_LL.y + TN_UL.y) / 2);
+    Point inFront = new Point((TN_LL.x - 0.5), (TN_LL.y + TN_UL.y) / 2);
     Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
@@ -132,7 +132,7 @@ public class FieldEntry {
    */
   public static void goInFrontOfLeftTunnel() {
 
-    Point inFront = new Point((TN_UR.x + 1), (TN_LL.y + TN_UL.y) / 2);
+    Point inFront = new Point((TN_UR.x + 0.5), (TN_LL.y + TN_UL.y) / 2);
     Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
@@ -142,7 +142,7 @@ public class FieldEntry {
    */
   public static void goInFrontOfTopTunnel() {
 
-    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 1));
+    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 0.5));
     Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
@@ -152,7 +152,7 @@ public class FieldEntry {
    */
   public static void goInFrontOfBottomTunnel() {
 
-    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 1));
+    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 0.5));
     Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
@@ -161,7 +161,7 @@ public class FieldEntry {
    * Robot crosses tunnel on the right of start zone
    */
   public static void crossRightTunnel() {
-    Point destination = new Point((TN_LR.x + 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
+    Point destination = new Point((TN_LR.x + 0.5), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
   }
@@ -170,7 +170,7 @@ public class FieldEntry {
    * Robot crosses tunnel on the left of start zone
    */
   public static void crossLeftTunnel() {
-    Point destination = new Point((TN_LL.x - 1), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
+    Point destination = new Point((TN_LL.x - 0.5), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
   }
@@ -179,7 +179,7 @@ public class FieldEntry {
    * Robot crosses tunnel on the top of start zone
    */
   public static void crossTopTunnel() {
-    Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_UR.y + 1);
+    Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_UR.y + 0.5);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
   }
@@ -188,7 +188,7 @@ public class FieldEntry {
    * Robot crosses tunnel on the bottom of start zone
    */
   public static void crossBottomTunnel() {
-    Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_LL.y - 1);
+    Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_LL.y - 0.5);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
   }
