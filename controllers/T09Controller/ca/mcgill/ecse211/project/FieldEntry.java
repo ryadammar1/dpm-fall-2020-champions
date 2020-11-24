@@ -57,6 +57,14 @@ public class FieldEntry {
 
     }
   }
+  
+
+//  public static boolean isRedTeam() {
+//    if (Resources.redTeam == Resources.TEAM_NUMBER) {
+//      return true;
+//    } else
+//      return false;
+//  }
 
   public static void setTunnelAndSearchZone() {
     Z_LL = Resources.startZone.ll;
