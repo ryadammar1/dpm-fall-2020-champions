@@ -1,6 +1,7 @@
 package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.TIMEOUT_PERIOD;
+import static ca.mcgill.ecse211.project.Resources.obstacleavoidance;
 import ca.mcgill.ecse211.playingfield.Point;
 import simlejos.hardware.ev3.LocalEV3;
 
@@ -161,36 +162,44 @@ public class FieldEntry {
    * Robot crosses tunnel on the right of start zone
    */
   public static void crossRightTunnel() {
+    obstacleavoidance.pause();
     Point destination = new Point((TN_LR.x + 0.5), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
+    obstacleavoidance.resume();
   }
 
   /**
    * Robot crosses tunnel on the left of start zone
    */
   public static void crossLeftTunnel() {
+    obstacleavoidance.pause();
     Point destination = new Point((TN_LL.x - 0.5), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
+    obstacleavoidance.resume();
   }
 
   /**
    * Robot crosses tunnel on the top of start zone
    */
   public static void crossTopTunnel() {
+    obstacleavoidance.pause();
     Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_UR.y + 0.5);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
+    obstacleavoidance.resume();
   }
 
   /**
    * Robot crosses tunnel on the bottom of start zone
    */
   public static void crossBottomTunnel() {
+    obstacleavoidance.pause();
     Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_LL.y - 0.5);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
+    obstacleavoidance.resume();
   }
 
 
