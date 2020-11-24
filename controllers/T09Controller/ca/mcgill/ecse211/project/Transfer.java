@@ -18,6 +18,8 @@ public class Transfer {
     private static int prevDistance;
     /** The number of invalid samples seen by filter() so far. */
     private static int invalidSampleCount;
+    
+    private static boolean isCageClosed = false;
 
     // TODO: Handle the case when the block is stuck inside the cage
     // TODO: Obstacle avoidance around other bin and ramp
@@ -33,10 +35,12 @@ public class Transfer {
        
        Utils.stopMotors();
        
-       cageMotor.setSpeed(60);
-       cageMotor.rotate(180, false);
-       obstacleavoidance.resume();
-      
+       if (!isCageClosed) {
+         cageMotor.setSpeed(60);
+         cageMotor.rotate(180, false);  
+       }
+       
+     obstacleavoidance.resume();
       Point midPoint = new Point((ramp.left.x + ramp.right.x) / 2, (ramp.left.y + ramp.right.y) / 2);
       ArrayList<Point> path;
       
@@ -68,6 +72,7 @@ public class Transfer {
 
       cageMotor.setSpeed(60);
       cageMotor.rotate(-180, false);
+      isCageClosed = false;
       
       obstacleavoidance.resume();
     }
