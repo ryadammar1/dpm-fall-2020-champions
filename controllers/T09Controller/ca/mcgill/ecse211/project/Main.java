@@ -35,6 +35,7 @@ public class Main {
           Search.initializeSearch();
           ObstacleAvoidance.initializeObstacleAvoidance();
           FieldEntry.setTunnelAndSearchZone();
+          FieldExit.setTunnelAndSearchZone();
 
           // Start the odometer and obstacle avoidance thread
           new Thread(odometer).start();
@@ -113,6 +114,11 @@ public class Main {
           STATE_MACHINE.blockTransfered();
           break;
         }
+        case ("Standard.Termination.ExitField"):
+          // TODO Complete termination
+          System.out.println("Exiting field");
+          FieldExit.exitField();
+          return;
         case ("Avoidance"): {
           System.out.println("Avoiding");
           Avoidance.correct();
