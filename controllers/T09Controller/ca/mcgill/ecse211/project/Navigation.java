@@ -113,7 +113,7 @@ public class Navigation {
     if (distanceX >= 0.2) {
       // Move along the X axis
       setSpeed(ROTATE_SPEED);
-      turnTo(angleX);
+      turnToImmReturn(angleX);
       setSpeed(FORWARD_SPEED);
       moveStraightForImmReturn(distanceX);
     }
@@ -129,7 +129,7 @@ public class Navigation {
     if (distanceY >= 0.2) {
       // Move along the Y axis
       setSpeed(ROTATE_SPEED);
-      turnTo(angleY);
+      turnToImmReturn(angleY);
       setSpeed(FORWARD_SPEED);
       moveStraightForImmReturn(distanceY);
     }

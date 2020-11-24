@@ -73,11 +73,12 @@ public class Main {
           break;
         }
         case ("Standard.Initialization.EntryField"): {
+          System.out.println(STATE_MACHINE.getStatusFullName());
+          odometer.printPosition();
           System.out.println("Entering field");
           obstacleavoidance.resume();
           System.out.println("Avoidance on....");
           FieldEntry.enterField();
-          System.out.println(STATE_MACHINE.getStatusFullName());
           break;
         }
         case ("Standard.Operation.Search"): {

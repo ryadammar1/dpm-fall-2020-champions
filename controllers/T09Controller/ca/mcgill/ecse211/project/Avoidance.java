@@ -19,7 +19,7 @@ public class Avoidance {
 	private static int invalidSampleCount;
 
 	/** Threshold to trigger obstacle avoidance corrections. in cm. */
-	private static int THRESHOLD = 15;
+	private static int THRESHOLD = 33;
 
 	/** Sensor to use. (can be changed depending on search mode). */
 	public static int SENSOR = 1;
@@ -32,12 +32,10 @@ public class Avoidance {
 		System.out.println("First turn");
 		setSpeed(ROTATE_SPEED);
 		turnBy(90.0);
-		stopMotors();
-		setSpeed(ROTATE_SPEED);
-		turnBy(90.0);
 		int reading = readUsDistance(SENSOR);
 		System.out.println(reading);
 		// If other obstacle detected at 90 degrees
+		int direction = 1;
 		if (reading <= THRESHOLD) {
 			// Try in the other side
 			System.out.println("Second turn");
@@ -45,18 +43,20 @@ public class Avoidance {
 			int reading2 = readUsDistance(SENSOR);
 			System.out.println(reading2);
 			// If both sides are not possible, move back and start again
+			direction = -1;
 			if (reading2 <= THRESHOLD) {
 				turnBy(90.0);
 				moveStraightFor(-1.0);
 				System.out.println("Impossible... going back a bit");
 				correct();
 			}
-			System.out.println("goAround(2)");
-			//goAround(2);
 		}
+		setSpeed(FORWARD_SPEED);
+		moveStraightFor(1.0);
+		setSpeed(ROTATE_SPEED);
+		turnBy(direction * -90.0);
 
-		System.out.println("goAround(1)");
-		//goAround(1);
+		System.out.println("Done correcting");
 
 		Main.STATE_MACHINE.obstacleAvoided();
 	}

@@ -23,7 +23,7 @@ public class ObstacleAvoidance implements Runnable {
 	private static int invalidSampleCount;
 
 	/** Threshold to trigger obstacle avoidance corrections. in cm. */
-	private static int THRESHOLD = 15;
+	private static int THRESHOLD = 10;
 
 	/** Sensor to use. (can be changed depending on search mode). */
 	public static int SENSOR = 1;
@@ -66,11 +66,9 @@ public class ObstacleAvoidance implements Runnable {
 			if (ENABLED == true) {
 				int reading = readUsDistance(SENSOR);
 				if (reading <= THRESHOLD) {
-					System.out.println(Main.STATE_MACHINE.getStatusFullName());
 					Main.STATE_MACHINE.setBlockDetected(false);
 					Main.STATE_MACHINE.detectObstacle();
 					System.out.println("Obstacle detected...." + reading);
-					System.out.println(Main.STATE_MACHINE.getStatus());
 					ENABLED = false;
 					//return;
 				}
@@ -79,70 +77,7 @@ public class ObstacleAvoidance implements Runnable {
 		}
 
 	}
-/*
-	public static void correct() {
-		correction();
-	}
-*/
-	/**
-	 * Method to decide which direction to go around the obstacle
-	 */
-	public static void correct() {
-		stopMotors();
-		System.out.println("First turn");
-		setSpeed(ROTATE_SPEED);
-		turnBy(90.0);
-		stopMotors();
-		setSpeed(ROTATE_SPEED);
-		turnBy(90.0);
-		int reading = readUsDistance(SENSOR);
-		System.out.println(reading);
-		// If other obstacle detected at 90 degrees
-		if (reading <= THRESHOLD) {
-			// Try in the other side
-			System.out.println("Second turn");
-			turnBy(-180.0);
-			int reading2 = readUsDistance(SENSOR);
-			System.out.println(reading2);
-			// If both sides are not possible, move back and start again
-			if (reading2 <= THRESHOLD) {
-				turnBy(90.0);
-				moveStraightFor(-1.0);
-				System.out.println("Impossible... going back a bit");
-				correct();
-			}
-			System.out.println("goAround(2)");
-			//goAround(2);
-		}
 
-		System.out.println("goAround(1)");
-		//goaround(1)
-
-		Main.STATE_MACHINE.obstacleAvoided();
-	}
-
-	/**
-	 * Method to move the robot around the obstacle
-	 * 
-	 * @param direction direction in which the correction is done. (1:clockwise,
-	 *                  2:counter-clockwise)
-	 */
-	private static void goAround(int direction) {
-		int coefficient = 0;
-		if (direction == 1) {
-			coefficient = -1;
-		} else {
-			coefficient = 1;
-		}
-		setSpeed(FORWARD_SPEED);
-		moveStraightFor(1.0);
-		turnBy(coefficient * 90.0);
-		moveStraightFor(2.0);
-		turnBy(coefficient * 90.0);
-		moveStraightFor(1.0);
-		turnBy(coefficient * (-90.0));
-
-	}
 
 	/**
 	 * Returns the filtered distance between the US sensor and an obstacle in cm.

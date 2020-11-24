@@ -48,7 +48,7 @@ public class FieldEntry {
         return;
     }
 
-
+    System.out.println("Finished travelling... entering search zone");
     if (checkIfInSearchZone() == true) {
       enteredSearchZone();
     } else {
