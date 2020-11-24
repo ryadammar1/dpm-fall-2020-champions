@@ -6,8 +6,12 @@ import static ca.mcgill.ecse211.project.Utils.*;
 import static simlejos.ExecutionController.*;
 
 import ca.mcgill.ecse211.playingfield.Point;
+import simlejos.robotics.RegulatedMotor;
 
 public class Navigation {
+
+  double position;
+  double previousPosition;
 
   /** Do not instantiate this class. */
   private Navigation() {
@@ -42,11 +46,11 @@ public class Navigation {
     turnBy(minimalAngle(currentTheta, destinationTheta));
     moveStraightForImmReturn(distanceBetween(currentLocation, destination));
 
-    while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance" && (leftMotor.isMoving() || rightMotor.isMoving()))
-      waitUntilNextStep(); // Sleep for one physics step
-    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+    for (int i = 0; i < 50; i++)
+      waitUntilNextStep();
+    waitUntilStopped();
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
       return;
-    }
 
     stopMotors();
   }
@@ -117,14 +121,13 @@ public class Navigation {
       moveStraightForImmReturn(distanceX);
     }
 
-    while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance" && (leftMotor.isMoving() || rightMotor.isMoving())) {
-      waitUntilNextStep(); // Sleep for one physics step
-      System.out.println(1);
-    }
-    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
-      stopMotors();
+    for (int i = 0; i < 50; i++)
+      waitUntilNextStep();
+    waitUntilStopped();
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
       return;
-    }
+
+    System.out.println("Done traveling x");
 
     if (distanceY >= 0.2) {
       // Move along the Y axis
@@ -134,15 +137,34 @@ public class Navigation {
       moveStraightForImmReturn(distanceY);
     }
 
-    while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance" && (leftMotor.isMoving() || rightMotor.isMoving())) {
-      waitUntilNextStep(); // Sleep for one physics step
-      System.out.println(1);
-    }
-    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+    for (int i = 0; i < 50; i++)
+      waitUntilNextStep();
+    waitUntilStopped();
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
       return;
-    }
 
-    stopMotors();
+    System.out.println("Done traveling y");
+  }
+
+  public static void waitUntilStopped() {
+    // Wait while motor is moving
+    double positionl = leftMotor.getTachoCount();
+    double previousPositionl = Double.POSITIVE_INFINITY;
+    double positionr = rightMotor.getTachoCount();
+    double previousPositionr = Double.POSITIVE_INFINITY;
+    while ((Math.abs(positionl - previousPositionl) > 0.000000001 || Math.abs(positionr - previousPositionr) > 0.000000001)
+        && Main.STATE_MACHINE.getStatusFullName() != "Avoidance") {
+      previousPositionl = positionl;
+      previousPositionr = positionr;
+      // Sleep for 50 physics steps
+      for (int i = 0; i < 400; i++)
+        waitUntilNextStep();
+      positionl = leftMotor.getTachoCount();
+      positionr = rightMotor.getTachoCount();
+
+      System.out.println(positionl + "vs x" + previousPositionl);
+      System.out.println(positionl + "vs y" + previousPositionl);
+    }
   }
 
   public static void turnTo(double angle) {

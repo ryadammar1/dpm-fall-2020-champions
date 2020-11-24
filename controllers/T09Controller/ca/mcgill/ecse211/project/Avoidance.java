@@ -58,6 +58,7 @@ public class Avoidance {
 
 		System.out.println("Done correcting");
 
+		stopMotors();
 		Main.STATE_MACHINE.obstacleAvoided();
 	}
 

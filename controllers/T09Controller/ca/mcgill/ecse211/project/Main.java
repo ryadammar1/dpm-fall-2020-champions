@@ -52,9 +52,9 @@ public class Main {
         }
         case ("Standard.Initialization.Localization"): {
           System.out.println("Localizing");
-          //UltrasonicLocalizer.localize();
-          //LightSensorCalibration.calibrate();
-          //LightLocalizer.localize();
+          UltrasonicLocalizer.localize();
+          LightSensorCalibration.calibrate();
+          LightLocalizer.localize();
           switch (Resources.corner) {
             case 0:
               odometer.setX(1 * TILE_SIZE);

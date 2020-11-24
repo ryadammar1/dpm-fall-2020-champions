@@ -2,6 +2,8 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import ca.mcgill.ecse211.playingfield.Point;
+import simlejos.robotics.RegulatedMotor;
+import static simlejos.ExecutionController.*;
 
 public class Utils {
 
