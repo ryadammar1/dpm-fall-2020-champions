@@ -42,9 +42,11 @@ public class Navigation {
     turnBy(minimalAngle(currentTheta, destinationTheta));
     moveStraightForImmReturn(distanceBetween(currentLocation, destination));
 
-    while (Main.STATE_MACHINE.getStatusFullName() != "Standard.Operation.Avoidance"
-        && (leftMotor.isMoving() || rightMotor.isMoving()))
+    while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance" && (leftMotor.isMoving() || rightMotor.isMoving()))
       waitUntilNextStep(); // Sleep for one physics step
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+      return;
+    }
 
     stopMotors();
   }
@@ -110,32 +112,45 @@ public class Navigation {
     if (distanceX >= 0.2) {
       // Move along the X axis
       setSpeed(ROTATE_SPEED);
-      turnTo(angleX);
+      turnToImmReturn(angleX);
       setSpeed(FORWARD_SPEED);
       moveStraightForImmReturn(distanceX);
     }
 
-    while (Main.STATE_MACHINE.getStatusFullName() != "Standard.Operation.Avoidance"
-        && (leftMotor.isMoving() || rightMotor.isMoving()))
+    while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance" && (leftMotor.isMoving() || rightMotor.isMoving())) {
       waitUntilNextStep(); // Sleep for one physics step
+      System.out.println(1);
+    }
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+      stopMotors();
+      return;
+    }
 
     if (distanceY >= 0.2) {
       // Move along the Y axis
       setSpeed(ROTATE_SPEED);
-      turnTo(angleY);
+      turnToImmReturn(angleY);
       setSpeed(FORWARD_SPEED);
       moveStraightForImmReturn(distanceY);
     }
 
-    while (Main.STATE_MACHINE.getStatusFullName() != "Standard.Operation.Avoidance"
-        && (leftMotor.isMoving() || rightMotor.isMoving()))
+    while (Main.STATE_MACHINE.getStatusFullName() != "Avoidance" && (leftMotor.isMoving() || rightMotor.isMoving())) {
       waitUntilNextStep(); // Sleep for one physics step
+      System.out.println(1);
+    }
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+      return;
+    }
 
-      stopMotors();
+    stopMotors();
   }
 
   public static void turnTo(double angle) {
     turnBy(minimalAngle(odometer.getXyt()[2], angle));
+  }
+
+  public static void turnToImmReturn(double angle) {
+    turnByImmReturn(minimalAngle(odometer.getXyt()[2], angle));
   }
 
   /**
@@ -209,6 +224,19 @@ public class Navigation {
    * @param angle the angle by which to turn, in degrees
    */
   public static void turnBy(double angle) {
+    setSpeed(ROTATE_SPEED);
+    leftMotor.rotate(convertAngle(angle), true);
+    rightMotor.rotate(-convertAngle(angle), false);
+  }
+
+  /**
+   * Same method as turnBy but returns immediately if the Avoidance state is
+   * triggered.
+   */
+  public static void turnByImmReturn(double angle) {
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+      return;
+
     setSpeed(ROTATE_SPEED);
     leftMotor.rotate(convertAngle(angle), true);
     rightMotor.rotate(-convertAngle(angle), false);

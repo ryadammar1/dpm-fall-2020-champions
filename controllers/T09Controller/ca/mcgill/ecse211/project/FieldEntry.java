@@ -28,23 +28,27 @@ public class FieldEntry {
 
     if (isTunnelRight() == true) {
       goInFrontOfRightTunnel();
-      Navigation.turnTo(90);
+      Navigation.turnToImmReturn(90);
       crossRightTunnel();
     } else if (isTunnelLeft() == true) {
       goInFrontOfLeftTunnel();
-      Navigation.turnTo(270);
+      Navigation.turnToImmReturn(270);
       crossLeftTunnel();
     } else if (isTunnelTop() == true) {
       goInFrontOfTopTunnel();
-      Navigation.turnTo(0);
+      Navigation.turnToImmReturn(0);
       crossTopTunnel();
     } else if (isTunnelBottom() == true) {
       goInFrontOfBottomTunnel();
-      Navigation.turnTo(180);
+      Navigation.turnToImmReturn(180);
       crossBottomTunnel();
     }
 
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
+        return;
+    }
 
+    System.out.println("Finished travelling... entering search zone");
     if (checkIfInSearchZone() == true) {
       enteredSearchZone();
     } else {
@@ -53,8 +57,7 @@ public class FieldEntry {
 
     }
   }
-
-
+  
 
 //  public static boolean isRedTeam() {
 //    if (Resources.redTeam == Resources.TEAM_NUMBER) {
@@ -221,7 +224,6 @@ public class FieldEntry {
       double yInSZ = SZ_LL.y + 1;
       Point inSZ = new Point(xInSZ, yInSZ);
       Navigation.travelToPerpendicularImmReturn(inSZ);
-
     }
 
   }

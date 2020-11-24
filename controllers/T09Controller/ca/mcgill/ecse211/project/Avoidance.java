@@ -2,12 +2,8 @@ package ca.mcgill.ecse211.project;
 
 import static ca.mcgill.ecse211.project.Resources.*;
 import static ca.mcgill.ecse211.project.Utils.*;
-import static simlejos.ExecutionController.waitUntilNextStep;
 
-public class ObstacleAvoidance implements Runnable {
-
-	/** The singleton odometer instance. */
-	private static ObstacleAvoidance avoider;
+public class Avoidance {
 
 	// These arrays are used to avoid creating new ones at each iteration.
 	/** Buffer (array) to store US samples. */
@@ -23,61 +19,70 @@ public class ObstacleAvoidance implements Runnable {
 	private static int invalidSampleCount;
 
 	/** Threshold to trigger obstacle avoidance corrections. in cm. */
-	private static int THRESHOLD = 10;
+	private static int THRESHOLD = 33;
 
 	/** Sensor to use. (can be changed depending on search mode). */
 	public static int SENSOR = 1;
 
-	/** Boolean to enable obstacle avoidance or not. */
-	public static boolean ENABLED = false;
-
-
 	/**
-	 * Initializes the obstacle avoidance depending on the search mode.
-	 * Selects which sensor to use.
+	 * Method to decide which direction to go around the obstacle
 	 */
-	public static void initializeObstacleAvoidance(){
-		if (Search.getMode() == Search.Mode.Recognize){
-			SENSOR = 2;
-			usData = new float[usSensor2.sampleSize()];
-		}
-	}
-
-	/**
-	 * Returns the Odometer Object. Use this method to obtain an instance of
-	 * Odometer.
-	 */
-	public static synchronized ObstacleAvoidance getAvoider() {
-		if (avoider == null) {
-			avoider = new ObstacleAvoidance();
-		}
-		return avoider;
-	}
-
-	/**
-	 * Main method run in a separate thread. Monitors second ultrasonic sensor and
-	 * triggers state machine's "detect obstacle" event when the reading is under a
-	 * set threshold.
-	 */
-	@Override
-	public void run() {
-		System.out.println("Running obstacle avoidance..");
-		while (true) {
-			if (ENABLED == true) {
-				int reading = readUsDistance(SENSOR);
-				if (reading <= THRESHOLD) {
-					Main.STATE_MACHINE.setBlockDetected(false);
-					Main.STATE_MACHINE.detectObstacle();
-					System.out.println("Obstacle detected...." + reading);
-					ENABLED = false;
-					//return;
-				}
+	public static void correct() {
+		stopMotors();
+		System.out.println("First turn");
+		setSpeed(ROTATE_SPEED);
+		turnBy(90.0);
+		int reading = readUsDistance(SENSOR);
+		System.out.println(reading);
+		// If other obstacle detected at 90 degrees
+		int direction = 1;
+		if (reading <= THRESHOLD) {
+			// Try in the other side
+			System.out.println("Second turn");
+			turnBy(-180.0);
+			int reading2 = readUsDistance(SENSOR);
+			System.out.println(reading2);
+			// If both sides are not possible, move back and start again
+			direction = -1;
+			if (reading2 <= THRESHOLD) {
+				turnBy(90.0);
+				moveStraightFor(-1.0);
+				System.out.println("Impossible... going back a bit");
+				correct();
 			}
-			waitUntilNextStep();
 		}
+		setSpeed(FORWARD_SPEED);
+		moveStraightFor(1.0);
+		setSpeed(ROTATE_SPEED);
+		turnBy(direction * -90.0);
 
+		System.out.println("Done correcting");
+
+		Main.STATE_MACHINE.obstacleAvoided();
 	}
 
+	/**
+	 * Method to move the robot around the obstacle
+	 * 
+	 * @param direction direction in which the correction is done. (1:clockwise,
+	 *                  2:counter-clockwise)
+	 */
+	private static void goAround(int direction) {
+		int coefficient = 0;
+		if (direction == 1) {
+			coefficient = -1;
+		} else {
+			coefficient = 1;
+		}
+		setSpeed(FORWARD_SPEED);
+		moveStraightFor(1.0);
+		turnBy(coefficient * 90.0);
+		moveStraightFor(2.0);
+		turnBy(coefficient * 90.0);
+		moveStraightFor(1.0);
+		turnBy(coefficient * (-90.0));
+
+	}
 
 	/**
 	 * Returns the filtered distance between the US sensor and an obstacle in cm.
@@ -116,16 +121,5 @@ public class ObstacleAvoidance implements Runnable {
 			prevDistance = distance;
 			return distance;
 		}
-	}
-
-	/**
-	 * Method to pause the obstacle avoidance system
-	 */
-	public void pause() {
-		ENABLED = false;
-	}
-
-	public void resume() {
-		ENABLED = true;
 	}
 }
