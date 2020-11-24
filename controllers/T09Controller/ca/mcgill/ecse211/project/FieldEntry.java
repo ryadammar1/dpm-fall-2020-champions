@@ -253,7 +253,6 @@ public class FieldEntry {
     } catch (InterruptedException e) {
     }
     LocalEV3.getAudio().beep();
-    Main.STATE_MACHINE.enteredField();
   }
 
 

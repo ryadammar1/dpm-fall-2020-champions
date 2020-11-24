@@ -98,6 +98,7 @@ public class Main {
           obstacleavoidance.resume();
           FieldEntry.enterField();
           obstacleavoidance.pause();
+          STATE_MACHINE.enteredField();
           break;
         }
         case ("Standard.Operation.Search"): {
@@ -109,12 +110,13 @@ public class Main {
           System.out.println("Transfering");
           obstacleavoidance.resume();
           Transfer.doTransfer();
-          obstacleavoidance.pause();
+          STATE_MACHINE.blockTransfered();
           break;
         }
         case ("Avoidance"): {
           System.out.println("Avoiding");
           Avoidance.correct();
+          Main.STATE_MACHINE.obstacleAvoided();
           break;
         }
         default:
