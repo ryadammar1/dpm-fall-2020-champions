@@ -117,8 +117,8 @@ public static void setTunnelAndSearchZone() {
   public static void goInFrontOfRightTunnelIsland() {
 
     Point inFront = new Point((TN_LL.x - 1), (TN_LL.y + TN_UL.y) / 2);
-    //Navigation.travelToPerpendicularImmReturn(inFront);
-    //TODO add travel to but with avoiding bins
+    Navigation.travelToPerpendicularImmReturn(inFront);
+    
   }
 
   /**
@@ -127,8 +127,8 @@ public static void setTunnelAndSearchZone() {
   public static void goInFrontOfLeftTunnelIsland() {
 
     Point inFront = new Point((TN_UL.x + 1), (TN_LL.y + TN_UL.y) / 2);
-    //Navigation.travelToPerpendicularImmReturn(inFront);
-    //TODO add travel to but with avoiding bins
+    Navigation.travelToPerpendicularImmReturn(inFront);
+    
   }
 
   /**
@@ -137,8 +137,8 @@ public static void setTunnelAndSearchZone() {
   public static void goInFrontOfTopTunnelIsland() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 1));
-    //Navigation.travelToPerpendicularImmReturn(inFront);
-    //TODO add travel to but with avoiding bins
+    Navigation.travelToPerpendicularImmReturn(inFront);
+    
   }
 
   /**
@@ -147,8 +147,8 @@ public static void setTunnelAndSearchZone() {
   public static void goInFrontOfBottomTunnel() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 1));
-    //Navigation.travelToPerpendicularImmReturn(inFront);
-    //TODO add travel to but with avoiding bins
+    Navigation.travelToPerpendicularImmReturn(inFront);
+    
   }
 
   public static void goToCorner(){
