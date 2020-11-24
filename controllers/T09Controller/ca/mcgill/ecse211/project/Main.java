@@ -96,8 +96,8 @@ public class Main {
           odometer.printPosition();
           System.out.println("Entering field");
           obstacleavoidance.resume();
-          System.out.println("Avoidance on....");
           FieldEntry.enterField();
+          obstacleavoidance.pause();
           break;
         }
         case ("Standard.Operation.Search"): {
@@ -107,7 +107,9 @@ public class Main {
         }
         case ("Standard.Operation.Transfer"): {
           System.out.println("Transfering");
+          obstacleavoidance.resume();
           Transfer.doTransfer();
+          obstacleavoidance.pause();
           break;
         }
         case ("Avoidance"): {
