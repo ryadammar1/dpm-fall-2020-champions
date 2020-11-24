@@ -22,17 +22,20 @@ public class Transfer {
     // TODO: Handle the case when the block is stuck inside the cage
     // TODO: Obstacle avoidance around other bin and ramp
     public static void doTransfer() {
-      // bad idea to close a cage when obstacle avoidance is involved in another thread during transfer
       /**
        * Secure block
        */
     
-      // setSpeed(FORWARD_SPEED);
-      // while(readUsDistance()>=0)
-      //     moveForward();
-
-      // cageMotor.setSpeed(60);
-      // cageMotor.rotate(180, false);
+      obstacleavoidance.pause();
+       setSpeed(FORWARD_SPEED/2);
+       while(readUsDistance()>=0.1)
+           moveForward();
+       
+       Utils.stopMotors();
+       
+       cageMotor.setSpeed(60);
+       cageMotor.rotate(180, false);
+       obstacleavoidance.resume();
       
       Point midPoint = new Point((ramp.left.x + ramp.right.x) / 2, (ramp.left.y + ramp.right.y) / 2);
       ArrayList<Point> path;
@@ -47,8 +50,10 @@ public class Transfer {
 
       for (Point p : path) {
           System.out.println(p);
-          Navigation.travelTo(p);
+          Navigation.travelToImmReturn(p);
       }
+      
+      obstacleavoidance.pause();
       
       Point destination;
       if (Resources.ramp == Resources.rr) {
@@ -57,12 +62,14 @@ public class Transfer {
           destination = new Point(midPoint.x + Resources.gFacingX, midPoint.y + Resources.gFacingY);
       }
 
-      Navigation.travelTo(destination);
+      Navigation.travelToImmReturn(destination);
 
       Navigation.moveStraightFor(-1.5);
 
       cageMotor.setSpeed(60);
       cageMotor.rotate(-180, false);
+      
+      obstacleavoidance.resume();
     }
 
     // ULTRASONIC SENSOR RELATED //
