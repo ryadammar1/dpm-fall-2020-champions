@@ -18,14 +18,17 @@ public class Transfer {
     private static int invalidSampleCount;
 
     public static void doTransfer() {
-        setSpeed(FORWARD_SPEED);
-        while(readUsDistance()>=0)
+        // Get into position
+        setSpeed(FORWARD_SPEED/2);
+        while(readUsDistance()>0)
             moveForward();
 
-        /**
-         * Secure block
-         */
+        stopMotors();
 
+        // Secure the block
+        cageMotor.rotate(180, false);
+
+        
         
     }
 
