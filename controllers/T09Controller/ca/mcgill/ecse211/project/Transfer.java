@@ -36,7 +36,8 @@ public class Transfer {
        
        if (!isCageClosed) {
          cageMotor.setSpeed(60);
-         cageMotor.rotate(180, false);  
+         cageMotor.rotate(180, false);
+         isCageClosed = true;
        }
        
      obstacleavoidance.resume();
