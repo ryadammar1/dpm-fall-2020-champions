@@ -124,7 +124,7 @@ public class FieldEntry {
   public static void goInFrontOfRightTunnel() {
 
     Point inFront = new Point((TN_LL.x - 0.5), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToImmReturn(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -134,7 +134,7 @@ public class FieldEntry {
   public static void goInFrontOfLeftTunnel() {
 
     Point inFront = new Point((TN_UR.x + 0.5), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToImmReturn(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -144,7 +144,7 @@ public class FieldEntry {
   public static void goInFrontOfTopTunnel() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 0.5));
-    Navigation.travelToImmReturn(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -154,7 +154,7 @@ public class FieldEntry {
   public static void goInFrontOfBottomTunnel() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 0.5));
-    Navigation.travelToImmReturn(inFront);
+    Navigation.travelToPerpendicularImmReturn(inFront);
 
   }
 
@@ -232,7 +232,7 @@ public class FieldEntry {
       double xInSZ = SZ_LL.x + 1;
       double yInSZ = SZ_LL.y + 1;
       Point inSZ = new Point(xInSZ, yInSZ);
-      Navigation.travelToImmReturn(inSZ);
+      Navigation.travelToPerpendicularImmReturn(inSZ);
     }
 
   }
