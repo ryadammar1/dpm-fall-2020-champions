@@ -30,9 +30,8 @@ public class Transfer {
     
       obstacleavoidance.pause();
        setSpeed(FORWARD_SPEED/2);
-       while(readUsDistance()>=0.1)
+       while(readUsDistance()>0)
            moveForward();
-       
        Utils.stopMotors();
        
        if (!isCageClosed) {
