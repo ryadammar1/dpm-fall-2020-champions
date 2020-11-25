@@ -63,8 +63,6 @@ public class FieldEntry {
       enteredSearchZone();
     } else {
       goToSearchZone();
-      enteredSearchZone();
-
     }
   }
   
@@ -242,6 +240,9 @@ public class FieldEntry {
       double yInSZ = SZ_LL.y + 1;
       Point inSZ = new Point(xInSZ, yInSZ);
       Navigation.travelToPerpendicularImmReturn(inSZ);
+      if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+        return;
+      enteredSearchZone();
     }
 
   }
@@ -262,6 +263,8 @@ public class FieldEntry {
     } catch (InterruptedException e) {
     }
     LocalEV3.getAudio().beep();
+    
+    Main.STATE_MACHINE.enteredField();
   }
 
 

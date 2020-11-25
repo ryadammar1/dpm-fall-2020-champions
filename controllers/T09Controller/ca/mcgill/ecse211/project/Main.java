@@ -99,7 +99,6 @@ public class Main {
           System.out.println("Entering field");
           FieldEntry.enterField();
           obstacleavoidance.resume();
-          STATE_MACHINE.enteredField();
           break;
         }
         case ("Standard.Operation.Search"): {
