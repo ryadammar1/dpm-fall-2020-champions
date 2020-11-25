@@ -20,6 +20,8 @@ static Point TN_LR;
 static Point SZ_LL;
 static Point SZ_UR;
 
+private static boolean crossedTunnel = false;
+
 /** Initialize values */
 public static void setTunnelAndSearchZone() {
     Z_LL = Resources.startZone.ll;
@@ -38,29 +40,30 @@ public static void setTunnelAndSearchZone() {
    * Main method that performs the exit of field
    */
   public static void exitField() {
-
-
-    // 1. travel to tunnel and cross
-    if( isTunnelRightIsland()==true){
-        goInFrontOfRightTunnelIsland();
-        Navigation.turnTo(90);
-        FieldEntry.crossRightTunnel();
+    if (!crossedTunnel) {
+      // 1. travel to tunnel and cross
+      if( isTunnelRightIsland()==true){
+          goInFrontOfRightTunnelIsland();
+          Navigation.turnTo(90);
+          FieldEntry.crossRightTunnel();
+      }
+      else if (isTunnelLeftIsland()==true){
+          goInFrontOfLeftTunnelIsland();
+          Navigation.turnTo(270);
+          FieldEntry.crossLeftTunnel();
+      }
+      else if (isTunnelTopIsland()==true){
+          goInFrontOfTopTunnelIsland();
+          Navigation.turnTo(0);
+          FieldEntry.crossTopTunnel();
+      }
+      else if (isTunnelBottomIsland()==true){
+          goInFrontOfBottomTunnel();
+          Navigation.turnTo(180);
+          FieldEntry.crossBottomTunnel();
+      }
     }
-    else if (isTunnelLeftIsland()==true){
-        goInFrontOfLeftTunnelIsland();
-        Navigation.turnTo(270);
-        FieldEntry.crossLeftTunnel();
-    }
-    else if (isTunnelTopIsland()==true){
-        goInFrontOfTopTunnelIsland();
-        Navigation.turnTo(0);
-        FieldEntry.crossTopTunnel();
-    }
-    else if (isTunnelBottomIsland()==true){
-        goInFrontOfBottomTunnel();
-        Navigation.turnTo(180);
-        FieldEntry.crossBottomTunnel();
-    }
+    crossedTunnel = true;
 
     //3. go to start corner
     goToCorner();

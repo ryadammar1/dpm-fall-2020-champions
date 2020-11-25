@@ -19,6 +19,8 @@ public class FieldEntry {
   static Point TN_LR;
   static Point SZ_LL;
   static Point SZ_UR;
+  
+  private static boolean crossedTunnel = false;
 
 
 
@@ -26,24 +28,27 @@ public class FieldEntry {
    * Main method that performs the enter field
    */
   public static void enterField() {
-
-    if (isTunnelRight() == true) {
-      goInFrontOfRightTunnel();
-      Navigation.turnToImmReturn(90);
-      crossRightTunnel();
-    } else if (isTunnelLeft() == true) {
-      goInFrontOfLeftTunnel();
-      Navigation.turnToImmReturn(270);
-      crossLeftTunnel();
-    } else if (isTunnelTop() == true) {
-      goInFrontOfTopTunnel();
-      Navigation.turnToImmReturn(0);
-      crossTopTunnel();
-    } else if (isTunnelBottom() == true) {
-      goInFrontOfBottomTunnel();
-      Navigation.turnToImmReturn(180);
-      crossBottomTunnel();
+    
+    if (!crossedTunnel) {
+      if (isTunnelRight() == true) {
+        goInFrontOfRightTunnel();
+        Navigation.turnToImmReturn(90);
+        crossRightTunnel();
+      } else if (isTunnelLeft() == true) {
+        goInFrontOfLeftTunnel();
+        Navigation.turnToImmReturn(270);
+        crossLeftTunnel();
+      } else if (isTunnelTop() == true) {
+        goInFrontOfTopTunnel();
+        Navigation.turnToImmReturn(0);
+        crossTopTunnel();
+      } else if (isTunnelBottom() == true) {
+        goInFrontOfBottomTunnel();
+        Navigation.turnToImmReturn(180);
+        crossBottomTunnel();
+      }
     }
+    crossedTunnel = true;
 
     if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
         return;
