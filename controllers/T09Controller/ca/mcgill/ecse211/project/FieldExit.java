@@ -104,7 +104,7 @@ public static void setTunnelAndSearchZone() {
    */
   public static void goInFrontOfRightTunnelIsland() {
     Point inFront = new Point((TN_LL.x - 0.5), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToPerpendicularImmReturn(inFront);
+    Navigation.travelToImmReturn(inFront);
     
   }
 
@@ -113,7 +113,7 @@ public static void setTunnelAndSearchZone() {
    */
   public static void goInFrontOfLeftTunnelIsland() {
     Point inFront = new Point((TN_UR.x + 0.5), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToPerpendicularImmReturn(inFront);
+    Navigation.travelToImmReturn(inFront);
     
   }
 
@@ -123,7 +123,7 @@ public static void setTunnelAndSearchZone() {
   public static void goInFrontOfTopTunnelIsland() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 0.5));
-    Navigation.travelToPerpendicularImmReturn(inFront);
+    Navigation.travelToImmReturn(inFront);
     
   }
 
@@ -133,7 +133,7 @@ public static void setTunnelAndSearchZone() {
   public static void goInFrontOfBottomTunnel() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 0.5));
-    Navigation.travelToPerpendicularImmReturn(inFront);
+    Navigation.travelToImmReturn(inFront);
     
   }
 
@@ -143,25 +143,25 @@ public static void setTunnelAndSearchZone() {
         double x = 0.5;
         double y = 0.5;
         Point startingCorner = new Point(x, y);
-        Navigation.travelToPerpendicularImmReturn(startingCorner);
+        Navigation.travelToImmReturn(startingCorner);
       }
       else if (Resources.corner == 1){
         double x = 15  - 0.5;
         double y = 0.5      ;
         Point startingCorner = new Point(x,y);
-        Navigation.travelToPerpendicularImmReturn(startingCorner);
+        Navigation.travelToImmReturn(startingCorner);
       }
       else if (Resources.corner == 2){
         double x = 15 - 0.5;
         double y = 9  - 0.5;
         Point startingCorner = new Point(x,y);
-        Navigation.travelToPerpendicularImmReturn(startingCorner);
+        Navigation.travelToImmReturn(startingCorner);
       }
       else if (Resources.corner == 3){
         double x = 0.5      ;
         double y = 9   - 0.5;
         Point startingCorner = new Point(x,y);
-        Navigation.travelToPerpendicularImmReturn(startingCorner);
+        Navigation.travelToImmReturn(startingCorner);
       }
   }
 
