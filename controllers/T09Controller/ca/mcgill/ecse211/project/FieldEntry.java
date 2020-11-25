@@ -32,27 +32,31 @@ public class FieldEntry {
     if (!crossedTunnel) {
       if (isTunnelRight() == true) {
         goInFrontOfRightTunnel();
+        if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+          return;
         Navigation.turnToImmReturn(90);
         crossRightTunnel();
       } else if (isTunnelLeft() == true) {
         goInFrontOfLeftTunnel();
+        if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+          return;
         Navigation.turnToImmReturn(270);
         crossLeftTunnel();
       } else if (isTunnelTop() == true) {
         goInFrontOfTopTunnel();
+        if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+          return;
         Navigation.turnToImmReturn(0);
         crossTopTunnel();
       } else if (isTunnelBottom() == true) {
         goInFrontOfBottomTunnel();
+        if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+          return;
         Navigation.turnToImmReturn(180);
         crossBottomTunnel();
       }
     }
     crossedTunnel = true;
-
-    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
-        return;
-    }
 
     System.out.println("Finished travelling... entering search zone");
     if (checkIfInSearchZone() == true) {
