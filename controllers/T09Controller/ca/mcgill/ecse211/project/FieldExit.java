@@ -20,6 +20,8 @@ static Point TN_LR;
 static Point SZ_LL;
 static Point SZ_UR;
 
+private static boolean crossedTunnel = false;
+
 /** Initialize values */
 public static void setTunnelAndSearchZone() {
     Z_LL = Resources.startZone.ll;
@@ -38,29 +40,30 @@ public static void setTunnelAndSearchZone() {
    * Main method that performs the exit of field
    */
   public static void exitField() {
-
-
-    // 1. travel to tunnel and cross
-    if( isTunnelRightIsland()==true){
-        goInFrontOfRightTunnelIsland();
-        Navigation.turnTo(90);
-        FieldEntry.crossRightTunnel();
+    if (!crossedTunnel) {
+      // 1. travel to tunnel and cross
+      if( isTunnelRightIsland()==true){
+          goInFrontOfRightTunnelIsland();
+          Navigation.turnTo(90);
+          FieldEntry.crossRightTunnel();
+      }
+      else if (isTunnelLeftIsland()==true){
+          goInFrontOfLeftTunnelIsland();
+          Navigation.turnTo(270);
+          FieldEntry.crossLeftTunnel();
+      }
+      else if (isTunnelTopIsland()==true){
+          goInFrontOfTopTunnelIsland();
+          Navigation.turnTo(0);
+          FieldEntry.crossTopTunnel();
+      }
+      else if (isTunnelBottomIsland()==true){
+          goInFrontOfBottomTunnel();
+          Navigation.turnTo(180);
+          FieldEntry.crossBottomTunnel();
+      }
     }
-    else if (isTunnelLeftIsland()==true){
-        goInFrontOfLeftTunnelIsland();
-        Navigation.turnTo(270);
-        FieldEntry.crossLeftTunnel();
-    }
-    else if (isTunnelTopIsland()==true){
-        goInFrontOfTopTunnelIsland();
-        Navigation.turnTo(0);
-        FieldEntry.crossTopTunnel();
-    }
-    else if (isTunnelBottomIsland()==true){
-        goInFrontOfBottomTunnel();
-        Navigation.turnTo(180);
-        FieldEntry.crossBottomTunnel();
-    }
+    crossedTunnel = true;
 
     //3. go to start corner
     goToCorner();
@@ -75,48 +78,35 @@ public static void setTunnelAndSearchZone() {
    * Verifies if tunnel is on the right of the island
    */
   public static boolean isTunnelRightIsland() {
-    if (TN_LL.x <= Island_UR.x)
-      return true;
-    else
-      return false;
+    return FieldEntry.isTunnelLeft();
   }
 
   /**
    * Verifies if tunnel is on the left of the Island
    */
   public static boolean isTunnelLeftIsland() {
-    if (TN_UR.x >= Island_LL.x)
-      return true;
-    else
-      return false;
+    return FieldEntry.isTunnelRight();
   }
 
   /**
    * Verifies if tunnel is on the top of the island
    */
   public static boolean isTunnelTopIsland() {
-    if (TN_LL.y <= Island_UR.y)
-      return true;
-    else
-      return false;
+    return FieldEntry.isTunnelBottom();
   }
 
   /**
    * Verifies if tunnel is on the bottom of the island
    */
   public static boolean isTunnelBottomIsland() {
-    if (TN_UR.y >= Island_LL.y)
-      return true;
-    else
-      return false;
+    return FieldEntry.isTunnelTop();
   }
 
   /**
    * Makes robot go in front of a tunnel that is on the right of the starting zone
    */
   public static void goInFrontOfRightTunnelIsland() {
-
-    Point inFront = new Point((TN_LL.x - 1), (TN_LL.y + TN_UL.y) / 2);
+    Point inFront = new Point((TN_LL.x - 0.5), (TN_LL.y + TN_UL.y) / 2);
     Navigation.travelToPerpendicularImmReturn(inFront);
     
   }
@@ -125,8 +115,7 @@ public static void setTunnelAndSearchZone() {
    * Makes robot go in front of a tunnel that is on the left of the starting zone
    */
   public static void goInFrontOfLeftTunnelIsland() {
-
-    Point inFront = new Point((TN_UL.x + 1), (TN_LL.y + TN_UL.y) / 2);
+    Point inFront = new Point((TN_UR.x + 0.5), (TN_LL.y + TN_UL.y) / 2);
     Navigation.travelToPerpendicularImmReturn(inFront);
     
   }
@@ -136,7 +125,7 @@ public static void setTunnelAndSearchZone() {
    */
   public static void goInFrontOfTopTunnelIsland() {
 
-    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 1));
+    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 0.5));
     Navigation.travelToPerpendicularImmReturn(inFront);
     
   }
@@ -146,7 +135,7 @@ public static void setTunnelAndSearchZone() {
    */
   public static void goInFrontOfBottomTunnel() {
 
-    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 1));
+    Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 0.5));
     Navigation.travelToPerpendicularImmReturn(inFront);
     
   }
@@ -154,26 +143,26 @@ public static void setTunnelAndSearchZone() {
   public static void goToCorner(){
       
     if (Resources.corner == 0){
-        double x = TILE_SIZE/2;
-        double y = TILE_SIZE/2;
+        double x = 0.5;
+        double y = 0.5;
         Point startingCorner = new Point(x, y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
       else if (Resources.corner == 1){
-        double x = ((15*TILE_SIZE)-(TILE_SIZE/2));
-        double y = TILE_SIZE/2;
+        double x = 15  - 0.5;
+        double y = 0.5      ;
         Point startingCorner = new Point(x,y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
       else if (Resources.corner == 2){
-        double x = ((15*TILE_SIZE)-(TILE_SIZE/2));
-        double y = ((9*TILE_SIZE)-(TILE_SIZE/2));
+        double x = 15 - 0.5;
+        double y = 9  - 0.5;
         Point startingCorner = new Point(x,y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
       else if (Resources.corner == 3){
-        double x = TILE_SIZE/2;
-        double y = ((9*TILE_SIZE)-(TILE_SIZE/2));
+        double x = 0.5      ;
+        double y = 9   - 0.5;
         Point startingCorner = new Point(x,y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }

@@ -19,6 +19,8 @@ public class FieldEntry {
   static Point TN_LR;
   static Point SZ_LL;
   static Point SZ_UR;
+  
+  private static boolean crossedTunnel = false;
 
 
 
@@ -26,36 +28,41 @@ public class FieldEntry {
    * Main method that performs the enter field
    */
   public static void enterField() {
-
-    if (isTunnelRight() == true) {
-      goInFrontOfRightTunnel();
-      Navigation.turnToImmReturn(90);
-      crossRightTunnel();
-    } else if (isTunnelLeft() == true) {
-      goInFrontOfLeftTunnel();
-      Navigation.turnToImmReturn(270);
-      crossLeftTunnel();
-    } else if (isTunnelTop() == true) {
-      goInFrontOfTopTunnel();
-      Navigation.turnToImmReturn(0);
-      crossTopTunnel();
-    } else if (isTunnelBottom() == true) {
-      goInFrontOfBottomTunnel();
-      Navigation.turnToImmReturn(180);
-      crossBottomTunnel();
+    
+    if (!crossedTunnel) {
+      if (isTunnelRight() == true) {
+        goInFrontOfRightTunnel();
+        if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+          return;
+        Navigation.turnToImmReturn(90);
+        crossRightTunnel();
+      } else if (isTunnelLeft() == true) {
+        goInFrontOfLeftTunnel();
+        if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+          return;
+        Navigation.turnToImmReturn(270);
+        crossLeftTunnel();
+      } else if (isTunnelTop() == true) {
+        goInFrontOfTopTunnel();
+        if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+          return;
+        Navigation.turnToImmReturn(0);
+        crossTopTunnel();
+      } else if (isTunnelBottom() == true) {
+        goInFrontOfBottomTunnel();
+        if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+          return;
+        Navigation.turnToImmReturn(180);
+        crossBottomTunnel();
+      }
     }
-
-    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance") {
-        return;
-    }
+    crossedTunnel = true;
 
     System.out.println("Finished travelling... entering search zone");
     if (checkIfInSearchZone() == true) {
       enteredSearchZone();
     } else {
       goToSearchZone();
-      enteredSearchZone();
-
     }
   }
   
@@ -233,6 +240,9 @@ public class FieldEntry {
       double yInSZ = SZ_LL.y + 1;
       Point inSZ = new Point(xInSZ, yInSZ);
       Navigation.travelToPerpendicularImmReturn(inSZ);
+      if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+        return;
+      enteredSearchZone();
     }
 
   }
@@ -253,6 +263,8 @@ public class FieldEntry {
     } catch (InterruptedException e) {
     }
     LocalEV3.getAudio().beep();
+    
+    Main.STATE_MACHINE.enteredField();
   }
 
 

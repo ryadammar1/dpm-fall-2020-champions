@@ -30,43 +30,37 @@ public class Transfer {
     
       obstacleavoidance.pause();
        setSpeed(FORWARD_SPEED/2);
-       while(readUsDistance()>=0.1)
+       while(readUsDistance()>0)
            moveForward();
-       
        Utils.stopMotors();
        
        if (!isCageClosed) {
          cageMotor.setSpeed(60);
-         cageMotor.rotate(180, false);  
+         cageMotor.rotate(180, false);
+         isCageClosed = true;
        }
-       
      obstacleavoidance.resume();
+     
       Point midPoint = new Point((ramp.left.x + ramp.right.x) / 2, (ramp.left.y + ramp.right.y) / 2);
-      ArrayList<Point> path;
       
+      Point pushFrom;
       if (Resources.ramp == Resources.rr) {
-          Point tail = new Point(midPoint.x + Resources.rFacingX, midPoint.y + Resources.rFacingY);
-          path = PathPlanning.plan(Utils.getCurrentPosition(), tail, midPoint);
+        pushFrom = new Point(midPoint.x - Resources.rFacingX * 0.5, midPoint.y - Resources.rFacingY * 0.5);
       } else {
-          Point tail = new Point(midPoint.x + Resources.gFacingX, midPoint.y + Resources.gFacingY);
-          path = PathPlanning.plan(Utils.getCurrentPosition(), tail, midPoint);
+        pushFrom = new Point(midPoint.x - Resources.gFacingX * 0.5, midPoint.y - Resources.gFacingY * 0.5);
       }
-
-      for (Point p : path) {
-          System.out.println(p);
-          Navigation.travelToImmReturn(p);
-      }
+      Navigation.travelToImmReturn(pushFrom);
       
       obstacleavoidance.pause();
       
-      Point destination;
+      Point pushTo; 
       if (Resources.ramp == Resources.rr) {
-          destination = new Point(midPoint.x + Resources.rFacingX, midPoint.y + Resources.rFacingY);
+        pushTo = new Point(midPoint.x + Resources.rFacingX, midPoint.y + Resources.rFacingY);
       } else {
-          destination = new Point(midPoint.x + Resources.gFacingX, midPoint.y + Resources.gFacingY);
+        pushTo = new Point(midPoint.x + Resources.gFacingX, midPoint.y + Resources.gFacingY);
       }
 
-      Navigation.travelToImmReturn(destination);
+      Navigation.travelToImmReturn(pushTo);
 
       Navigation.moveStraightFor(-1.5);
 
