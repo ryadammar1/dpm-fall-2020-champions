@@ -64,12 +64,12 @@ public class Main {
               odometer.setTheta(0);
               break;
             case 1:
-              odometer.setX(8 * TILE_SIZE);
+              odometer.setX(14 * TILE_SIZE);
               odometer.setY(1 * TILE_SIZE);
               odometer.setTheta(270);
               break;
             case 2:
-              odometer.setX(8 * TILE_SIZE);
+              odometer.setX(14 * TILE_SIZE);
               odometer.setY(8 * TILE_SIZE);
               odometer.setTheta(180);
               break;
