@@ -43,22 +43,32 @@ public class Transfer {
      
       Point midPoint = new Point((ramp.left.x + ramp.right.x) / 2, (ramp.left.y + ramp.right.y) / 2);
       
-      Point pushFrom;
+      ArrayList<Point> path;
       if (Resources.ramp == Resources.rr) {
-        pushFrom = new Point(midPoint.x - Resources.rFacingX * 0.5, midPoint.y - Resources.rFacingY * 0.5);
+          Point tail = new Point(midPoint.x - Resources.rFacingX * 0.5, midPoint.y + Resources.rFacingY * 0.5);
+          System.out.println(tail);
+          path = PathPlanning.plan(Utils.getCurrentPosition(), tail, midPoint);
       } else {
-        pushFrom = new Point(midPoint.x - Resources.gFacingX * 0.5, midPoint.y - Resources.gFacingY * 0.5);
+          Point tail = new Point(midPoint.x - Resources.gFacingX * 0.5, midPoint.y + Resources.gFacingY * 0.5);
+          System.out.println(tail);
+          path = PathPlanning.plan(Utils.getCurrentPosition(), tail, midPoint);
       }
-      Navigation.travelToImmReturn(pushFrom);
+
+      for (Point p : path) {
+          System.out.println(p);
+          Navigation.travelToImmReturn(p);
+      }
       
       obstacleavoidance.pause();
       
       Point pushTo; 
       if (Resources.ramp == Resources.rr) {
-        pushTo = new Point(midPoint.x + Resources.rFacingX, midPoint.y + Resources.rFacingY);
+        pushTo = new Point(midPoint.x - Resources.rFacingX, midPoint.y + Resources.rFacingY);
       } else {
-        pushTo = new Point(midPoint.x + Resources.gFacingX, midPoint.y + Resources.gFacingY);
+        pushTo = new Point(midPoint.x - Resources.gFacingX, midPoint.y + Resources.gFacingY);
       }
+
+      System.out.println(pushTo);
 
       Navigation.travelToImmReturn(pushTo);
 
