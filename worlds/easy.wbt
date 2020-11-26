@@ -37,8 +37,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -1 0 0 1.58
-  position 2.6182921948173794 10.643821589878165 1.1565760522592805
+  orientation 0.9999018958087323 -0.012358921676538674 -0.006592102327483526 5.303103825683581
+  position 4.340586753697378 3.1990622546964427 4.399971874651861
 }
 TexturedBackground {
 }
@@ -238,4 +238,108 @@ DPM-Block {
   rotation 0 1 0 0
   dimension 0.1
   mass 2
+}
+DPM-Robot {
+  name "T09Robot"
+  translation 4.37963 0.0831761 2.5308
+  rotation 0.01246200305812477 0.9998552453604029 -0.011583902842642553 1.57095
+  children [
+    EV3-MediumMotor {
+      name "B"
+      translation -0.003 -0.0059 -0.068
+      rotation -0.57735126918836 0.57735126918836 -0.5773482691869614 -2.094395307179586
+      position 9.068309705789636e-06
+      children [
+        T09Robot_Grab4-solid {
+          translation 2.03924e-08 -0.02 0
+          rotation 0 0 1 -1.5707953071795862
+        }
+        T09Robot_Grab3-solid {
+          translation -0.156 0.032 0
+          rotation 0 0 1 -1.5707953071795862
+        }
+        T09Robot_Grab2-solid {
+          translation -0.079 -0.04 0
+          rotation 0 0 1 -1.5707953071795862
+        }
+        T09Robot_Grab1-solid {
+          translation -0.079 0.107 0
+          rotation 0 0 1 -1.5707953071795862
+        }
+      ]
+    }
+    T09Robot_back_weight-solid {
+      translation 0 0.0021 0.052
+      rotation 1 0 0 -1.5707953071795862
+    }
+    T09Robot_version5_mainassembly-solid {
+      translation 0 -0.018 -0.0065
+      rotation 1 0 0 -1.5707953071795862
+    }
+    EV3-Ultrasonic {
+      name "S4"
+      translation 0 0.042 -0.06
+      rotation -2.698941073254372e-08 0.7071062811861716 0.7071072811865693 3.14159
+    }
+    T09robot-design-4-fixed-mainframe-frontpart-solid {
+      translation 0.0638 -0.033 -0.071
+      rotation 1 0 0 -1.5707953071795862
+    }
+    T09robot-design-4-fixed-mainframe-frontpart-solid {
+      translation -0.063 -0.033 -0.071
+      rotation 1 0 0 -1.5707953071795862
+    }
+    EV3-Ultrasonic {
+      name "S1"
+      translation 0 -0.038 -0.06
+      rotation -7.851293122126192e-08 0.7071062811861697 0.7071072811865674 -3.1415853071795863
+    }
+    EV3-ColorSensor {
+      name "S4"
+      translation 0.008 -0.062 -0.04
+      rotation 1 0 0 1.5708
+    }
+    BallCaster {
+      translation 0 -0.065 0.08
+      rotation 1 0 0 -1.5707953071795862
+    }
+    EV3-ColorSensor {
+      name "S3"
+      translation 0.0471 -0.058 -0.0513
+      rotation 0 1 0 3.14159
+    }
+    EV3-ColorSensor {
+      name "S2"
+      translation -0.0471 -0.058 -0.0513
+      rotation 0 1 0 3.14159
+    }
+    EV3-LargeMotor {
+      name "D"
+      translation 0.039 -0.0485 0.0262
+      rotation 1 0 0 -1.5707953071795862
+      position 1.7067509384456122e-06
+      children [
+        Wheel {
+          translation 0.022 0 0
+          rotation 0 0 1 1.57
+        }
+      ]
+    }
+    EV3-LargeMotor {
+      name "A"
+      translation -0.04 -0.0485 0.0262
+      rotation -0.9999999999999999 0 0 1.5707953071795862
+      position 1.6306900792506273e-06
+      children [
+        Wheel {
+          translation -0.022 0 0
+          rotation 0 0 1 1.57
+        }
+      ]
+    }
+    EV3 {
+      rotation 1 0 0 -1.5708
+    }
+  ]
+  controller "T09Controller"
 }
