@@ -40,8 +40,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.9973997662052067 0.05756193115202054 0.04336277730783518 4.9894318612797495
-  position 0.4434222412322894 1.8632932369032191 0.7280398188466337
+  orientation 0.999997440416836 -0.001646785792345938 -0.0015515335415442174 4.77193275232839
+  position 0.4310692430385669 2.092273743811892 0.9083697759157182
   follow "robot"
   followType "Pan and Tilt Shot"
 }
@@ -283,11 +283,8 @@ DPM-Block {
   mass 2
 }
 DPM-Robot {
-  hidden rotation_13 5.676390238893387e-05 0.9999999983889295 -1.714003411314294e-08 0.0006039061051147225
-  hidden rotation_21 0.007839659515931161 -0.9999083141700235 -0.011040968813274724 1.7924852012931944e-05
-  hidden rotation_24 0.006439750165529172 0.9999179953782714 0.011069423494691956 1.753858443313758e-05
   name "T09Robot"
-  translation 0.152282 0.0923903 0.160083
+  translation 0.312234 0.0878826 0.910083
   rotation 0.011584004677580664 0.9998552428907233 0.012462106545947822 -1.5709303318501844
   children [
     T09Robot_back_weight-solid {
@@ -364,4 +361,596 @@ DPM-Robot {
     }
   ]
   controller "T09Controller"
+}
+Transform {
+  translation 0.91 0.1 0.86
+  children [
+    Solid {
+      translation 0.11730746418437 0 0
+      rotation 0 1 0 1.5707963267949
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "textures/wall_baseColor.jpg"
+              ]
+            }
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "textures/wall_normal.jpg"
+              ]
+            }
+            normalMapFactor 0.8
+            occlusionMap ImageTexture {
+              url [
+                "textures/wall_occlusion.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+            }
+          }
+          geometry IndexedFaceSet {
+            coord Coordinate {
+              point [
+                -0.085229 0.1 0.005
+                0.085229 0.1 0.005
+                0.085229 0.1 -0.005
+                -0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                0.085229 -0.1 -0.005
+                0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                0.085229 -0.1 0.005
+                0.085229 0.1 0.005
+                -0.085229 0.1 0.005
+                0.085229 -0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 0.1 -0.005
+                0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 -0.1 0.005
+                -0.085229 0.1 0.005
+                -0.085229 0.1 -0.005
+                0.085229 -0.1 0.005
+                0.085229 -0.1 -0.005
+                0.085229 0.1 -0.005
+                0.085229 0.1 0.005
+              ]
+            }
+            texCoord TextureCoordinate {
+              point [
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+              ]
+            }
+            coordIndex [
+              0, 1, 2, 3, -1, 4, 5, 6, 7, -1, 8, 9, 10, 11, -1, 12, 13, 14, 15, -1, 16, 17, 18, 19, -1, 20, 21, 22, 23, -1
+            ]
+            creaseAngle 1.5
+          }
+        }
+      ]
+      name "obstacle[0.000000]"
+      model "box"
+      boundingObject Box {
+        size 0.170458 0.2 0.01
+      }
+    }
+    Solid {
+      translation 0.03625 0 0.1115660282226
+      rotation 0 1 0 0.31415926535898
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "textures/wall_baseColor.jpg"
+              ]
+            }
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "textures/wall_normal.jpg"
+              ]
+            }
+            normalMapFactor 0.8
+            occlusionMap ImageTexture {
+              url [
+                "textures/wall_occlusion.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              translation 1.2566370614359 1.2566370614359
+            }
+          }
+          geometry IndexedFaceSet {
+            coord Coordinate {
+              point [
+                -0.085229 0.1 0.005
+                0.085229 0.1 0.005
+                0.085229 0.1 -0.005
+                -0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                0.085229 -0.1 -0.005
+                0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                0.085229 -0.1 0.005
+                0.085229 0.1 0.005
+                -0.085229 0.1 0.005
+                0.085229 -0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 0.1 -0.005
+                0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 -0.1 0.005
+                -0.085229 0.1 0.005
+                -0.085229 0.1 -0.005
+                0.085229 -0.1 0.005
+                0.085229 -0.1 -0.005
+                0.085229 0.1 -0.005
+                0.085229 0.1 0.005
+              ]
+            }
+            texCoord TextureCoordinate {
+              point [
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+              ]
+            }
+            coordIndex [
+              0, 1, 2, 3, -1, 4, 5, 6, 7, -1, 8, 9, 10, 11, -1, 12, 13, 14, 15, -1, 16, 17, 18, 19, -1, 20, 21, 22, 23, -1
+            ]
+            creaseAngle 1.5
+          }
+        }
+      ]
+      name "obstacle[1.256637]"
+      model "box"
+      boundingObject Box {
+        size 0.170458 0.2 0.01
+      }
+    }
+    Solid {
+      translation -0.094903732092184 0 0.068951597431399
+      rotation 0 1 0 -0.94247779607694
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "textures/wall_baseColor.jpg"
+              ]
+            }
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "textures/wall_normal.jpg"
+              ]
+            }
+            normalMapFactor 0.8
+            occlusionMap ImageTexture {
+              url [
+                "textures/wall_occlusion.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              translation 2.5132741228718 2.5132741228718
+            }
+          }
+          geometry IndexedFaceSet {
+            coord Coordinate {
+              point [
+                -0.085229 0.1 0.005
+                0.085229 0.1 0.005
+                0.085229 0.1 -0.005
+                -0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                0.085229 -0.1 -0.005
+                0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                0.085229 -0.1 0.005
+                0.085229 0.1 0.005
+                -0.085229 0.1 0.005
+                0.085229 -0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 0.1 -0.005
+                0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 -0.1 0.005
+                -0.085229 0.1 0.005
+                -0.085229 0.1 -0.005
+                0.085229 -0.1 0.005
+                0.085229 -0.1 -0.005
+                0.085229 0.1 -0.005
+                0.085229 0.1 0.005
+              ]
+            }
+            texCoord TextureCoordinate {
+              point [
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+              ]
+            }
+            coordIndex [
+              0, 1, 2, 3, -1, 4, 5, 6, 7, -1, 8, 9, 10, 11, -1, 12, 13, 14, 15, -1, 16, 17, 18, 19, -1, 20, 21, 22, 23, -1
+            ]
+            creaseAngle 1.5
+          }
+        }
+      ]
+      name "obstacle[2.513274]"
+      model "box"
+      boundingObject Box {
+        size 0.170458 0.2 0.01
+      }
+    }
+    Solid {
+      translation -0.094903732092184 0 -0.068951597431399
+      rotation 0 1 0 -2.1991148575129
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "textures/wall_baseColor.jpg"
+              ]
+            }
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "textures/wall_normal.jpg"
+              ]
+            }
+            normalMapFactor 0.8
+            occlusionMap ImageTexture {
+              url [
+                "textures/wall_occlusion.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              translation 3.7699111843078 3.7699111843078
+            }
+          }
+          geometry IndexedFaceSet {
+            coord Coordinate {
+              point [
+                -0.085229 0.1 0.005
+                0.085229 0.1 0.005
+                0.085229 0.1 -0.005
+                -0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                0.085229 -0.1 -0.005
+                0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                0.085229 -0.1 0.005
+                0.085229 0.1 0.005
+                -0.085229 0.1 0.005
+                0.085229 -0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 0.1 -0.005
+                0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 -0.1 0.005
+                -0.085229 0.1 0.005
+                -0.085229 0.1 -0.005
+                0.085229 -0.1 0.005
+                0.085229 -0.1 -0.005
+                0.085229 0.1 -0.005
+                0.085229 0.1 0.005
+              ]
+            }
+            texCoord TextureCoordinate {
+              point [
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+              ]
+            }
+            coordIndex [
+              0, 1, 2, 3, -1, 4, 5, 6, 7, -1, 8, 9, 10, 11, -1, 12, 13, 14, 15, -1, 16, 17, 18, 19, -1, 20, 21, 22, 23, -1
+            ]
+            creaseAngle 1.5
+          }
+        }
+      ]
+      name "obstacle[3.769911]"
+      model "box"
+      boundingObject Box {
+        size 0.170458 0.2 0.01
+      }
+    }
+    Solid {
+      translation 0.03625 0 -0.1115660282226
+      rotation 0 1 0 -3.4557519189488
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "textures/wall_baseColor.jpg"
+              ]
+            }
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "textures/wall_normal.jpg"
+              ]
+            }
+            normalMapFactor 0.8
+            occlusionMap ImageTexture {
+              url [
+                "textures/wall_occlusion.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              translation 5.0265482457437 5.0265482457437
+            }
+          }
+          geometry IndexedFaceSet {
+            coord Coordinate {
+              point [
+                -0.085229 0.1 0.005
+                0.085229 0.1 0.005
+                0.085229 0.1 -0.005
+                -0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                0.085229 -0.1 -0.005
+                0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                0.085229 -0.1 0.005
+                0.085229 0.1 0.005
+                -0.085229 0.1 0.005
+                0.085229 -0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 0.1 -0.005
+                0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 -0.1 0.005
+                -0.085229 0.1 0.005
+                -0.085229 0.1 -0.005
+                0.085229 -0.1 0.005
+                0.085229 -0.1 -0.005
+                0.085229 0.1 -0.005
+                0.085229 0.1 0.005
+              ]
+            }
+            texCoord TextureCoordinate {
+              point [
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+              ]
+            }
+            coordIndex [
+              0, 1, 2, 3, -1, 4, 5, 6, 7, -1, 8, 9, 10, 11, -1, 12, 13, 14, 15, -1, 16, 17, 18, 19, -1, 20, 21, 22, 23, -1
+            ]
+            creaseAngle 1.5
+          }
+        }
+      ]
+      name "obstacle[5.026548]"
+      model "box"
+      boundingObject Box {
+        size 0.170458 0.2 0.01
+      }
+    }
+    Solid {
+      translation 0.11730746418437 0 -2.8732042105896e-17
+      rotation 0 1 0 -4.7123889803847
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "textures/wall_baseColor.jpg"
+              ]
+            }
+            roughness 1
+            metalness 0
+            normalMap ImageTexture {
+              url [
+                "textures/wall_normal.jpg"
+              ]
+            }
+            normalMapFactor 0.8
+            occlusionMap ImageTexture {
+              url [
+                "textures/wall_occlusion.jpg"
+              ]
+            }
+            textureTransform TextureTransform {
+              translation 6.2831853071796 6.2831853071796
+            }
+          }
+          geometry IndexedFaceSet {
+            coord Coordinate {
+              point [
+                -0.085229 0.1 0.005
+                0.085229 0.1 0.005
+                0.085229 0.1 -0.005
+                -0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                0.085229 -0.1 -0.005
+                0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                -0.085229 -0.1 0.005
+                0.085229 -0.1 0.005
+                0.085229 0.1 0.005
+                -0.085229 0.1 0.005
+                0.085229 -0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 0.1 -0.005
+                0.085229 0.1 -0.005
+                -0.085229 -0.1 -0.005
+                -0.085229 -0.1 0.005
+                -0.085229 0.1 0.005
+                -0.085229 0.1 -0.005
+                0.085229 -0.1 0.005
+                0.085229 -0.1 -0.005
+                0.085229 0.1 -0.005
+                0.085229 0.1 0.005
+              ]
+            }
+            texCoord TextureCoordinate {
+              point [
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 0.05
+                0 0.05
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.85229 0
+                0.85229 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+                0 0
+                0.05 0
+                0.05 1
+                0 1
+              ]
+            }
+            coordIndex [
+              0, 1, 2, 3, -1, 4, 5, 6, 7, -1, 8, 9, 10, 11, -1, 12, 13, 14, 15, -1, 16, 17, 18, 19, -1, 20, 21, 22, 23, -1
+            ]
+            creaseAngle 1.5
+          }
+        }
+      ]
+      name "obstacle[6.283185]"
+      model "box"
+      boundingObject Box {
+        size 0.170458 0.2 0.01
+      }
+    }
+  ]
 }

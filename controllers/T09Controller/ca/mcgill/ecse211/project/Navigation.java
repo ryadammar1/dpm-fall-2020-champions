@@ -165,8 +165,8 @@ public class Navigation {
       positionl = leftMotor.getTachoCount();
       positionr = rightMotor.getTachoCount();
 
-      System.out.println(positionl + "vs x" + previousPositionl);
-      System.out.println(positionl + "vs y" + previousPositionl);
+      //System.out.println(positionl + "vs x" + previousPositionl);
+      //System.out.println(positionl + "vs y" + previousPositionl);
     }
   }
 

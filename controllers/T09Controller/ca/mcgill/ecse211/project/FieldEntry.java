@@ -34,24 +34,28 @@ public class FieldEntry {
         goInFrontOfRightTunnel();
         if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
           return;
+        obstacleavoidance.pause();
         Navigation.turnToImmReturn(90);
         crossRightTunnel();
       } else if (isTunnelLeft() == true) {
         goInFrontOfLeftTunnel();
         if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
           return;
+        obstacleavoidance.pause();
         Navigation.turnToImmReturn(270);
         crossLeftTunnel();
       } else if (isTunnelTop() == true) {
         goInFrontOfTopTunnel();
         if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
           return;
+        obstacleavoidance.pause();
         Navigation.turnToImmReturn(0);
         crossTopTunnel();
       } else if (isTunnelBottom() == true) {
         goInFrontOfBottomTunnel();
         if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
           return;
+        obstacleavoidance.pause();
         Navigation.turnToImmReturn(180);
         crossBottomTunnel();
       }
@@ -169,33 +173,27 @@ public class FieldEntry {
    * Robot crosses tunnel on the right of start zone
    */
   public static void crossRightTunnel() {
-    obstacleavoidance.pause();
     Point destination = new Point((TN_LR.x + 0.5), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
-    obstacleavoidance.resume();
   }
 
   /**
    * Robot crosses tunnel on the left of start zone
    */
   public static void crossLeftTunnel() {
-    obstacleavoidance.pause();
     Point destination = new Point((TN_LL.x - 0.5), (Odometer.getOdometer().getXyt()[1]) / 0.3048);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
-    obstacleavoidance.resume();
   }
 
   /**
    * Robot crosses tunnel on the top of start zone
    */
   public static void crossTopTunnel() {
-    obstacleavoidance.pause();
     Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_UR.y + 0.5);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
-    obstacleavoidance.resume();
   }
 
   /**
