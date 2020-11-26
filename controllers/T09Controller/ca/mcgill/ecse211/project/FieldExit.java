@@ -21,6 +21,7 @@ static Point SZ_LL;
 static Point SZ_UR;
 
 private static boolean crossedTunnel = false;
+private static boolean backAtCorner = false;
 
 /** Initialize values */
 public static void setTunnelAndSearchZone() {
@@ -40,25 +41,34 @@ public static void setTunnelAndSearchZone() {
    * Main method that performs the exit of field
    */
   public static void exitField() {
+    if (!backAtCorner) {
     if (!crossedTunnel) {
       // 1. travel to tunnel and cross
       if( isTunnelRightIsland()==true){
           goInFrontOfRightTunnelIsland();
+          if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+            return;
           Navigation.turnTo(90);
           FieldEntry.crossRightTunnel();
       }
       else if (isTunnelLeftIsland()==true){
           goInFrontOfLeftTunnelIsland();
+          if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+            return;
           Navigation.turnTo(270);
           FieldEntry.crossLeftTunnel();
       }
       else if (isTunnelTopIsland()==true){
           goInFrontOfTopTunnelIsland();
+          if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+            return;
           Navigation.turnTo(0);
           FieldEntry.crossTopTunnel();
       }
       else if (isTunnelBottomIsland()==true){
           goInFrontOfBottomTunnel();
+          if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+            return;
           Navigation.turnTo(180);
           FieldEntry.crossBottomTunnel();
       }
@@ -67,11 +77,13 @@ public static void setTunnelAndSearchZone() {
 
     //3. go to start corner
     goToCorner();
+    
+    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+      return;
+    
     //4. 5 beeps 
     backAtCorner();
-
-
-
+    }
   }
 
 /**
@@ -141,7 +153,6 @@ public static void setTunnelAndSearchZone() {
   }
 
   public static void goToCorner(){
-      
     if (Resources.corner == 0){
         double x = 0.5;
         double y = 0.5;
@@ -194,7 +205,8 @@ public static void setTunnelAndSearchZone() {
       } catch (InterruptedException e) {
       }
       LocalEV3.getAudio().beep();
-    //Main.STATE_MACHINE.
+      
+      backAtCorner = true;
   }
 
 

@@ -117,11 +117,10 @@ public class Main {
         }
         case ("Standard.Termination.ExitField"):
           obstacleavoidance.resume();
-          // TODO Complete termination
           System.out.println("Exiting field");
           FieldExit.exitField();
           obstacleavoidance.pause();
-          return;
+          break;
         case ("Avoidance"): {
           System.out.println("Avoiding");
           Avoidance.correct();
