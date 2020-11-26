@@ -34,6 +34,7 @@ public class Main {
           Resources.initializeResources();
           Search.initializeSearch();
           ObstacleAvoidance.initializeObstacleAvoidance();
+          Avoidance.initializeAvoidance();
           FieldEntry.setTunnelAndSearchZone();
           FieldExit.setTunnelAndSearchZone();
 

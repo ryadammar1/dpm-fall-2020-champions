@@ -496,4 +496,11 @@ public class Search {
         Search.colorSensorDataFront = colorSensorDataFront;
     }
 
+    public static ArrayList<Circle> getBlacklistPoint() {
+        return Search.blacklistPoint;
+    }
+    public static ArrayList<Rect> getBlacklistEdge() {
+        return Search.blacklistEdge;
+    }
+
 }
