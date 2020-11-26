@@ -62,11 +62,11 @@ public class Transfer {
 
       Navigation.travelToImmReturn(pushTo);
 
-      Navigation.moveStraightFor(-1.5);
-
       cageMotor.setSpeed(60);
       cageMotor.rotate(-180, false);
       isCageClosed = false;
+
+      Navigation.moveStraightFor(-1.5);
       
       obstacleavoidance.resume();
     }
