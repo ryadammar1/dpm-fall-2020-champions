@@ -45,9 +45,9 @@ public class Transfer {
       
       Point pushFrom;
       if (Resources.ramp == Resources.rr) {
-        pushFrom = new Point(midPoint.x - Resources.rFacingX * 0.5, midPoint.y - Resources.rFacingY * 0.5);
+        pushFrom = new Point(midPoint.x + Resources.rFacingX * 0.5, midPoint.y - Resources.rFacingY * 0.5);
       } else {
-        pushFrom = new Point(midPoint.x - Resources.gFacingX * 0.5, midPoint.y - Resources.gFacingY * 0.5);
+        pushFrom = new Point(midPoint.x + Resources.gFacingX * 0.5, midPoint.y - Resources.gFacingY * 0.5);
       }
       Navigation.travelToImmReturn(pushFrom);
       
@@ -55,9 +55,9 @@ public class Transfer {
       
       Point pushTo; 
       if (Resources.ramp == Resources.rr) {
-        pushTo = new Point(midPoint.x + Resources.rFacingX, midPoint.y + Resources.rFacingY);
+        pushTo = new Point(midPoint.x - Resources.rFacingX, midPoint.y + Resources.rFacingY);
       } else {
-        pushTo = new Point(midPoint.x + Resources.gFacingX, midPoint.y + Resources.gFacingY);
+        pushTo = new Point(midPoint.x - Resources.gFacingX, midPoint.y + Resources.gFacingY);
       }
 
       Navigation.travelToImmReturn(pushTo);
