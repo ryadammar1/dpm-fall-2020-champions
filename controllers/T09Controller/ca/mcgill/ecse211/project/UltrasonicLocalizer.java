@@ -39,11 +39,11 @@ public class UltrasonicLocalizer {
       }
 
       // Rotate the robot until it detects no wall and saves the current angle computed by the odometer
-      while (readUsDistance() < 50) {
+      while (readUsDistance() < 30) {
         rotateClockwise();
       }
       
-      while (readUsDistance() > 30) {
+      while (readUsDistance() > 20) {
         rotateCounterClockwise();
       }
 
@@ -51,7 +51,7 @@ public class UltrasonicLocalizer {
       angleA = odometer.getXyt()[2];
 
       // Rotate until the wall is out of reach
-      while (readUsDistance() < 80) {
+      while (readUsDistance() < 60) {
         rotateClockwise();
       }
       
@@ -68,7 +68,7 @@ public class UltrasonicLocalizer {
       
       // Calculate the angle required to rotate the robot towards the north and perform the rotation
       // The robot "undershoots", so subtract an additional 2.5 to compensate
-      double angleC = (angleA + angleB)/2 - angleB - 50;
+      double angleC = (angleA + angleB)/2 - angleB - 45;
      
       turnBy(angleC);
 
