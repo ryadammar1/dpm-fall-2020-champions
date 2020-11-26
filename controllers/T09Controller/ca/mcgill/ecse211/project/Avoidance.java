@@ -96,6 +96,9 @@ public class Avoidance {
 			return filter((int) (usData[0] * 100.0));
 		}
 		if (usId == 2) {
+			for (int i = 0; i < 3; i++) {
+				usSensor2.fetchSample(usData, 0);
+			}
 			usSensor2.fetchSample(usData, 0);
 			return filter((int) (usData[0] * 100.0));
 		}
