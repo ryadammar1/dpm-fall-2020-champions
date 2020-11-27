@@ -218,6 +218,11 @@ public class Search {
                     rotateClockwise();
                     hasSeenDanger = true;
                 }
+                // If an object was avoided, the robot is prone to collision due to tight us
+                // sensor FOV.
+                // Turn by 20 degrees to assure no collision.
+                // Otherwise, check right side of the robot to assure no obstacle and correct
+                // orientation accordingly.
                 if (MODE == Mode.Recognize && hasSeenDanger)
                     turnBy(20);
                 else {
