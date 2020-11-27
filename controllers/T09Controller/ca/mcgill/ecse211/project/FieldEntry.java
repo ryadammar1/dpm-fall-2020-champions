@@ -20,6 +20,10 @@ public class FieldEntry {
   static Point SZ_LL;
   static Point SZ_UR;
   
+  /**
+   * Prevents robot from crossing tunnel again when it is on the island during entry
+   * Prevents robot from going back to the tunnel when it already exited through the tunnel
+   */
   private static boolean onIsland = false;
 
   /**
