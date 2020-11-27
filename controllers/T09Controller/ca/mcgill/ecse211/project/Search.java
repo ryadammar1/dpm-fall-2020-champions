@@ -466,6 +466,8 @@ public class Search {
      * Returns the filtered distance between the US sensor and an obstacle in cm.
      */
     public static int readUsDistance(int usId) {
+        waitUntilNextStep();
+
         if (usId == 1) {
             usSensor1.fetchSample(usData1, 0);
             return filter((int) (usData1[0] * 100.0));
