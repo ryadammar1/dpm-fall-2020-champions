@@ -236,8 +236,8 @@ public class FieldEntry {
    */
   public static void goToSearchZone() {
     if (checkIfInSearchZone() == false) {
-      double xInSZ = SZ_LL.x + 1;
-      double yInSZ = SZ_LL.y + 1;
+      double xInSZ = (Resources.searchZone.ll.x + Resources.searchZone.ur.x) / 2;
+      double yInSZ = (Resources.searchZone.ll.y + Resources.searchZone.ur.y) / 2;
       Point inSZ = new Point(xInSZ, yInSZ);
       Navigation.travelToPerpendicularImmReturn(inSZ);
       if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
