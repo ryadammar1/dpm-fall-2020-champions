@@ -108,21 +108,25 @@ public class Search {
             usData2 = new float[usSensor2.sampleSize()];
 
         // bottom wall
-        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ll.x, searchZone.ll.y), new Point(searchZone.ur.x, searchZone.ll.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ll.x, searchZone.ll.y),
+                new Point(searchZone.ur.x, searchZone.ll.y)));
         // top wall
-        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ll.x, searchZone.ur.y), new Point(searchZone.ur.x, searchZone.ur.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ll.x, searchZone.ur.y),
+                new Point(searchZone.ur.x, searchZone.ur.y)));
         // left wall
-        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ll.x, searchZone.ll.y), new Point(searchZone.ll.x, searchZone.ur.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ll.x, searchZone.ll.y),
+                new Point(searchZone.ll.x, searchZone.ur.y)));
         // right wall
-        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ur.x, searchZone.ll.y), new Point(searchZone.ur.x, searchZone.ur.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ur.x, searchZone.ll.y),
+                new Point(searchZone.ur.x, searchZone.ur.y)));
 
         // red ramp
         blacklistEdge.add(rrbb);
         // green ramp
         blacklistEdge.add(grbb);
 
-        blacklistEdge.add(
-                new Rect(new Point(tunnel.ll.x - 0.25, tunnel.ll.y - 0.25), new Point(tunnel.ur.x + 0.25, tunnel.ur.y + 0.25))); // tunnel
+        blacklistEdge.add(new Rect(new Point(tunnel.ll.x - 0.25, tunnel.ll.y - 0.25),
+                new Point(tunnel.ur.x + 0.25, tunnel.ur.y + 0.25))); // tunnel
     }
 
     /** Main method of search */
@@ -216,6 +220,13 @@ public class Search {
                 }
                 if (MODE == Mode.Recognize && hasSeenDanger)
                     turnBy(20);
+                else {
+                    turnBy(20);
+                    if (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100)))
+                        turnBy(-40);
+                    else
+                        turnBy(-20);
+                }
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
                 return;
             }
@@ -499,6 +510,7 @@ public class Search {
     public static ArrayList<Circle> getBlacklistPoint() {
         return Search.blacklistPoint;
     }
+
     public static ArrayList<Rect> getBlacklistEdge() {
         return Search.blacklistEdge;
     }
