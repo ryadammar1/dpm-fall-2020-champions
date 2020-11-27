@@ -20,16 +20,14 @@ public class FieldEntry {
   static Point SZ_LL;
   static Point SZ_UR;
   
-  private static boolean crossedTunnel = false;
-
-
+  private static boolean onIsland = false;
 
   /**
    * Main method that performs the enter field
    */
   public static void enterField() {
     
-    if (!crossedTunnel) {
+    if (!isOnIsland()) {
       if (isTunnelRight() == true) {
         goInFrontOfRightTunnel();
         if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
@@ -60,7 +58,7 @@ public class FieldEntry {
         crossBottomTunnel();
       }
     }
-    crossedTunnel = true;
+    setOnIsland(true);
 
     System.out.println("Finished travelling... entering search zone");
     if (checkIfInSearchZone() == true) {
@@ -265,5 +263,18 @@ public class FieldEntry {
     Main.STATE_MACHINE.enteredField();
   }
 
+  /**
+   * @return the onIsland
+   */
+  public static boolean isOnIsland() {
+    return onIsland;
+  }
 
+  
+  /**
+   * @param onIsland the onIsland to set
+   */
+  public static void setOnIsland(boolean onIsland) {
+    FieldEntry.onIsland = onIsland;
+  }
 }

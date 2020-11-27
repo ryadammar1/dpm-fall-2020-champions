@@ -20,7 +20,6 @@ static Point TN_LR;
 static Point SZ_LL;
 static Point SZ_UR;
 
-private static boolean crossedTunnel = false;
 private static boolean backAtCorner = false;
 
 /** Initialize values */
@@ -42,7 +41,7 @@ public static void setTunnelAndSearchZone() {
    */
   public static void exitField() {
     if (!backAtCorner) {
-    if (!crossedTunnel) {
+    if (FieldEntry.isOnIsland()) {
       // 1. travel to tunnel and cross
       if( isTunnelRightIsland()==true){
           goInFrontOfRightTunnelIsland();
@@ -73,7 +72,7 @@ public static void setTunnelAndSearchZone() {
           FieldEntry.crossBottomTunnel();
       }
     }
-    crossedTunnel = true;
+    FieldEntry.setOnIsland(false);
 
     //3. go to start corner
     goToCorner();
