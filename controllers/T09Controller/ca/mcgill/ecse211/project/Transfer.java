@@ -51,6 +51,9 @@ public class Transfer {
       }
       Navigation.travelToImmReturn(pushFrom);
       
+      if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+        return;
+      
       obstacleavoidance.pause();
       
       Point pushTo; 
@@ -69,6 +72,8 @@ public class Transfer {
       Navigation.moveStraightFor(-1.5);
       
       obstacleavoidance.resume();
+      
+      Main.STATE_MACHINE.blockTransfered();
     }
 
     // ULTRASONIC SENSOR RELATED //
