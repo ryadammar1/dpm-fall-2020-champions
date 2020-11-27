@@ -24,7 +24,7 @@ PROTO T09Robot_Grab3-solid [
 		}
 		physics Physics {
 			density -1
-			mass 1.206847
+			mass 1.492089
 		}
 	}
 }

@@ -214,24 +214,23 @@ public class Search {
                 boolean hasSeenDanger = false;
 
                 System.out.println("Could not find near object");
-                while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100))) {
+                while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100)))
                     rotateClockwise();
+
+                for (int i = 0; i < 50; i++)
+                    waitUntilNextStep();
+
+                while (Math.abs(readUsDistance(1) - readUsDistance(2)) < MAX_SENSOR_DIST
+                        && readUsDistance(2) < 120 * DISTANCE_THREESHOLD) {
                     hasSeenDanger = true;
-                }
-                // If an object was avoided, the robot is prone to collision due to tight us
-                // sensor FOV.
-                // Turn by 20 degrees to assure no collision.
-                // Otherwise, check right side of the robot to assure no obstacle and correct
-                // orientation accordingly.
-                if (MODE == Mode.Recognize && hasSeenDanger)
                     turnBy(20);
-                else {
-                    turnBy(20);
-                    if (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100)))
-                        turnBy(-40);
-                    else
-                        turnBy(-20);
+                    waitUntilNextStep();
+                    waitUntilNextStep();
                 }
+
+                if (hasSeenDanger)
+                    turnBy(20);
+
                 moveStraightFor(DISTANCE_THREESHOLD / TILE_SIZE);
                 return;
             }
@@ -362,17 +361,11 @@ public class Search {
 
         while (hyp > 0) {
             if (isBlackListed(hyp, getCurrentAngle()) || isBlackListed(hyp, getCurrentAngle() + VIEW_FOV / 2)
-                    || isBlackListed(hyp, getCurrentAngle() - VIEW_FOV / 2)) {
+                    || isBlackListed(hyp, getCurrentAngle() - VIEW_FOV / 2))
                 return true;
-            }
+
             hyp -= hypotenuse * (1 / SCAN_FREQUENCY);
         }
-        if (MODE == Mode.Recognize && (Math.abs(readUsDistance(1) - readUsDistance(2)) < MAX_US_SENSOR_DIFFERENCE)) // Necessary
-                                                                                                                    // second
-                                                                                                                    // check
-                                                                                                                    // for
-                                                                                                                    // recognize
-            return true;
 
         return false;
 
