@@ -10,6 +10,6 @@ PROTO T09Robot_Grab3-boundingbox [
 ]
 {
 		Box {
-			size 0.151607 0.005016 0.004770
+			size 0.166950 0.004770 0.004770
 		}
 }
