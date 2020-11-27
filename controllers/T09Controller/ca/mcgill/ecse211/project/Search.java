@@ -108,13 +108,13 @@ public class Search {
             usData2 = new float[usSensor2.sampleSize()];
 
         // bottom wall
-        blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ur.x, szr.ll.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ll.x, searchZone.ll.y), new Point(searchZone.ur.x, searchZone.ll.y)));
         // top wall
-        blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ll.x, szr.ur.y), new Point(szr.ur.x, szr.ur.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ll.x, searchZone.ur.y), new Point(searchZone.ur.x, searchZone.ur.y)));
         // left wall
-        blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ll.x, szr.ll.y), new Point(szr.ll.x, szr.ur.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ll.x, searchZone.ll.y), new Point(searchZone.ll.x, searchZone.ur.y)));
         // right wall
-        blacklistEdge.add(Rect.creatRectFromEdge(new Point(szr.ur.x, szr.ll.y), new Point(szr.ur.x, szr.ur.y)));
+        blacklistEdge.add(Rect.creatRectFromEdge(new Point(searchZone.ur.x, searchZone.ll.y), new Point(searchZone.ur.x, searchZone.ur.y)));
 
         // red ramp
         blacklistEdge.add(rrbb);
@@ -122,7 +122,7 @@ public class Search {
         blacklistEdge.add(grbb);
 
         blacklistEdge.add(
-                new Rect(new Point(tnr.ll.x - 0.25, tnr.ll.y - 0.25), new Point(tnr.ur.x + 0.25, tnr.ur.y + 0.25))); // tunnel
+                new Rect(new Point(tunnel.ll.x - 0.25, tunnel.ll.y - 0.25), new Point(tunnel.ur.x + 0.25, tunnel.ur.y + 0.25))); // tunnel
     }
 
     /** Main method of search */
