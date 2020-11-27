@@ -112,7 +112,6 @@ public class Main {
           obstacleavoidance.resume();
           Transfer.doTransfer();
           obstacleavoidance.pause();
-          STATE_MACHINE.blockTransfered();
           break;
         }
         case ("Standard.Termination.ExitField"):

@@ -37,8 +37,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.9999025538957872 0.010344277014432857 0.009374361083867393 1.4725969809016877
-  position 2.383079867801043 9.234571965631943 2.186802791708892
+  orientation -0.6679142668780688 0.6647984870545325 0.33456464802895214 1.291443819829351
+  position 4.719722852524268 0.9852020803190178 0.7354075929286613
 }
 TexturedBackground {
 }
@@ -65,12 +65,6 @@ DEF ARENA DPM-CompetitionArena {
     }
     DEF OBSTACLE3 DPM-Obstacle {
       name "obstacle3"
-      position 3.6 6.5
-      rotation 3.14
-      sections 4
-    }
-    DEF OBSTACLE3 DPM-Obstacle {
-      name "obstacle3"
       position 1.5 6.5
       rotation 3.14
       sections 4
@@ -86,11 +80,6 @@ DEF ARENA DPM-CompetitionArena {
       position 13 3
       rotation 3.14
       sections 9
-    }
-    DEF OBSTACLE5 DPM-Obstacle {
-      name "obstacle5"
-      position 4.5 6.5
-      sections 8
     }
     DEF BRIDGE2 DPM-Bridge {
       name "bridge2"
@@ -237,8 +226,116 @@ DEF ARENA DPM-CompetitionArena {
 }
 DPM-Block {
   name "block4"
-  translation 0.75 0.05 1.99
+  translation 0.47 0.05 2.29
   rotation 0 1 0 0
   dimension 0.1
   mass 2
+}
+DPM-Robot {
+  hidden rotation_2 0 1 0 9.068333006861629e-06
+  hidden rotation_19 5.676390238893387e-05 0.9999999983889295 -1.714003411314294e-08 0.0006039061051147225
+  hidden rotation_27 0.007839659515931161 -0.9999083141700235 -0.011040968813274724 1.7924852012931944e-05
+  hidden rotation_30 0.006439750165529172 0.9999179953782714 0.011069423494691956 1.753858443313758e-05
+  name "T09Robot"
+  translation 4.2672 0.0999309 0.3048
+  rotation 0 -1 0 -1.570796
+  children [
+    EV3-MediumMotor {
+      name "B"
+      translation -0.003 -0.0059 -0.068
+      rotation -0.57735126918836 0.57735126918836 -0.5773482691869614 -2.094395307179586
+      position 9.068309705789636e-06
+      children [
+        T09Robot_Grab4-solid {
+          translation 2.03924e-08 -0.02 0
+          rotation 0 0 1 -1.5707953071795862
+        }
+        T09Robot_Grab3-solid {
+          translation -0.156 0.032 0
+          rotation 0 0 1 -1.5707953071795862
+        }
+        T09Robot_Grab2-solid {
+          translation -0.079 -0.04 0
+          rotation 0 0 1 -1.5707953071795862
+        }
+        T09Robot_Grab1-solid {
+          translation -0.079 0.107 0
+          rotation 0 0 1 -1.5707953071795862
+        }
+      ]
+    }
+    T09Robot_back_weight-solid {
+      translation 0 0.0021 0.052
+      rotation 1 0 0 -1.5707953071795862
+    }
+    T09Robot_version5_mainassembly-solid {
+      translation 0 -0.018 -0.0065
+      rotation 1 0 0 -1.5707953071795862
+    }
+    EV3-Ultrasonic {
+      name "S4"
+      translation 0 0.042 -0.06
+      rotation -2.698941073254372e-08 0.7071062811861716 0.7071072811865693 3.14159
+    }
+    T09robot-design-4-fixed-mainframe-frontpart-solid {
+      translation 0.0638 -0.033 -0.071
+      rotation 1 0 0 -1.5707953071795862
+    }
+    T09robot-design-4-fixed-mainframe-frontpart-solid {
+      translation -0.063 -0.033 -0.071
+      rotation 1 0 0 -1.5707953071795862
+    }
+    EV3-Ultrasonic {
+      name "S1"
+      translation 0 -0.038 -0.06
+      rotation -7.851293122126192e-08 0.7071062811861697 0.7071072811865674 -3.1415853071795863
+    }
+    EV3-ColorSensor {
+      name "S4"
+      translation 0.008 -0.062 -0.04
+      rotation 1 0 0 1.5708
+    }
+    BallCaster {
+      translation 0 -0.065 0.08
+      rotation 1 0 0 -1.5707953071795862
+    }
+    EV3-ColorSensor {
+      name "S3"
+      translation 0.0471 -0.058 -0.0513
+      rotation 0 1 0 3.14159
+    }
+    EV3-ColorSensor {
+      name "S2"
+      translation -0.0471 -0.058 -0.0513
+      rotation 0 1 0 3.14159
+    }
+    EV3-LargeMotor {
+      name "D"
+      translation 0.039 -0.0485 0.0262
+      rotation 1 0 0 -1.5707953071795862
+      position 1.7067509384456122e-06
+      children [
+        Wheel {
+          translation 0.022 0 0
+          rotation 0 0 1 1.57
+        }
+      ]
+    }
+    EV3-LargeMotor {
+      name "A"
+      translation -0.04 -0.0485 0.0262
+      rotation -0.9999999999999999 0 0 1.5707953071795862
+      position 1.6306900792506273e-06
+      children [
+        Wheel {
+          translation -0.022 0 0
+          rotation 0 0 1 1.57
+        }
+      ]
+    }
+    EV3 {
+      rotation 1 0 0 -1.5708
+    }
+  ]
+  controller "T09Controller"
 }
