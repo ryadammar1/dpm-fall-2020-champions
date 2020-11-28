@@ -203,11 +203,9 @@ public class FieldEntry {
    * Robot crosses tunnel on the bottom of start zone
    */
   public static void crossBottomTunnel() {
-    obstacleavoidance.pause();
     Point destination = new Point((Odometer.getOdometer().getXyt()[0]) / 0.3048, TN_LL.y - 0.5);
     // Navigation.travelCorrected(destination);
     Navigation.travelToImmReturn(destination);
-    obstacleavoidance.resume();
   }
 
 

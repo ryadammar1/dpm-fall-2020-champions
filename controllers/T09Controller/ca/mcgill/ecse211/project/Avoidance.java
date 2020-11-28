@@ -44,7 +44,7 @@ public class Avoidance {
     * Setter method to change the Threshold used by the robot when attempting to find a correction path
 	* @param newThreshold the new threshold to use (in cm).
 	*/
-    public void setThreshold(int newThreshold) {
+    public static void setThreshold(int newThreshold) {
     	THRESHOLD = newThreshold;
     }
 
