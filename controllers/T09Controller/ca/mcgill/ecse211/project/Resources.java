@@ -199,7 +199,7 @@ public class Resources {
     rFacingX = -Math.signum(Resources.rr.right.y - Resources.rr.left.y);
     rFacingY = Math.signum(Resources.rr.right.x - Resources.rr.left.x);
 
-    final double OFFSETPP = 0.5;
+    final double OFFSETPP = 1;
     final double OFFSETBB = 0.25;
 
     if (rFacingY != 0) {
@@ -256,14 +256,14 @@ public static double gFacingX;
 public static double gFacingY;
 
 private static void makeGreenRamp() {
-  rFacingX = -Math.signum(Resources.gr.right.y - Resources.gr.left.y);
-  rFacingY = Math.signum(Resources.gr.right.x - Resources.gr.left.x);
+  gFacingX = -Math.signum(Resources.gr.right.y - Resources.gr.left.y);
+  gFacingY = Math.signum(Resources.gr.right.x - Resources.gr.left.x);
 
-  final double OFFSETPP = 0.5;
+  final double OFFSETPP = 1;
   final double OFFSETBB = 0.25;
 
-  if (rFacingY != 0) {
-    if (rFacingY > 0) {
+  if (gFacingY != 0) {
+    if (gFacingY > 0) {
       Resources.grpp = new RampRect(new Point(Resources.gr.left.x - OFFSETPP, Resources.gr.left.y - OFFSETPP),
           new Point(Resources.gr.right.x + OFFSETPP, Resources.gr.right.y + OFFSETPP + 2));
 
@@ -273,7 +273,7 @@ private static void makeGreenRamp() {
       Resources.grpp.setFrontLeft(grpp.ll);
       Resources.grpp.setFrontRight(new Point(grpp.ur.x, grpp.ll.y));
     }
-    if (rFacingY < 0) {
+    if (gFacingY < 0) {
       Resources.grpp = new RampRect(new Point(Resources.gr.right.x - OFFSETPP, Resources.gr.right.y - OFFSETPP - 2),
           new Point(Resources.gr.left.x + OFFSETPP, Resources.gr.left.y + OFFSETPP)); // Ramp
 
@@ -285,8 +285,8 @@ private static void makeGreenRamp() {
     }
   }
 
-  if (rFacingX != 0) {
-    if (rFacingX > 0) {
+  if (gFacingX != 0) {
+    if (gFacingX > 0) {
       Resources.grpp = new RampRect(new Point(Resources.gr.right.x - OFFSETPP, Resources.gr.right.y - OFFSETPP),
           new Point(Resources.gr.left.x + OFFSETPP + 2, Resources.gr.left.y + OFFSETPP)); // Ramp
 
@@ -296,7 +296,7 @@ private static void makeGreenRamp() {
       Resources.grpp.setFrontLeft(new Point(grpp.ll.x, grpp.ur.y));
       Resources.grpp.setFrontRight(grpp.ll);
     }
-    if (rFacingX < 0) {
+    if (gFacingX < 0) {
       Resources.grpp = new RampRect(new Point(Resources.gr.left.x - OFFSETPP - 2, Resources.gr.left.y - OFFSETPP),
           new Point(Resources.gr.right.x + OFFSETPP, Resources.gr.right.y + OFFSETPP)); // Ramp
 
