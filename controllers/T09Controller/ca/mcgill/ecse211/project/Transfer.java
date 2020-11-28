@@ -88,78 +88,48 @@ public class Transfer {
       
       obstacleavoidance.pause();
 
-      Navigation.travelTo(pushTo); 
+      Navigation.travelTo(pushTo);
 
-    Point pushFrom;
-    if (Resources.ramp == Resources.rr) {
-      pushFrom = new Point(midPoint.x - Resources.rFacingX * 0.5, midPoint.y - Resources.rFacingY * 0.5);
-    } else {
-      pushFrom = new Point(midPoint.x - Resources.gFacingX * 0.5, midPoint.y - Resources.gFacingY * 0.5);
-      
+      cageMotor.setSpeed(60);
+      cageMotor.rotate(-180, false);
+      isCageClosed = false;
+
       Navigation.travelTo(pushFrom);
       
       obstacleavoidance.pause();
       
       Main.STATE_MACHINE.blockTransfered();
     }
-    Navigation.travelToImmReturn(pushFrom);
 
-    if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
-      return;
+    // ULTRASONIC SENSOR RELATED //
 
-    obstacleavoidance.pause();
-
-    Point pushTo;
-    if (Resources.ramp == Resources.rr) {
-      pushTo = new Point(midPoint.x + Resources.rFacingX, midPoint.y + Resources.rFacingY);
-    } else {
-      pushTo = new Point(midPoint.x + Resources.gFacingX, midPoint.y + Resources.gFacingY);
+    /**
+     * Returns the filtered distance between the US sensor and an obstacle in cm.
+     */
+    public static int readUsDistance() {
+        usSensor1.fetchSample(usData, 0);
+        // extract from buffer, cast to int, and filter
+        return filter((int) (usData[0] * 100.0));
     }
 
-    Navigation.travelToImmReturn(pushTo);
-
-    CageController.openCage();
-    isCageClosed = false;
-
-    //Navigation.moveStraightFor(-1.5);
-    Navigation.moveStraightFor(-0.5);
-    Navigation.turnBy(180);
-    Navigation.travelToPerpendicular(pushFrom);
-    
-    obstacleavoidance.resume();
-    
-    Main.STATE_MACHINE.blockTransfered();
-  }
-
-  // ULTRASONIC SENSOR RELATED //
-
-  /**
-   * Returns the filtered distance between the US sensor and an obstacle in cm.
-   */
-  public static int readUsDistance() {
-    usSensor1.fetchSample(usData, 0);
-    // extract from buffer, cast to int, and filter
-    return filter((int) (usData[0] * 100.0));
-  }
-
-  /**
-   * Rudimentary filter - toss out invalid samples corresponding to null signal.
-   * 
-   * @param distance raw distance measured by the sensor in cm
-   * @return the filtered distance in cm
-   */
-  public static int filter(int distance) {
-    if (distance >= MAX_SENSOR_DIST && invalidSampleCount < INVALID_SAMPLE_LIMIT) {
-      // bad value, increment the filter value and return the distance remembered from
-      // before
-      invalidSampleCount++;
-      return prevDistance;
-    } else {
-      if (distance < MAX_SENSOR_DIST) {
-        invalidSampleCount = 0; // reset filter and remember the input distance.
-      }
-      prevDistance = distance;
-      return distance;
+    /**
+     * Rudimentary filter - toss out invalid samples corresponding to null signal.
+     * 
+     * @param distance raw distance measured by the sensor in cm
+     * @return the filtered distance in cm
+     */
+    public static int filter(int distance) {
+        if (distance >= MAX_SENSOR_DIST && invalidSampleCount < INVALID_SAMPLE_LIMIT) {
+            // bad value, increment the filter value and return the distance remembered from
+            // before
+            invalidSampleCount++;
+            return prevDistance;
+        } else {
+            if (distance < MAX_SENSOR_DIST) {
+                invalidSampleCount = 0; // reset filter and remember the input distance.
+            }
+            prevDistance = distance;
+            return distance;
+        }
     }
-  }
 }
