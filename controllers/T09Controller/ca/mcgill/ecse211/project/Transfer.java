@@ -30,7 +30,7 @@ public class Transfer {
     while (readUsDistance() > 0)
       moveForward();
 
-    Navigation.moveStraightFor(0.1);
+    Navigation.moveStraightFor(0.05);
     Utils.stopMotors();
 
     if (!isCageClosed) {
