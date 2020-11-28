@@ -153,26 +153,26 @@ public static void setTunnelAndSearchZone() {
 
   public static void goToCorner(){
     if (Resources.corner == 0){
-        double x = 0.5;
-        double y = 0.5;
+        double x = 1;
+        double y = 1;
         Point startingCorner = new Point(x, y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
       else if (Resources.corner == 1){
-        double x = 15  - 0.5;
-        double y = 0.5      ;
+        double x = 14;
+        double y = 1;
         Point startingCorner = new Point(x,y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
       else if (Resources.corner == 2){
-        double x = 15 - 0.5;
-        double y = 9  - 0.5;
+        double x = 14;
+        double y = 8;
         Point startingCorner = new Point(x,y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }
       else if (Resources.corner == 3){
-        double x = 0.5      ;
-        double y = 9   - 0.5;
+        double x = 1;
+        double y = 8;
         Point startingCorner = new Point(x,y);
         Navigation.travelToPerpendicularImmReturn(startingCorner);
       }

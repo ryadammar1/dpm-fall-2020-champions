@@ -13,7 +13,7 @@ import simlejos.hardware.ev3.LocalEV3;
  */
 public class Main {
 
-  public static final int NUM_BLOCKS = 10;
+  public static final int NUM_BLOCKS = 1; // Number of blocks to transfer before retiring
   public static final StateMachine STATE_MACHINE = new StateMachine();
 
   /**
@@ -22,29 +22,29 @@ public class Main {
    */
   public static final int NUMBER_OF_THREADS = 3;
 
+  public static long startTime = 0;
+
   /** Main entry point. */
   public static void main(String[] args) {
-    // TODO : Poll states and call corresponding functions
+    // Poll states and call corresponding functions
     while (true) { // main loop
+      if (System.currentTimeMillis() - startTime >= 180000)
+        STATE_MACHINE.timeUp();
       switch (STATE_MACHINE.getStatusFullName()) {
         case ("Standard.Initialization.Configuration"): {
           System.out.println("Configuring");
 
-          Main.initialize();
-          Resources.initializeResources();
-          Search.initializeSearch();
-          ObstacleAvoidance.initializeObstacleAvoidance();
-          Avoidance.initializeAvoidance();
-          FieldEntry.setTunnelAndSearchZone();
-          FieldExit.setTunnelAndSearchZone();
+          STATE_MACHINE.setNumBlocks(NUM_BLOCKS);
+
+          startTime = System.currentTimeMillis();
+
+          initializeAll();
 
           // Start the odometer and obstacle avoidance thread
           new Thread(odometer).start();
 
           new Thread(obstacleavoidance).start();
           obstacleavoidance.pause();
-
-          cageMotor.setSpeed(20);
 
           LocalEV3.getAudio().beep(); // beeps once
 
@@ -182,6 +182,16 @@ public class Main {
 
     // Example 4: Calculate the area of a region
     System.out.println("The island area is " + island.getWidth() * island.getHeight() + ".");
+  }
+
+  private static void initializeAll() {
+    Main.initialize();
+    Resources.initializeResources();
+    Search.initializeSearch();
+    ObstacleAvoidance.initializeObstacleAvoidance();
+    Avoidance.initializeAvoidance();
+    FieldEntry.setTunnelAndSearchZone();
+    FieldExit.setTunnelAndSearchZone();
   }
 
   /**
