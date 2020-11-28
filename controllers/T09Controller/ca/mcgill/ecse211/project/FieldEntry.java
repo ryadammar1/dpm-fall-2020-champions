@@ -3,6 +3,7 @@ package ca.mcgill.ecse211.project;
 import static ca.mcgill.ecse211.project.Resources.TIMEOUT_PERIOD;
 import static ca.mcgill.ecse211.project.Resources.obstacleavoidance;
 import ca.mcgill.ecse211.playingfield.Point;
+import ca.mcgill.ecse211.playingfield.RampRect;
 import simlejos.hardware.ev3.LocalEV3;
 
 public class FieldEntry {
@@ -235,10 +236,22 @@ public class FieldEntry {
    * Robot travels to search zone
    */
   public static void goToSearchZone() {
+   
+    RampRect bb;
+    if (Resources.ramp == Resources.rr) {
+      bb = Resources.rrbb;
+    } else {
+      bb = Resources.grbb;
+    }
+     
     if (checkIfInSearchZone() == false) {
       double xInSZ = (Resources.searchZone.ll.x + Resources.searchZone.ur.x) / 2;
       double yInSZ = (Resources.searchZone.ll.y + Resources.searchZone.ur.y) / 2;
       Point inSZ = new Point(xInSZ, yInSZ);
+      if(bb.contains(inSZ)==true) {
+        inSZ.x = bb.ll.x;
+        inSZ.y = bb.ll.y;     
+      }
       Navigation.travelToPerpendicularImmReturn(inSZ);
       if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
         return;
