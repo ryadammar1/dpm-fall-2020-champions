@@ -256,10 +256,10 @@ public static double gFacingX;
 public static double gFacingY;
 
 private static void makeGreenRamp() {
-  rFacingX = -Math.signum(Resources.gr.right.y - Resources.gr.left.y);
-  rFacingY = Math.signum(Resources.gr.right.x - Resources.gr.left.x);
+  gFacingX = -Math.signum(Resources.gr.right.y - Resources.gr.left.y);
+  gFacingY = Math.signum(Resources.gr.right.x - Resources.gr.left.x);
 
-  final double OFFSETPP = 0.5;
+  final double OFFSETPP = 1;
   final double OFFSETBB = 0.25;
 
   if (rFacingY != 0) {
