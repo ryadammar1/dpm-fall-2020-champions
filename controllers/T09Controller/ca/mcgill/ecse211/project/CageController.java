@@ -29,7 +29,7 @@ public class CageController {
      */
     public static void openCage() {
         cageMotor.setSpeed(30);
-        cageMotor.rotate(180, false);
+        cageMotor.rotate(-180, false);
     }
 
     /**
