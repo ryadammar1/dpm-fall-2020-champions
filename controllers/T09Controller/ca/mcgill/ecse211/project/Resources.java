@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import ca.mcgill.ecse211.playingfield.Point;
 import ca.mcgill.ecse211.playingfield.RampEdge;
+import ca.mcgill.ecse211.playingfield.RampRect;
 import ca.mcgill.ecse211.playingfield.Rect;
 import ca.mcgill.ecse211.playingfield.Region;
 import ca.mcgill.ecse211.wificlient.WifiConnection;
@@ -189,65 +190,93 @@ public class Resources {
   }
   
   /** The Red ramp bounding box. */
-  public static Rect rrbb;
+  public static RampRect rrbb;
   public static double rFacingX;
   public static double rFacingY;
 
   private static void makeRedRamp() {
     rFacingX = -Math.signum(Resources.rr.right.y - Resources.rr.left.y);
     rFacingY = Math.signum(Resources.rr.right.x - Resources.rr.left.x);
+    
+    final double OFFSET = 0.5;
   
     if (rFacingY != 0) {
       if (rFacingY > 0) {
-        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 0.25, Resources.rr.left.y - 0.25),
-            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 2.25));
+        Resources.rrbb = new RampRect(new Point(Resources.rr.left.x - OFFSET, Resources.rr.left.y - OFFSET),
+            new Point(Resources.rr.right.x + OFFSET, Resources.rr.right.y + OFFSET + 2));
+        
+        Resources.rrbb.setFrontLeft(rrbb.ll);
+        Resources.rrbb.setFrontRight(new Point(rrbb.ur.x, rrbb.ll.y));
       }
       if (rFacingY < 0) {
-        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 2.25),
-            new Point(Resources.rr.left.x + 0.25, Resources.rr.left.y + 0.25)); // Ramp
+        Resources.rrbb = new RampRect(new Point(Resources.rr.right.x - OFFSET, Resources.rr.right.y - OFFSET - 2),
+            new Point(Resources.rr.left.x + OFFSET, Resources.rr.left.y + OFFSET)); // Ramp
+        
+        Resources.rrbb.setFrontLeft(rrbb.ur);
+        Resources.rrbb.setFrontRight(new Point(rrbb.ll.x, rrbb.ur.y));
       }
     }
     
     if (rFacingX != 0) {
       if (rFacingX > 0) {
-        Resources.rrbb = new Rect(new Point(Resources.rr.right.x - 0.25, Resources.rr.right.y - 0.25),
-            new Point(Resources.rr.left.x + 2.25, Resources.rr.left.y + 0.25)); // Ramp
+        Resources.rrbb = new RampRect(new Point(Resources.rr.right.x - OFFSET, Resources.rr.right.y - OFFSET),
+            new Point(Resources.rr.left.x + OFFSET + 2, Resources.rr.left.y + OFFSET)); // Ramp
+        
+        Resources.rrbb.setFrontLeft(new Point(rrbb.ll.x, rrbb.ur.y));
+        Resources.rrbb.setFrontRight(rrbb.ll);
       }
       if (rFacingX < 0) {
-        Resources.rrbb = new Rect(new Point(Resources.rr.left.x - 2.25, Resources.rr.left.y - 0.25),
-            new Point(Resources.rr.right.x + 0.25, Resources.rr.right.y + 0.25)); // Ramp
+        Resources.rrbb = new RampRect(new Point(Resources.rr.left.x - OFFSET - 2, Resources.rr.left.y - OFFSET),
+            new Point(Resources.rr.right.x + OFFSET, Resources.rr.right.y + OFFSET)); // Ramp
+        
+        Resources.rrbb.setFrontLeft(new Point(rrbb.ur.x, rrbb.ll.y));
+        Resources.rrbb.setFrontRight(rrbb.ur);
       }
     }
   }
 
   /** The Green ramp bounding box. */
-  public static Rect grbb;
+  public static RampRect grbb;
   public static double gFacingX;
   public static double gFacingY;
 
   private static void makeGreenRamp() {
     gFacingX = -Math.signum(Resources.gr.right.y - Resources.gr.left.y);
     gFacingY = Math.signum(Resources.gr.right.x - Resources.gr.left.x);
+    
+    final double OFFSET = 0.5;
   
     if (gFacingY != 0) {
       if (gFacingY > 0) {
-        Resources.grbb = new Rect(new Point(Resources.gr.left.x - 0.25, Resources.gr.left.y - 0.25),
-            new Point(Resources.gr.right.x + 0.25, Resources.gr.right.y + 2.25));
+        Resources.grbb = new RampRect(new Point(Resources.gr.left.x - OFFSET, Resources.gr.left.y - OFFSET),
+            new Point(Resources.gr.right.x + OFFSET, Resources.gr.right.y + OFFSET + 2));
+        
+        Resources.grbb.setFrontLeft(grbb.ll);
+        Resources.grbb.setFrontRight(new Point(grbb.ur.x, grbb.ll.y));
       }
       if (gFacingY < 0) {
-        Resources.grbb = new Rect(new Point(Resources.gr.right.x - 0.25, Resources.gr.right.y - 2.25),
-            new Point(Resources.gr.left.x + 0.25, Resources.gr.left.y + 0.25)); // Ramp
+        Resources.grbb = new RampRect(new Point(Resources.gr.right.x - OFFSET, Resources.gr.right.y - OFFSET - 2),
+            new Point(Resources.gr.left.x + OFFSET, Resources.gr.left.y + OFFSET)); // Ramp
+        
+        Resources.grbb.setFrontLeft(grbb.ur);
+        Resources.grbb.setFrontRight(new Point(grbb.ll.x, grbb.ur.y));
       }
     }
   
     if (gFacingX != 0) {
       if (gFacingX > 0) {
-        Resources.grbb = new Rect(new Point(Resources.gr.right.x - 0.25, Resources.gr.right.y - 0.25),
-            new Point(Resources.gr.left.x + 2.25, Resources.gr.left.y + 0.25)); // Ramp
+        Resources.grbb = new RampRect(new Point(Resources.gr.right.x - OFFSET, Resources.gr.right.y - OFFSET),
+            new Point(Resources.gr.left.x + OFFSET + 2, Resources.gr.left.y + OFFSET)); // Ramp
+        
+        Resources.grbb.setFrontLeft(new Point(grbb.ll.x, grbb.ur.y));
+        Resources.grbb.setFrontRight(grbb.ll);
       }
       if (gFacingX < 0) {
-        Resources.grbb = new Rect(new Point(Resources.gr.left.x - 2.25, Resources.gr.left.y - 0.25),
-            new Point(Resources.gr.right.x + 0.25, Resources.gr.right.y + 0.25)); // Ramp
+        Resources.grbb = new RampRect(new Point(Resources.gr.left.x - OFFSET - 2, Resources.gr.left.y - OFFSET),
+            new Point(Resources.gr.right.x + OFFSET, Resources.gr.right.y + OFFSET)); // Ramp
+        
+        Resources.grbb.setFrontLeft(new Point(grbb.ur.x, grbb.ll.y));
+        Resources.grbb.setFrontRight(grbb.ur);
       }
     }
   }
