@@ -45,7 +45,6 @@ public class Main {
           obstacleavoidance.pause();
 
           cageMotor.setSpeed(20);
-          cageMotor.rotate(-180, false);
 
           LocalEV3.getAudio().beep(); // beeps once
 
