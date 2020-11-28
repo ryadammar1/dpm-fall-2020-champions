@@ -6,7 +6,6 @@ import static ca.mcgill.ecse211.project.Utils.*;
 import static simlejos.ExecutionController.*;
 
 import ca.mcgill.ecse211.playingfield.Point;
-import simlejos.robotics.RegulatedMotor;
 
 public class Navigation {
 
@@ -159,14 +158,11 @@ public class Navigation {
         && Main.STATE_MACHINE.getStatusFullName() != "Avoidance") {
       previousPositionl = positionl;
       previousPositionr = positionr;
-      // Sleep for 50 physics steps
+      // Sleep for 400 physics steps
       for (int i = 0; i < 400; i++)
         waitUntilNextStep();
       positionl = leftMotor.getTachoCount();
       positionr = rightMotor.getTachoCount();
-
-      //System.out.println(positionl + "vs x" + previousPositionl);
-      //System.out.println(positionl + "vs y" + previousPositionl);
     }
   }
 
