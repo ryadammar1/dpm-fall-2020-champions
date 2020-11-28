@@ -63,9 +63,9 @@ public class Transfer {
       
      RampRect bb;
      if (Resources.ramp == Resources.rr) {
-       bb = Resources.rrbb;
+       bb = Resources.rrpp;
      } else {
-       bb = Resources.grbb;
+       bb = Resources.grpp;
      }
      
      List<Point> cornersInIsland = Arrays.asList(bb.corners());
