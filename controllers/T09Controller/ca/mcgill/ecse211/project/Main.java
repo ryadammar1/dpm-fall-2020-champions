@@ -49,6 +49,16 @@ public class Main {
           LocalEV3.getAudio().beep(); // beeps once
 
           STATE_MACHINE.doneConfiguring();
+
+          /*/ DEBUG >/
+          STATE_MACHINE.doneLocalizing();
+          STATE_MACHINE.enteredField();
+          STATE_MACHINE.setBlockDetected(true);
+          STATE_MACHINE.detectObstacle();
+          odometer.setX(1 * TILE_SIZE);
+          odometer.setY(8 * TILE_SIZE);
+          odometer.setTheta(90);
+          // < DEBUG*/
           break;
         }
         case ("Standard.Initialization.Localization"): {
