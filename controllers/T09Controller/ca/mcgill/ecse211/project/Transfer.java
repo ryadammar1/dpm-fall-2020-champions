@@ -69,7 +69,10 @@ public class Transfer {
       cageMotor.rotate(-180, false);
       isCageClosed = false;
 
-      Navigation.moveStraightFor(-1.5);
+      //Navigation.moveStraightFor(-1.5);
+      Navigation.moveStraightFor(-0.5);
+      Navigation.turnBy(180);
+      Navigation.travelToPerpendicular(new Point((ramp.left.x + ramp.right.x) / 2, ramp.left.y-0.5));
       
       obstacleavoidance.resume();
       
