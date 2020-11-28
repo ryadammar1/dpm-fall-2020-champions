@@ -199,7 +199,7 @@ public class Resources {
     rFacingX = -Math.signum(Resources.rr.right.y - Resources.rr.left.y);
     rFacingY = Math.signum(Resources.rr.right.x - Resources.rr.left.x);
 
-    final double OFFSETPP = 0.5;
+    final double OFFSETPP = 1;
     final double OFFSETBB = 0.25;
 
     if (rFacingY != 0) {
