@@ -29,7 +29,7 @@ public class Avoidance {
 	/** The number of invalid samples seen by filter() so far. */
 	private static int invalidSampleCount;
 
-	/** Threshold to trigger obstacle avoidance corrections. in cm. */
+	/** Threshold to ensure free correction path. in cm. */
 	private static int THRESHOLD = 33;
 
 	/** Sensor to use. (can be changed depending on search mode). */
@@ -39,7 +39,19 @@ public class Avoidance {
 	private static ArrayList<Circle> blacklistPoint = new ArrayList<Circle>();
     private static ArrayList<Rect> blacklistEdge = new ArrayList<Rect>();
 
+
+    /**
+    * Setter method to change the Threshold used by the robot when attempting to find a correction path
+	* @param newThreshold the new threshold to use (in cm).
+	*/
+    public void setThreshold(int newThreshold) {
+    	THRESHOLD = newThreshold;
+    }
+
+
     public static void initializeAvoidance() {
+    	SENSOR = 2;
+    	usData = new float[usSensor2.sampleSize()];
 
     	blacklistPoint = Search.getBlacklistPoint();
     	blacklistEdge = Search.getBlacklistEdge();
@@ -140,6 +152,8 @@ public class Avoidance {
 
 	/**
 	 * Returns the filtered distance between the US sensor and an obstacle in cm.
+	 * @param usId the id of the US sensor to use
+	 * @return the filtered reading from the US sensor
 	 */
 	public static int readUsDistance(int usId) {
 		if (usId == 1) {

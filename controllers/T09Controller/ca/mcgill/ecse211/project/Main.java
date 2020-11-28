@@ -94,7 +94,8 @@ public class Main {
         }
         case ("Standard.Initialization.EntryField"): {
           System.out.println(STATE_MACHINE.getStatusFullName());
-          obstacleavoidance.resume();
+          obstacleavoidance.resume(15);
+          Avoidance.setThreshold(33);
           odometer.printPosition();
           System.out.println("Entering field");
           FieldEntry.enterField();
@@ -108,13 +109,15 @@ public class Main {
         }
         case ("Standard.Operation.Transfer"): {
           System.out.println("Transfering");
-          obstacleavoidance.resume();
+          obstacleavoidance.resume(40);
+          Avoidance.setThreshold(40);
           Transfer.doTransfer();
           obstacleavoidance.pause();
           break;
         }
         case ("Standard.Termination.ExitField"):
-          obstacleavoidance.resume();
+          obstacleavoidance.resume(15);
+          Avoidance.setThreshold(33);
           System.out.println("Exiting field");
           FieldExit.exitField();
           obstacleavoidance.pause();
@@ -122,7 +125,7 @@ public class Main {
         case ("Avoidance"): {
           System.out.println("Avoiding");
           Avoidance.correct();
-          Main.STATE_MACHINE.obstacleAvoided();
+          STATE_MACHINE.obstacleAvoided();
           break;
         }
         default:

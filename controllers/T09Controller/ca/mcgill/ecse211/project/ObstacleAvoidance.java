@@ -23,7 +23,7 @@ public class ObstacleAvoidance implements Runnable {
 	private static int invalidSampleCount;
 
 	/** Threshold to trigger obstacle avoidance corrections. in cm. */
-	private static int THRESHOLD = 10;
+	private static int THRESHOLD = 15;
 
 	/** Sensor to use. (can be changed depending on search mode). */
 	public static int SENSOR = 1;
@@ -81,6 +81,8 @@ public class ObstacleAvoidance implements Runnable {
 
 	/**
 	 * Returns the filtered distance between the US sensor and an obstacle in cm.
+	 * @param usId the id of the US sensor to use
+	 * @return the filtered reading from the US sensor
 	 */
 	public static int readUsDistance(int usId) {
 		if (usId == 1) {
@@ -125,7 +127,14 @@ public class ObstacleAvoidance implements Runnable {
 		ENABLED = false;
 	}
 
-	public void resume() {
+	/**
+	 * Method to resume the obstacle avoidance system
+	 * @param  * @param newThreshold the new threshold to use (in cm) if wanted
+	 */
+	public void resume(int newThreshold) {
 		ENABLED = true;
+		if (newThreshold >= 0) {
+			THRESHOLD = newThreshold
+		}
 	}
 }
