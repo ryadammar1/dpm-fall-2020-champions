@@ -45,11 +45,15 @@ public class Transfer {
 
     Point midPoint = new Point((ramp.left.x + ramp.right.x) / 2, (ramp.left.y + ramp.right.y) / 2);
 
+
+     
+
     Point pushFrom;
     if (Resources.ramp == Resources.rr) {
       pushFrom = new Point(midPoint.x - Resources.rFacingX * 0.5, midPoint.y - Resources.rFacingY * 0.5);
     } else {
       pushFrom = new Point(midPoint.x - Resources.gFacingX * 0.5, midPoint.y - Resources.gFacingY * 0.5);
+
     }
     Navigation.travelToImmReturn(pushFrom);
 
@@ -70,10 +74,13 @@ public class Transfer {
     CageController.openCage();
     isCageClosed = false;
 
-    Navigation.moveStraightFor(-1.5);
-
+    //Navigation.moveStraightFor(-1.5);
+    Navigation.moveStraightFor(-0.5);
+    Navigation.turnBy(180);
+    Navigation.travelToPerpendicular(pushFrom);
+    
     obstacleavoidance.resume();
-
+    
     Main.STATE_MACHINE.blockTransfered();
   }
 
