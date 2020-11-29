@@ -81,8 +81,12 @@ public class Transfer {
        cornersInIsland.sort((Point p1, Point p2) -> (int)Math.signum(Navigation.distanceBetween(Utils.getCurrentPosition(), p1) - Navigation.distanceBetween(Utils.getCurrentPosition(), p2)));
        cornersInIsland.removeIf((Point p) -> !(new Rect(Resources.island).contains(p)));
        
-       Navigation.travelToPerpendicularImmReturn(cornersInIsland.get(Math.min((int)(Math.random()*2), cornersInIsland.size() - 1)));
+       final int INDEX = Math.min((int)(Math.random()*2), cornersInIsland.size() - 1);
        
+       if (Navigation.distanceBetween(cornersInIsland.get(INDEX), pushFrom) < Navigation.distanceBetween(Utils.getCurrentPosition(), pushFrom)) {
+       
+         Navigation.travelToPerpendicularImmReturn(cornersInIsland.get(INDEX));
+         
          if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
            return;
          
@@ -94,6 +98,7 @@ public class Transfer {
              Navigation.travelToPerpendicular(bb.getFrontRight());
            }
          }
+       }
      }
      
      obstacleavoidance.pause();
