@@ -37,8 +37,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -1 0 0 1.58
-  position 2.25 7.5 1.3
+  orientation -0.9999073386789454 0.009237203125685467 0.009999406702568298 1.6500923747715468
+  position 1.2550410959572362 5.009767318079863 0.270569701122712
 }
 TexturedBackground {
 }
@@ -64,7 +64,7 @@ DEF ARENA DPM-CompetitionArena {
     }
     DEF OBSTACLE2 DPM-Obstacle {
       name "obstacle2"
-      position 2 4
+      position 4 4
       rotation 3.14
       sections 7
     }
@@ -76,7 +76,7 @@ DEF ARENA DPM-CompetitionArena {
     }
     DEF OBSTACLE4 DPM-Obstacle {
       name "obstacle4"
-      position 8.5 8
+      position 1 8
       rotation 1.57
       sections 9
     }
@@ -263,14 +263,8 @@ DPM-Block {
   mass 2
 }
 DPM-Robot {
-  hidden rotation_2 0 -1 0 0.01567474754116343
-  hidden position_18_0 139.04834836334354
-  hidden translation_19 -3.202913839306376e-05 -6.25084355005967e-05 0.00026454841826978326
-  hidden rotation_19 -0.09255081360063108 0.7272662989114075 0.6800868160533363 -2.231348166642219
-  hidden rotation_27 -0.35322046972864124 -0.9354831191133107 -0.010326355538585111 1.9158860519466605e-05
-  hidden rotation_30 0.37214037118395743 0.9281195563720971 0.01027780203779264 1.8895001438727516e-05
   name "T09Robot"
-  translation 0.177946 0.122068 0.16387
+  translation 0.167958 0.122171 0.154105
   rotation 0.004270406601170272 0.9999798104967753 0.0047055527086772506 -1.569298276016972
   children [
     EV3-MediumMotor {

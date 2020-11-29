@@ -98,10 +98,10 @@ public class Avoidance {
 			}
 		}
 		setSpeed(FORWARD_SPEED);
-		moveStraightFor(1.0);
+		moveStraightFor(1.25);
 		setSpeed(ROTATE_SPEED);
 		turnBy(direction * -90.0);
-		moveStraightFor(1.0);
+		moveStraightFor(1.25);
 
 		System.out.println("Done correcting");
 
