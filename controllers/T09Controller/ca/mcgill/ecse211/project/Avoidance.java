@@ -137,6 +137,10 @@ public class Avoidance {
         (hypotenuse + DIST_US_SENSOR_Y)); System.out.println("dx = " + dx + DIST_US_SENSOR_X); System.out.println("dy = " + dy);
         System.out.println("Point curr = " + crt); System.out.println("Point seen = " + npt);
         */
+        
+        if (!(new Rect(Resources.island)).contains(npt)) {
+          return true;
+        }
 
         for (Circle point : blacklistPoint) {
             if (point.contains(npt))
