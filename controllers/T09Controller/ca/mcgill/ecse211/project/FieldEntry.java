@@ -64,6 +64,9 @@ public class FieldEntry {
       }
     }
     setOnIsland(true);
+    
+    obstacleavoidance.resume(15);
+    Avoidance.setThreshold(33);
 
     System.out.println("Finished travelling... entering search zone");
     if (checkIfInSearchZone() == true) {
