@@ -94,7 +94,7 @@ public class Main {
         }
         case ("Standard.Initialization.EntryField"): {
           System.out.println(STATE_MACHINE.getStatusFullName());
-          obstacleavoidance.resume(15);
+          obstacleavoidance.resume(20);
           Avoidance.setThreshold(33);
           odometer.printPosition();
           System.out.println("Entering field");
@@ -115,7 +115,7 @@ public class Main {
           break;
         }
         case ("Standard.Termination.ExitField"):
-          obstacleavoidance.resume(15);
+          obstacleavoidance.resume(20);
           Avoidance.setThreshold(33);
           System.out.println("Exiting field");
           FieldExit.exitField();

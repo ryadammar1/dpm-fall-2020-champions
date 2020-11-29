@@ -119,7 +119,7 @@ public class Avoidance {
      */
     private static boolean isBlackListed() {
 
-    	System.out.println(blacklistEdge);
+    	//System.out.println(blacklistEdge);
 
         Point crt = getCurrentPosition();
         double angle = getCurrentAngle();
