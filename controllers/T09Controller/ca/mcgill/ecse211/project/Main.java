@@ -109,7 +109,6 @@ public class Main {
         }
         case ("Standard.Operation.Transfer"): {
           System.out.println("Transfering");
-          obstacleavoidance.resume(40);
           Avoidance.setThreshold(40);
           Transfer.doTransfer();
           obstacleavoidance.pause();
