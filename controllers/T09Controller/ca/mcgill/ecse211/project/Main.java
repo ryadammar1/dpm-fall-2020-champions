@@ -119,8 +119,7 @@ public class Main {
           Avoidance.setThreshold(33);
           System.out.println("Exiting field");
           FieldExit.exitField();
-          obstacleavoidance.pause();
-          break;
+          return;
         case ("Avoidance"): {
           System.out.println("Avoiding");
           Avoidance.correct();
