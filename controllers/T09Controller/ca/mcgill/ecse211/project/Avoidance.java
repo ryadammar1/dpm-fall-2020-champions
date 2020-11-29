@@ -101,6 +101,7 @@ public class Avoidance {
 		moveStraightFor(1.0);
 		setSpeed(ROTATE_SPEED);
 		turnBy(direction * -90.0);
+		moveStraightFor(1.0);
 
 		System.out.println("Done correcting");
 
