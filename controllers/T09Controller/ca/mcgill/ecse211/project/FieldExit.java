@@ -47,6 +47,7 @@ public static void setTunnelAndSearchZone() {
           goInFrontOfRightTunnelIsland();
           if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
             return;
+          obstacleavoidance.pause();
           Navigation.turnTo(90);
           FieldEntry.crossRightTunnel();
       }
@@ -54,6 +55,7 @@ public static void setTunnelAndSearchZone() {
           goInFrontOfLeftTunnelIsland();
           if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
             return;
+          obstacleavoidance.pause();
           Navigation.turnTo(270);
           FieldEntry.crossLeftTunnel();
       }
@@ -61,6 +63,7 @@ public static void setTunnelAndSearchZone() {
           goInFrontOfTopTunnelIsland();
           if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
             return;
+          obstacleavoidance.pause();
           Navigation.turnTo(0);
           FieldEntry.crossTopTunnel();
       }
@@ -68,6 +71,7 @@ public static void setTunnelAndSearchZone() {
           goInFrontOfBottomTunnel();
           if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
             return;
+          obstacleavoidance.pause();
           Navigation.turnTo(180);
           FieldEntry.crossBottomTunnel();
       }
