@@ -65,7 +65,7 @@ public class ObstacleAvoidance implements Runnable {
 		while (true) {
 			if (ENABLED == true) {
 				int reading = readUsDistance(SENSOR);
-				if (reading <= THRESHOLD) {
+				if (reading <= THRESHOLD && reading != 0) {
 					Main.STATE_MACHINE.setBlockDetected(false);
 					Main.STATE_MACHINE.detectObstacle();
 					System.out.println("Obstacle detected...." + reading);
