@@ -138,19 +138,15 @@ public class Avoidance {
         System.out.println("Point curr = " + crt); System.out.println("Point seen = " + npt);
         */
         
-        if (!(new Rect(Resources.island)).contains(npt)) {
-          return true;
+        if (new Rect(Resources.island).contains(npt)) {
+          return false;
         }
 
-        for (Circle point : blacklistPoint) {
-            if (point.contains(npt))
-                return true;
+        if (new Rect(Resources.startZone).contains(npt)) {
+        	return false;
         }
-        for (Rect edge : blacklistEdge) {
-            if (edge.contains(npt))
-                return true;
-        }
-        return false;
+
+        return true;
     }
 
 
