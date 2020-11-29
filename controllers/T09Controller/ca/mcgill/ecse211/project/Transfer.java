@@ -73,23 +73,27 @@ public class Transfer {
        bb = Resources.grpp;
      }
      
-     ArrayList<Point> cornersInIsland = new ArrayList<>(Arrays.asList(bb.corners()));
-     
-     cornersInIsland.sort((Point p1, Point p2) -> (int)Math.signum(Navigation.distanceBetween(Utils.getCurrentPosition(), p1) - Navigation.distanceBetween(Utils.getCurrentPosition(), p2)));
-     cornersInIsland.removeIf((Point p) -> !(new Rect(Resources.island).contains(p)));
-     
-     Navigation.travelToPerpendicularImmReturn(cornersInIsland.get(0));
-     
-     if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
-       return;
-     
-     // verify if already on the corners close to the front of ramp
-     if (!(cornersInIsland.get(0).equals(bb.getFrontLeft()) || (cornersInIsland.get(0).equals(bb.getFrontRight())))) {
-       if ((new Rect(Resources.island).contains(bb.getFrontLeft()))) {
-         Navigation.travelToPerpendicular(bb.getFrontLeft());
-       } else {
-         Navigation.travelToPerpendicular(bb.getFrontRight());
-       }
+     if (Navigation.distanceBetween(Utils.getCurrentPosition(), pushFrom) <= 0.5) {
+       Navigation.travelTo(pushFrom);
+     } else {
+       ArrayList<Point> cornersInIsland = new ArrayList<>(Arrays.asList(bb.corners()));
+       
+       cornersInIsland.sort((Point p1, Point p2) -> (int)Math.signum(Navigation.distanceBetween(Utils.getCurrentPosition(), p1) - Navigation.distanceBetween(Utils.getCurrentPosition(), p2)));
+       cornersInIsland.removeIf((Point p) -> !(new Rect(Resources.island).contains(p)));
+       
+       Navigation.travelToPerpendicularImmReturn(cornersInIsland.get(Math.min((int)(Math.random()*2), cornersInIsland.size() - 1)));
+       
+         if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
+           return;
+         
+         // verify if already on the corners close to the front of ramp
+         if (!(cornersInIsland.get(0).equals(bb.getFrontLeft()) || (cornersInIsland.get(0).equals(bb.getFrontRight())))) {
+           if ((new Rect(Resources.island).contains(bb.getFrontLeft()))) {
+             Navigation.travelToPerpendicular(bb.getFrontLeft());
+           } else {
+             Navigation.travelToPerpendicular(bb.getFrontRight());
+           }
+         }
      }
      
      obstacleavoidance.pause();
