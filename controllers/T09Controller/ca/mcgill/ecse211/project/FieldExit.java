@@ -125,7 +125,7 @@ public static void setTunnelAndSearchZone() {
    */
   public static void goInFrontOfRightTunnelIsland() {
     Point inFront = new Point((TN_LL.x - 0.5), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToPerpendicularImmReturn(inFront);
+    Navigation.travelToImmReturn(inFront);
     
   }
 
@@ -134,7 +134,7 @@ public static void setTunnelAndSearchZone() {
    */
   public static void goInFrontOfLeftTunnelIsland() {
     Point inFront = new Point((TN_UR.x + 0.5), (TN_LL.y + TN_UL.y) / 2);
-    Navigation.travelToPerpendicularImmReturn(inFront);
+    Navigation.travelToImmReturn(inFront);
     
   }
 
@@ -144,7 +144,7 @@ public static void setTunnelAndSearchZone() {
   public static void goInFrontOfTopTunnelIsland() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_LL.y - 0.5));
-    Navigation.travelToPerpendicularImmReturn(inFront);
+    Navigation.travelToImmReturn(inFront);
     
   }
 
@@ -154,7 +154,7 @@ public static void setTunnelAndSearchZone() {
   public static void goInFrontOfBottomTunnel() {
 
     Point inFront = new Point((TN_UL.x + TN_UR.x) / 2, (TN_UL.y + 0.5));
-    Navigation.travelToPerpendicularImmReturn(inFront);
+    Navigation.travelToImmReturn(inFront);
     
   }
 
