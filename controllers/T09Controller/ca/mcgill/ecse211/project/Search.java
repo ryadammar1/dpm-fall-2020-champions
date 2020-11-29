@@ -214,8 +214,11 @@ public class Search {
                 boolean hasSeenDanger = false;
 
                 System.out.println("Could not find near object");
-                while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100)))
+                while (hasDangerWithin((int) (1.2 * DISTANCE_THREESHOLD * 100))){
                     rotateClockwise();
+                    waitUntilNextStep();
+                    waitUntilNextStep();
+                }
 
                 for (int i = 0; i < 50; i++)
                     waitUntilNextStep();
