@@ -189,6 +189,7 @@ public static void setTunnelAndSearchZone() {
    * Steps to be performed once robot is back at starting corner
    */
   public static void backAtCorner() {
+    obstacleavoidance.pause();
     System.out.println("In Starting Corner");
     LocalEV3.getAudio().beep();
     try {
