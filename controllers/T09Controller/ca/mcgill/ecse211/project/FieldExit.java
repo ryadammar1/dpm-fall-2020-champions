@@ -73,6 +73,9 @@ public static void setTunnelAndSearchZone() {
       }
     }
     FieldEntry.setOnIsland(false);
+    
+    obstacleavoidance.resume(15);
+    Avoidance.setThreshold(33);
 
     //3. go to start corner
     goToCorner();
