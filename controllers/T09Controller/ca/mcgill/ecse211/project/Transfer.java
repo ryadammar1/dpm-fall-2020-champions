@@ -92,12 +92,12 @@ public class Transfer {
        }
      }
      
+     obstacleavoidance.pause();
+     
      Navigation.travelTo(pushFrom);
       
       if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
         return;
-      
-      obstacleavoidance.pause();
       
       Navigation.travelTo(pushTo);
 
