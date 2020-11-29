@@ -133,7 +133,7 @@ public class ObstacleAvoidance implements Runnable {
 	 */
 	public void resume(int newThreshold) {
 		ENABLED = true;
-		if (newThreshold >= 0) {
+		if (newThreshold > 0) {
 			THRESHOLD = newThreshold;
 		}
 	}
