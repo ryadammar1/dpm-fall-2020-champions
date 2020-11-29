@@ -48,7 +48,7 @@ public static void setTunnelAndSearchZone() {
           if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
             return;
           obstacleavoidance.pause();
-          Navigation.turnTo(90);
+          Navigation.turnToImmReturn(90);
           FieldEntry.crossRightTunnel();
       }
       else if (isTunnelLeftIsland()==true){
@@ -56,7 +56,7 @@ public static void setTunnelAndSearchZone() {
           if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
             return;
           obstacleavoidance.pause();
-          Navigation.turnTo(270);
+          Navigation.turnToImmReturn(270);
           FieldEntry.crossLeftTunnel();
       }
       else if (isTunnelTopIsland()==true){
@@ -64,7 +64,7 @@ public static void setTunnelAndSearchZone() {
           if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
             return;
           obstacleavoidance.pause();
-          Navigation.turnTo(0);
+          Navigation.turnToImmReturn(0);
           FieldEntry.crossTopTunnel();
       }
       else if (isTunnelBottomIsland()==true){
@@ -72,7 +72,7 @@ public static void setTunnelAndSearchZone() {
           if (Main.STATE_MACHINE.getStatusFullName() == "Avoidance")
             return;
           obstacleavoidance.pause();
-          Navigation.turnTo(180);
+          Navigation.turnToImmReturn(180);
           FieldEntry.crossBottomTunnel();
       }
     }
