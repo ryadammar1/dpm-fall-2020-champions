@@ -33,17 +33,22 @@ public class Transfer {
        */
     
       obstacleavoidance.pause();
-       setSpeed(FORWARD_SPEED/2);
-       while(readUsDistance()>0)
-           moveForward();
-       Utils.stopMotors();
-       
-       if (!isCageClosed) {
-         cageMotor.setSpeed(60);
-         cageMotor.rotate(180, false);
-         isCageClosed = true;
-       }
-     obstacleavoidance.pause();
+      setSpeed(FORWARD_SPEED / 2);
+      while (readUsDistance() > 0)
+        moveForward();
+  
+      Navigation.moveStraightFor(0.05);
+      Utils.stopMotors();
+  
+      if (!isCageClosed) {
+        if (!CageController.closeCage()) {
+          CageController.resetCage();
+          Navigation.moveStraightFor(-0.25);
+          return;
+        }
+        isCageClosed = true;
+      }
+      obstacleavoidance.pause();
      
       Point midPoint = new Point((ramp.left.x + ramp.right.x) / 2, (ramp.left.y + ramp.right.y) / 2);
       
@@ -96,8 +101,7 @@ public class Transfer {
       
       Navigation.travelTo(pushTo);
 
-      cageMotor.setSpeed(60);
-      cageMotor.rotate(-180, false);
+      CageController.openCage();
       isCageClosed = false;
       
       Navigation.moveStraightFor(-0.5);
