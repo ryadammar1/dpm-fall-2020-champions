@@ -48,7 +48,7 @@ public class Transfer {
         }
         isCageClosed = true;
       }
-      obstacleavoidance.resume(40);
+      obstacleavoidance.resume(20);
      
       Point midPoint = new Point((ramp.left.x + ramp.right.x) / 2, (ramp.left.y + ramp.right.y) / 2);
       
