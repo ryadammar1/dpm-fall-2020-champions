@@ -11,6 +11,8 @@
 
 bin/
 
+/.vscode
+
 # Ignore certain OS files
 .DS_Store
 Thumbs.db
